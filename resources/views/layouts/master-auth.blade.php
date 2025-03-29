@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>@yield('title') | Toner eCommerce + Admin HTML Template</title>
+    <title>La Gramma | @yield('title')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="eCommerce + Admin HTML Template" name="description">
-    <meta content="Themesbrand" name="author">
+    <meta content="La gramma backoffice" name="description">
+    <meta content="Fernandes Wiraharjo" name="author">
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('build/images/favicon.ico') }}">
 
@@ -23,15 +23,16 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-2">
                         <a class="navbar-brand mb-2 mb-sm-0" href="index">
-                            <img src="{{ URL::asset('build/images/logo-dark.png') }}" class="card-logo card-logo-dark"
+                            <!-- <img src="{{ URL::asset('build/images/logo-dark.png') }}" class="card-logo card-logo-dark"
                                 alt="logo dark" height="22">
                             <img src="{{ URL::asset('build/images/logo-light.png') }}"
-                                class="card-logo card-logo-light" alt="logo light" height="22">
+                                class="card-logo card-logo-light" alt="logo light" height="22"> -->
+                            LA GRAMMA
                         </a>
                     </div>
                     <!---end col-->
                     <div class="col-auto">
-                        <ul class="list-unstyled hstack gap-2 mb-0">
+                        <!-- <ul class="list-unstyled hstack gap-2 mb-0">
                             <li class="me-md-3">
                                 <a href="#!" class="text-body fw-medium fs-15">Become a Selling</a>
                             </li>
@@ -47,7 +48,7 @@
                                     <i class="bi bi-apple align-middle me-1"></i> Download App
                                 </a>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
                 <!--end row-->

@@ -15,12 +15,12 @@
                                             class="img-fluid">
                                     </div>
                                     <div class="col-lg-8 col-9">
-                                        <h1 class="text-white lh-base fw-lighter">Join Our Toner Store</h1>
+                                        <h1 class="text-white lh-base fw-lighter">La Gramma Account Login</h1>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p class="text-muted fs-15">Sign in to continue to Toner.</p>
+                                <p class="text-muted fs-15">Sign in.</p>
                                 <div class="p-2">
                                     <form method="POST" action="{{ route('login') }}">
                                         @csrf
@@ -29,7 +29,7 @@
                                             <label for="email" class="form-label">Email</label>
                                             <input id="email" type="email"
                                                 class="form-control @error('email') is-invalid @enderror" name="email"
-                                                value="admin@themesbrand.com" required autocomplete="email" autofocus
+                                                value="" required autocomplete="email" autofocus
                                                 placeholder="Enter your email">
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
@@ -39,14 +39,14 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <div class="float-end">
+                                            <!-- <div class="float-end">
                                                 <a href="{{ route('password.request') }}" class="text-muted">Forgot password?</a>
-                                            </div>
+                                            </div> -->
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
                                                 <input id="password" type="password"
-                                                    class="form-control @error('password') is-invalid @enderror"
-                                                    name="password" required autocomplete="current-password" placeholder="Enter your password" value="12345678">
+                                                    class="form-control password-input @error('password') is-invalid @enderror"
+                                                    name="password" required autocomplete="current-password" placeholder="Enter your password" value="">
                                                 <button
                                                     class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                                     type="button" id="password-addon"><i
@@ -59,16 +59,16 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-check">
+                                        <!-- <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                             <label class="form-check-label" for="auth-remember-check">Remember me</label>
-                                        </div>
+                                        </div> -->
 
                                         <div class="mt-4">
                                             <button class="btn btn-primary w-100" type="submit">Sign In</button>
                                         </div>
 
-                                        <div class="mt-4 pt-2 text-center">
+                                        <!-- <div class="mt-4 pt-2 text-center">
                                             <div class="signin-other-title">
                                                 <h5 class="fs-13 mb-4 title">Sign In with</h5>
                                             </div>
@@ -82,7 +82,7 @@
                                                 <button type="button" class="btn btn-soft-info btn-icon"><i
                                                         class="ri-twitter-fill fs-16"></i></button>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </form>
 
                                     <div class="text-center mt-5">
@@ -107,10 +107,14 @@
                     <div class="col-lg-12">
                         <div class="text-center">
                             <p class="mb-0 text-muted">©
-                                <script>
+                                <!-- <script>
                                     document.write(new Date().getFullYear())
                                 </script> Toner. Crafted with <i class="mdi mdi-heart text-danger"></i> by
-                                Themesbrand
+                                Themesbrand -->
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> La Gramma. Crafted by
+                                <a href="https://fernandesdev.com" target="_blank">Fernandes Wiraharjo</a>
                             </p>
                         </div>
                     </div>

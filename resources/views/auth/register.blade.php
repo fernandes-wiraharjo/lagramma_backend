@@ -89,28 +89,27 @@
                                         <img src="{{ URL::asset('build/images/auth/img-1.png') }}" alt="" class="img-fluid">
                                     </div>
                                     <div class="col-lg-8 col-9">
-                                        <h1 class="text-white text-capitalize lh-base fw-lighter">Let's get started with
-                                            Toner Store</h1>
+                                        <h1 class="text-white text-capitalize lh-base fw-lighter">La Gramma Account Sign Up</h1>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <p class="text-muted fs-15">Get your free Toner account now</p>
+                                <p class="text-muted fs-15">Get your free La Gramma account now</p>
                                 <div class="p-2">
                                     <form class="needs-validation" novalidate method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                                         @csrf
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="mb-3">
-                                                    <label for="first_name" class="form-label">First Name <span
+                                                    <label for="name" class="form-label">Name <span
                                                             class="text-danger">*</span></label>
-                                                    <input id="first_name" type="text"
-                                                        class="form-control @error('first_name') is-invalid @enderror"
-                                                        name="first_name" value="{{ old('first_name') }}" required
-                                                        autocomplete="first_name" autofocus
-                                                        placeholder="Enter your last name">
-                                                    @error('first_name')
+                                                    <input id="name" type="text"
+                                                        class="form-control @error('name') is-invalid @enderror"
+                                                        name="name" value="{{ old('name') }}" required
+                                                        autocomplete="name" autofocus
+                                                        placeholder="Enter your name">
+                                                    @error('name')
                                                         <span class="invalid-feedback" role="alert">
                                                             <strong>{{ $message }}</strong>
                                                         </span>
@@ -118,7 +117,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <!-- <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label for="last_name" class="form-label">Last Name <span
                                                             class="text-danger">*</span></label>
@@ -133,7 +132,7 @@
                                                         </span>
                                                     @enderror
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="mb-3 col-md-12">
                                                 <label for="email" class="form-label">Email <span
@@ -143,6 +142,20 @@
                                                     value="{{ old('email') }}" required autocomplete="email"
                                                     placeholder="Enter your email">
                                                 @error('email')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="mb-3 col-md-12">
+                                                <label for="phone" class="form-label">Phone <span
+                                                        class="text-danger">*</span></label>
+                                                <input id="phone" type="text"
+                                                    class="form-control @error('phone') is-invalid @enderror" name="phone"
+                                                    value="{{ old('phone') }}" required autocomplete="phone"
+                                                    placeholder="Enter your phone">
+                                                @error('phone')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -184,7 +197,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="mb-3 col-md-12">
+                                            <!-- <div class="mb-3 col-md-12">
                                                 <label for="avatar" class="form-label">Avatar <span
                                                         class="text-danger">*</span></label>
                                                 <input id="avatar" type="file"
@@ -196,15 +209,15 @@
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                 @enderror
-                                            </div>
+                                            </div> -->
                                         </div>
 
-                                        <div class="mb-4 col-md-12">
+                                        <!-- <div class="mb-4 col-md-12">
                                             <p class="mb-0 fs-12 text-muted fst-italic">By registering you agree to the
                                                 Toner <a href="#"
                                                     class="text-primary text-decoration-underline fst-normal fw-medium">Terms
                                                     of Use</a></p>
-                                        </div>
+                                        </div> -->
 
                                         <div id="password-contain" class="p-3 bg-light mb-2 rounded">
                                             <h5 class="fs-13">Password must contain:</h5>
@@ -220,7 +233,7 @@
                                             <button class="btn btn-primary w-100" type="submit">Sign Up</button>
                                         </div>
 
-                                        <div class="mt-4 text-center col-md-12">
+                                        <!-- <div class="mt-4 text-center col-md-12">
                                             <div class="signin-other-title">
                                                 <h5 class="fs-13 mb-4 title text-muted">Create account with</h5>
                                             </div>
@@ -235,7 +248,7 @@
                                                 <button type="button" class="btn btn-soft-info btn-icon "><i
                                                         class="ri-twitter-fill fs-16"></i></button>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </form>
                                 </div>
                                 <div class="mt-4 text-center">
@@ -260,8 +273,8 @@
                             <p class="mb-0 text-muted">©
                                 <script>
                                     document.write(new Date().getFullYear())
-                                </script> Toner. Crafted with <i class="mdi mdi-heart text-danger"></i> by
-                                Themesbrand
+                                </script> La Gramma. Crafted by
+                                <a href="https://fernandesdev.com" target="_blank">Fernandes Wiraharjo</a>
                             </p>
                         </div>
                     </div>

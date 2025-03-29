@@ -33,6 +33,14 @@ class RoleSeeder extends Seeder
         'created_at' => $now,
         'updated_by' => null,
         'updated_at' => null,
+      ],
+      [
+        'name' => 'customer',
+        'is_active' => true,
+        'created_by' => null,
+        'created_at' => $now,
+        'updated_by' => null,
+        'updated_at' => null,
       ]
     ];
 
