@@ -13,6 +13,7 @@ return new class extends Migration {
     Schema::create('menus', function (Blueprint $table) {
       $table->id();
       $table->string('name', 100)->unique();
+      $table->string('icon', 50)->nullable();
       $table->text('url')->nullable();
       $table->unsignedBigInteger('parent_id')->nullable(); // For submenus
       $table->smallInteger('sequence');

@@ -2081,9 +2081,9 @@ function scrollToBottom(id) {
 }
 
 
-const chatCollapsible = document.getElementById('chatBot')
-chatCollapsible.addEventListener('shown.bs.collapse', event => {
-	// chat
-	var currentChatId = "users-chat-widget";
-	scrollToBottom(currentChatId);
-})
+// const chatCollapsible = document.getElementById('chatBot')
+// chatCollapsible.addEventListener('shown.bs.collapse', event => {
+// 	// chat
+// 	var currentChatId = "users-chat-widget";
+// 	scrollToBottom(currentChatId);
+// })

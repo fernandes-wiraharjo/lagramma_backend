@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-3">
+            <!-- <div class="col-md-4 col-3">
                 <div class="d-flex align-items-center justify-content-end gap-3 fs-14">
                     <a href="#!" class="text-reset fw-normal d-none d-lg-block">
                         Balance: <span class="fw-semibold">$8451.36</span>
@@ -74,73 +74,73 @@
                                     <span id="lang-name">English</span>
                             @endswitch
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end">
+                        <div class="dropdown-menu dropdown-menu-end"> -->
                             <!-- item-->
-                            <a href="{{ url('index/en') }}" class="dropdown-item notify-item language py-2"
+                            <!-- <a href="{{ url('index/en') }}" class="dropdown-item notify-item language py-2"
                                 data-lang="en" title="English">
                                 <img src="{{ URL::asset('build/images/flags/us.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">English</span>
-                            </a>
+                            </a> -->
 
                             <!-- item-->
-                            <a href="{{ url('index/sp') }}" class="dropdown-item notify-item language" data-lang="sp"
+                            <!-- <a href="{{ url('index/sp') }}" class="dropdown-item notify-item language" data-lang="sp"
                                 title="Spanish">
                                 <img src="{{ URL::asset('build/images/flags/spain.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">Española</span>
-                            </a>
+                            </a> -->
 
                             <!-- item-->
-                            <a href="{{ url('index/gr') }}" class="dropdown-item notify-item language" data-lang="gr"
+                            <!-- <a href="{{ url('index/gr') }}" class="dropdown-item notify-item language" data-lang="gr"
                                 title="German">
                                 <img src="{{ URL::asset('build/images/flags/germany.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18"> <span
                                     class="align-middle">Deutsche</span>
-                            </a>
+                            </a> -->
 
                             <!-- item-->
-                            <a href="{{ url('index/it') }}" class="dropdown-item notify-item language" data-lang="it"
+                            <!-- <a href="{{ url('index/it') }}" class="dropdown-item notify-item language" data-lang="it"
                                 title="Italian">
                                 <img src="{{ URL::asset('build/images/flags/italy.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">Italiana</span>
-                            </a>
+                            </a> -->
 
                             <!-- item-->
-                            <a href="{{ url('index/ru') }}" class="dropdown-item notify-item language"
+                            <!-- <a href="{{ url('index/ru') }}" class="dropdown-item notify-item language"
                                 data-lang="ru" title="Russian">
                                 <img src="{{ URL::asset('build/images/flags/russia.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">русский</span>
-                            </a>
+                            </a> -->
 
                             <!-- item-->
-                            <a href="{{ url('index/ch') }}" class="dropdown-item notify-item language"
+                            <!-- <a href="{{ url('index/ch') }}" class="dropdown-item notify-item language"
                                 data-lang="ch" title="Chinese">
                                 <img src="{{ URL::asset('build/images/flags/china.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">中国人</span>
-                            </a>
+                            </a> -->
 
                             <!-- item-->
-                            <a href="{{ url('index/fr') }}" class="dropdown-item notify-item language"
+                            <!-- <a href="{{ url('index/fr') }}" class="dropdown-item notify-item language"
                                 data-lang="fr" title="French">
                                 <img src="{{ URL::asset('build/images/flags/french.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">français</span>
-                            </a>
+                            </a> -->
                             <!-- item-->
-                            <a href="{{ url('index/sa') }}" class="dropdown-item notify-item language"
+                            <!-- <a href="{{ url('index/sa') }}" class="dropdown-item notify-item language"
                                 data-lang="ae" title="Arabic">
                                 <img src="{{ URL::asset('build/images/flags/sa.svg') }}" alt="user-image"
                                     class="me-2 rounded-circle" height="18">
                                 <span class="align-middle">عربى</span>
-                            </a>
-                        </div>
+                            </a> -->
+                        <!-- </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

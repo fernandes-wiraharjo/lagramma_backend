@@ -33,11 +33,26 @@ class RoleMenuSeeder extends Seeder
             throw new \Exception("Master menu not found. Please seed menus first.");
         }
 
+        // Get the menu ID where menu is 'user management'
+        $userManagementMenu = Menu::where('name', 'User Management')->first();
+
+        if (!$userManagementMenu) {
+            throw new \Exception("User Management menu not found. Please seed menus first.");
+        }
+
         // Main Menus
         $roleMenus = [
             [
                 'role_id' => $adminRole->id,
                 'menu_id' => $masterMenu->id,
+                'created_by' => null,
+                'created_at' => $now,
+                'updated_by' => null,
+                'updated_at' => null,
+            ],
+            [
+                'role_id' => $adminRole->id,
+                'menu_id' => $userManagementMenu->id,
                 'created_by' => null,
                 'created_at' => $now,
                 'updated_by' => null,

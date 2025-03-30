@@ -15,6 +15,7 @@ class Menu extends Model
 
     protected $fillable = [
         'name',
+        'icon',
         'url',
         'parent_id',
         'is_active',

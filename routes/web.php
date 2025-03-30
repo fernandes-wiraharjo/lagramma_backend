@@ -26,6 +26,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
     Route::get('logout', [TonerController::class, 'logout']);
 
+    // Apply 'checkMenuAccess' middleware to a specific group of routes
+    Route::middleware(['menu.access'])->group(function () {
+        Route::get('/role', [App\Http\Controllers\RoleController::class, 'index'])->name('index-role');
+    });
+
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);
 });

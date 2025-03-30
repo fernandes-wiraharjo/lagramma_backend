@@ -21,25 +21,33 @@ class MenuSeeder extends Seeder
         $menus = [
             [
                 'name' => 'Master',
+                'icon' => 'bi bi-gear',
                 'url' => null,
                 'parent_id' => null,
                 'sequence' => 1,
                 'is_active' => true,
                 'created_by' => null,
-                // 'created_at' => $now,
                 'updated_by' => null,
-                // 'updated_at' => null,
             ],
             [
-                'name' => 'User Management',
+                'name' => 'Product',
+                'icon' => 'bi bi-box-seam',
                 'url' => null,
                 'parent_id' => null,
                 'sequence' => 2,
                 'is_active' => true,
                 'created_by' => null,
-                // 'created_at' => $now,
                 'updated_by' => null,
-                // 'updated_at' => null,
+            ],
+            [
+                'name' => 'User Management',
+                'icon' => 'bi bi-person-circle',
+                'url' => null,
+                'parent_id' => null,
+                'sequence' => 3,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
             ],
         ];
 
@@ -58,6 +66,13 @@ class MenuSeeder extends Seeder
             throw new \Exception("Master menu not found. Please seed menus first.");
         }
 
+        // Get the menu ID where menu is 'product'
+        $productMenu = Menu::where('name', 'Product')->first();
+
+        if (!$productMenu) {
+            throw new \Exception("Product menu not found. Please seed menus first.");
+        }
+
         // Get the menu ID where menu is 'user management'
         $userManagementMenu = Menu::where('name', 'User Management')->first();
 
@@ -73,42 +88,79 @@ class MenuSeeder extends Seeder
                 'sequence' => 1,
                 'is_active' => true,
                 'created_by' => null,
-                // 'created_at' => $now,
                 'updated_by' => null,
-                // 'updated_at' => null,
             ],
             [
-                'name' => 'Menu',
-                'url' => '/menu',
+                'name' => 'Modifier',
+                'url' => '/modifier',
                 'parent_id' => $masterMenu->id,
                 'sequence' => 2,
                 'is_active' => true,
                 'created_by' => null,
-                // 'created_at' => $now,
                 'updated_by' => null,
-                // 'updated_at' => null,
             ],
             [
-                'name' => 'User',
-                'url' => '/user',
-                'parent_id' => $userManagementMenu->id,
+                'name' => 'Modifier Option',
+                'url' => '/modifier-option',
+                'parent_id' => $masterMenu->id,
+                'sequence' => 3,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
+            [
+                'name' => 'Sales Type',
+                'url' => '/sales-type',
+                'parent_id' => $masterMenu->id,
+                'sequence' => 4,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
+            [
+                'name' => 'List',
+                'url' => '/product',
+                'parent_id' => $productMenu->id,
                 'sequence' => 1,
                 'is_active' => true,
                 'created_by' => null,
-                // 'created_at' => $now,
                 'updated_by' => null,
-                // 'updated_at' => null,
+            ],
+            [
+                'name' => 'Hampers',
+                'url' => '/product-hampers',
+                'parent_id' => $productMenu->id,
+                'sequence' => 2,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
             ],
             [
                 'name' => 'Role',
                 'url' => '/role',
                 'parent_id' => $userManagementMenu->id,
+                'sequence' => 1,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
+            [
+                'name' => 'Role Menu',
+                'url' => '/role-menu',
+                'parent_id' => $userManagementMenu->id,
                 'sequence' => 2,
                 'is_active' => true,
                 'created_by' => null,
-                // 'created_at' => $now,
                 'updated_by' => null,
-                // 'updated_at' => null,
+            ],
+            [
+                'name' => 'User',
+                'url' => '/user',
+                'parent_id' => $userManagementMenu->id,
+                'sequence' => 3,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
             ],
         ];
 

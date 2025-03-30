@@ -4,8 +4,8 @@
 </button>
 <!--end back-to-top-->
 
-<a class="btn btn-danger shadow-lg chat-button rounded-bottom-0 d-none d-lg-block" data-bs-toggle="collapse" href="#chatBot" role="button" aria-expanded="false" aria-controls="chatBot">Online Chat</a>
-<div class="collapse chat-box" id="chatBot">
+<!-- <a class="btn btn-danger shadow-lg chat-button rounded-bottom-0 d-none d-lg-block" data-bs-toggle="collapse" href="#chatBot" role="button" aria-expanded="false" aria-controls="chatBot">Online Chat</a> -->
+<!-- <div class="collapse chat-box" id="chatBot">
     <div class="card shadow-lg border-0 rounded-bottom-0 mb-0">
         <div class="card-header bg-success d-flex align-items-center border-0">
             <h5 class="text-white fs-16 fw-medium flex-grow-1 mb-0">Hi, Raquel Murillo 👋</h5>
@@ -39,10 +39,10 @@
                                     <div class="conversation-name"><small class="text-muted time">09:07 am</small> <span class="text-success check-message-icon"><i class="ri-check-double-line align-bottom"></i></span></div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                         <!-- chat-list -->
-            
-                        <li class="chat-list right">
+
+                        <!-- <li class="chat-list right">
                             <div class="conversation-list">
                                 <div class="user-chat-content">
                                     <div class="ctext-wrap">
@@ -63,10 +63,10 @@
                                     <div class="conversation-name"><small class="text-muted time">09:08 am</small> <span class="text-success check-message-icon"><i class="ri-check-double-line align-bottom"></i></span></div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                         <!-- chat-list -->
-            
-                        <li class="chat-list left">
+
+                        <!-- <li class="chat-list left">
                             <div class="conversation-list">
                                 <div class="chat-avatar">
                                     <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="">
@@ -90,10 +90,10 @@
                                     <div class="conversation-name"><small class="text-muted time">09:10 am</small> <span class="text-success check-message-icon"><i class="ri-check-double-line align-bottom"></i></span></div>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                         <!-- chat-list -->
-            
-                    </ul>
+
+                    <!-- </ul>
                 </div>
             </div>
             <div class="border-top border-top-dashed">
@@ -102,15 +102,18 @@
                         <div class="position-relative">
                             <input type="text" class="form-control border-light bg-light" placeholder="Enter Message...">
                         </div>
-                    </div><!-- end col -->
-                    <div class="col-auto">
+                    </div> -->
+                    <!-- end col -->
+                    <!-- <div class="col-auto">
                         <button type="submit" class="btn btn-info"><i class="mdi mdi-send"></i></button>
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div>
+                    </div> -->
+                    <!-- end col -->
+                <!-- </div> -->
+                <!-- end row -->
+            <!-- </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!--preloader-->
 <div id="preloader">
@@ -141,10 +144,10 @@
                 <!-- <h6 class="mb-1 fs-15 fw-semibold text-uppercase">View Website</h6>
                 <p class="text-muted">Choose your</p> -->
 
-                <div class="mb-4 hstack gap-2">
+                <!-- <div class="mb-4 hstack gap-2">
                     <a href="index" target="_blank" class="btn btn-secondary">Visit Your Website</a>
                     <a href="components/index" target="_blank" class="btn btn-success">Components</a>
-                </div>
+                </div> -->
 
                 <h6 class="mb-1 fs-15 fw-semibold text-uppercase">Layout</h6>
                 <p class="text-muted">Choose your layout</p>
@@ -391,7 +394,7 @@
                 <div class="collapse" id="collapseLayoutWidth">
                     <h6 class="mt-4 mb-1 fs-15 fw-semibold text-uppercase">Boxed Layout Body Images</h6>
                     <p class="text-muted">Choose image.</p>
-                
+
                     <div class="row gy-3">
                         <div class="col-6">
                             <div class="form-check card-radio customize-widget">
@@ -914,7 +917,7 @@
                     <h6 class="mt-4 mb-1 fs-15 fw-semibold text-uppercase">Sidebar Images</h6>
                     <p class="text-muted">Choose a image of Sidebar.</p>
 
-                    
+
                     <div class="img-switch">
                         <div class="row gy-3">
                             <div class="col-6">
@@ -1131,12 +1134,12 @@
     </div>
     <div class="offcanvas-footer border-top p-3 text-center">
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <button type="button" class="btn btn-light w-100" id="reset-layout">Reset</button>
             </div>
-            <div class="col-6">
+            <!-- <div class="col-6">
                 <a href="#!" target="_blank" class="btn btn-primary w-100">Buy Now</a>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

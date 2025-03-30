@@ -31,20 +31,20 @@
                     </span>
                 </button>
 
-                <button type="button" class="btn btn-sm px-3 fs-15 user-name-text header-item d-none d-md-block" data-bs-toggle="modal" data-bs-target="#searchModal">
+                <!-- <button type="button" class="btn btn-sm px-3 fs-15 user-name-text header-item d-none d-md-block" data-bs-toggle="modal" data-bs-target="#searchModal">
                     <span class="bi bi-search me-2"></span> Search for Toner...
-                </button>
+                </button> -->
             </div>
 
             <div class="d-flex align-items-center">
 
-                <div class="d-md-none topbar-head-dropdown header-item">
+                <!-- <div class="d-md-none topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle" id="page-header-search-dropdown" data-bs-toggle="modal" data-bs-target="#searchModal">
                         <i class="bi bi-search fs-16"></i>
                     </button>
-                </div>
+                </div> -->
 
-                <div class="dropdown topbar-head-dropdown ms-1 header-item dropdown-hover-end">
+                <!-- <div class="dropdown topbar-head-dropdown ms-1 header-item dropdown-hover-end">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class='bi bi-grid fs-18'></i>
                     </button>
@@ -65,9 +65,9 @@
                             <div class="row g-0">
                                 <div class="col">
                                     <a class="dropdown-icon-item" href="#!">
-                                        <img src="{{ URL::asset('build/images/brands/img-2.png') }}" alt="Github">
+                                        <img src="{{ URL::asset('build/images/brands/img-2.png') }}" alt="Github"> -->
                                         <!-- <span>GitHub</span> -->
-                                    </a>
+                                    <!-- </a>
                                 </div>
                                 <div class="col">
                                     <a class="dropdown-icon-item" href="#!">
@@ -100,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="dropdown topbar-head-dropdown ms-1 header-item dropdown-hover-end">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle" id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
@@ -432,7 +432,7 @@
                         <a class="dropdown-item" href="account"><i class="bi bi-person-circle text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
                         <a class="dropdown-item" href="calendar"><i class="bi bi-cart4 text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Order Track</span></a>
                         <a class="dropdown-item" href="product-list"><i class="bi bi-box-seam text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Products</span></a>
-                        <a class="dropdown-item" href="javascript:void(0)"><span class="badge bg-success-subtle text-success float-end ms-2">New</span><i class="bi bi-cassette text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Frontend</span></a>
+                        <a class="dropdown-item" href="javascript:void(0)"><i class="bi bi-cassette text-muted fs-15 align-middle me-1"></i> <span class="align-middle">View Store</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="account-settings"><i class="bi bi-gear text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
                         <a class="dropdown-item" href="{{ url('logout') }}"><i class="bi bi-box-arrow-right text-muted fs-15 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">{{ __('t-logout') }}</span></a>
@@ -445,7 +445,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+<!-- <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content rounded">
             <div class="modal-header p-3">
@@ -522,7 +522,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- removeNotificationModal -->
 <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">

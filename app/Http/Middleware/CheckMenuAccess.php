@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckMenuAccess
@@ -23,11 +24,28 @@ class CheckMenuAccess
             abort(403, 'Unauthorized Access');
         }
 
-        // Get allowed menu URLs for the user's role
-        $allowedMenus = $user->role->menus
-            ->pluck('url')
-            ->filter() // Remove null values
-            ->toArray();
+         // Get all menus assigned to the user's role (including submenus)
+        $menus = $user->role->menus()->with('children')->get();
+
+        // Collect allowed URLs
+        $allowedMenus = collect();
+
+        foreach ($menus as $menu) {
+            if ($menu->url) {
+                // If parent has a URL, add it
+                $allowedMenus->push(ltrim($menu->url, '/'));
+            } elseif ($menu->children->isNotEmpty()) {
+                // If parent has submenus, add their URLs instead
+                foreach ($menu->children as $childMenu) {
+                    if ($childMenu->url) {
+                        $allowedMenus->push(ltrim($childMenu->url, '/'));
+                    }
+                }
+            }
+        }
+
+        // Convert to array and filter null values
+        $allowedMenus = $allowedMenus->filter()->toArray();
 
         if (!in_array($request->path(), $allowedMenus)) {
             abort(403, 'Unauthorized Access');

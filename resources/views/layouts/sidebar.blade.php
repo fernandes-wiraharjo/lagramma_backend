@@ -2,20 +2,24 @@
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
     <div class="navbar-brand-box">
-        <a href="index" class="logo logo-dark">
+        <a href="index" class="logo logo-dark" style="color:black">
             <span class="logo-sm">
-                <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="26">
+                LA GRAMMA
+                <!-- <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="26"> -->
             </span>
-            <span class="logo-lg">
-                <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="26">
+            <span class="logo-lg" style="color:black">
+                LA GRAMMA
+                <!-- <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="26"> -->
             </span>
         </a>
-        <a href="index" class="logo logo-light">
+        <a href="index" class="logo logo-light" style="color:black">
             <span class="logo-sm">
-                <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="24">
+                LA GRAMMA
+                <!-- <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="24"> -->
             </span>
-            <span class="logo-lg">
-                <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="24">
+            <span class="logo-lg" style="color:black">
+                LA GRAMMA
+                <!-- <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="24"> -->
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -28,8 +32,50 @@
 
             <div id="two-column-menu">
             </div>
+
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">{{ __('t-menu') }}</span></li>
+                @foreach ($menus as $menu)
+                    <li class="nav-item">
+                        @if ($menu->url)
+                            <!-- If menu has a URL, just add href and class -->
+                            <a class="nav-link menu-link" href="{{ $menu->url }}">
+                                <i class="{{ $menu->icon ?? '' }}"></i>
+                                <span data-key="{{ $menu->name }}">{{ $menu->name }}</span>
+                            </a>
+                        @else
+                            <!-- If menu has no URL, it's a collapsible parent -->
+                            @php $menuSlug = Str::slug($menu->name); @endphp
+                            <a class="nav-link menu-link"
+                                href="#sidebar-{{ $menuSlug }}"
+                                data-bs-toggle="collapse"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="sidebar-{{ $menuSlug }}">
+                                    <i class="{{ $menu->icon ?? '' }}"></i>
+                                    <span data-key="{{ $menu->name }}">{{ $menu->name }}</span>
+                            </a>
+
+                            @if (isset($menu->children) && $menu->children->isNotEmpty())
+                                <div class="collapse menu-dropdown" id="sidebar-{{ $menuSlug }}">
+                                    <ul class="nav nav-sm flex-column">
+                                        @foreach ($menu->children as $submenu)
+                                            <li class="nav-item">
+                                                <a href="{{ $submenu->url }}" class="nav-link" data-key="{{ $submenu->name }}">
+                                                    {{ $submenu->name }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+
+            <ul class="navbar-nav" id="navbar-nav">
+                <li class="menu-title"><span data-key="t-menu">Template {{ __('t-menu') }}</span></li>
                 <li class="nav-item">
                     <a href="index" class="nav-link menu-link"> <i class="bi bi-speedometer2"></i> <span data-key="t-dashboard">{{ __('t-dashboard') }}</span> <span class="badge badge-pill bg-danger-subtle text-danger" data-key="t-hot">{{ __('t-hot') }}</span></a>
                 </li>
@@ -52,7 +98,7 @@
                             <li class="nav-item">
                                 <a href="product-create" class="nav-link" data-key="t-create-product">{{ __('t-create-product') }}</a>
                             </li>
-                            <li class="nav-item">       
+                            <li class="nav-item">
                                 <a href="categories" class="nav-link" data-key="t-categories">{{ __('t-categories') }}</a>
                             </li>
                             <li class="nav-item">
@@ -141,7 +187,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="coupons" class="nav-link menu-link"> <i class="bi bi-tag"></i> <span data-key="t-coupons">{{ __('t-coupons') }}</span> </a>
-                </li>   
+                </li>
                 <li class="nav-item">
                     <a href="reviews-ratings" class="nav-link menu-link"><i class="bi bi-star"></i> <span data-key="t-reviews-ratings">{{ __('t-reviews-ratings') }}</span></a>
                 </li>
