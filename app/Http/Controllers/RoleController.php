@@ -8,6 +8,6 @@ class RoleController extends Controller
 {
     public function index()
     {
-        return view('role.index');
+        return view('role');
     }
 }

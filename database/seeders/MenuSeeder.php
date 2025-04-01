@@ -83,7 +83,7 @@ class MenuSeeder extends Seeder
         $submenus = [
             [
                 'name' => 'Category',
-                'url' => '/category',
+                'url' => 'category',
                 'parent_id' => $masterMenu->id,
                 'sequence' => 1,
                 'is_active' => true,
@@ -92,7 +92,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'Modifier',
-                'url' => '/modifier',
+                'url' => 'modifier',
                 'parent_id' => $masterMenu->id,
                 'sequence' => 2,
                 'is_active' => true,
@@ -101,7 +101,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'Modifier Option',
-                'url' => '/modifier-option',
+                'url' => 'modifier-option',
                 'parent_id' => $masterMenu->id,
                 'sequence' => 3,
                 'is_active' => true,
@@ -110,7 +110,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'Sales Type',
-                'url' => '/sales-type',
+                'url' => 'sales-type',
                 'parent_id' => $masterMenu->id,
                 'sequence' => 4,
                 'is_active' => true,
@@ -119,7 +119,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'List',
-                'url' => '/product',
+                'url' => 'product',
                 'parent_id' => $productMenu->id,
                 'sequence' => 1,
                 'is_active' => true,
@@ -128,7 +128,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'Hampers',
-                'url' => '/product-hampers',
+                'url' => 'product-hampers',
                 'parent_id' => $productMenu->id,
                 'sequence' => 2,
                 'is_active' => true,
@@ -137,7 +137,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'Role',
-                'url' => '/role',
+                'url' => 'role',
                 'parent_id' => $userManagementMenu->id,
                 'sequence' => 1,
                 'is_active' => true,
@@ -146,7 +146,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'Role Menu',
-                'url' => '/role-menu',
+                'url' => 'role-menu',
                 'parent_id' => $userManagementMenu->id,
                 'sequence' => 2,
                 'is_active' => true,
@@ -155,7 +155,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'User',
-                'url' => '/user',
+                'url' => 'user',
                 'parent_id' => $userManagementMenu->id,
                 'sequence' => 3,
                 'is_active' => true,
