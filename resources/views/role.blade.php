@@ -4,8 +4,11 @@
 @endsection
 @section('css')
     <!-- extra css -->
-    <!-- gridjs css -->
-        <link rel="stylesheet" href="{{ URL::asset('build/libs/gridjs/mermaid.min.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 @endsection
 @section('content')
     <x-breadcrumb title="Role" pagetitle="User Management" />
@@ -18,7 +21,7 @@
                 </div>
                 <div class="card-body">
                     <form autocomplete="off" class="needs-validation createRoleForm" id="createRoleForm" novalidate>
-                        <input type="hidden" id="roleid-input" class="form-control" value="">
+                        <input type="hidden" id="roleid-input" name="roleid" class="form-control" value="">
                         <div class="row">
                             <div class="col-xxl-12 col-lg-6">
                                 <div class="mb-3">
@@ -61,71 +64,34 @@
             </div>
         </div>
         <div class="col-xxl-9">
-            <div class="row justify-content-between mb-4">
-                <div class="col-xxl-3 col-lg-6">
-                    <div class="search-box mb-3 mb-lg-0">
-                        <input type="text" class="form-control" id="searchResultList" autocomplete="off"
-                            placeholder="Search role name...">
-                        <i class="ri-search-line search-icon"></i>
-                    </div>
-                </div>
-                <!--end col-->
-                <div class="col-xxl-2 col-lg-6">
-                    <select class="form-control" data-choices data-choices-search-false name="choices-single-default"
-                        id="idStatus">
-                        <option value="">Status</option>
-                        <option value="all" selected>All</option>
-                        <option value="0">False</option>
-                        <option value="1">True</option>
-                    </select>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
-
             <div class="card">
                 <div class="card-body">
-                    <div id="roles" class="table-card"></div>
+                    <table id="tb_roles" class="display table table-bordered dt-responsive"
+                        style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Role Name</th>
+                                <th>Is Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
         <!--end col-->
     </div>
     <!--end row-->
-
-    <!-- removeItemModal -->
-    <div id="removeItemModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" id="closeRemoveRoleModal" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-md-5">
-                    <div class="text-center">
-                        <div class="text-danger">
-                            <i class="bi bi-trash display-4"></i>
-                        </div>
-                        <div class="mt-4 fs-15">
-                            <h4 class="mb-1">Are you sure ?</h4>
-                            <p class="text-muted mx-3 fs-16 mb-0">Are you sure you want to remove this role ?</p>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light btn-hover"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger btn-hover" id="remove-role">Yes, Delete
-                            It!</button>
-                    </div>
-                </div>
-
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 @endsection
 @section('scripts')
-    <!-- gridjs js -->
-    <script src="{{ URL::asset('build/libs/gridjs/gridjs.umd.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!--datatable js-->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
     <!-- roles js -->
     <script src="{{ URL::asset('build/js/backend/roles.init.js') }}"></script>
