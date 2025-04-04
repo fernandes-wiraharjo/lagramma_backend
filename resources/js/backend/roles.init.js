@@ -1,220 +1,95 @@
-var rolesData = [
-    {
-        "id": 1,
-        "name": "admin",
-        "is_active": true
-    }, {
-        "id": 2,
-        "name": "kitchen",
-        "is_active": true
-    }, {
-        "id": 3,
-        "name": "customer",
-        "is_active": true
-    }
-];
-
-var editList = false;
-
-// roles
-if (document.getElementById("roles")) {
-    var roleList = new gridjs.Grid({
+document.addEventListener('DOMContentLoaded', function () {
+    let table = new DataTable('#tb_roles', {
+        processing: true,
+        serverSide: true,
+        ajax: '/role/list',
         columns: [
-            {
-                name: 'Id',
-                width: '80px',
-                // data: (function (row) {
-                //     return gridjs.html('<div class="fw-medium">' + row.id + '</div>');
-                // })
-                data: (row) => row.id,
-                sort: true
-            },
-            {
-                name: 'Name',
-                width: '120px',
-                sort: true
-            },
-            {
-                name: 'Is Active',
-                width: '60px',
-                data: (row) => row.is_active ? 'True' : 'False',
-                sort: true
-            },{
-                name: 'Action',
-                width: '80px',
-                data: (function (row) {
-                    return gridjs.html('<ul class="hstack gap-2 list-unstyled mb-0">\
-                    <li>\
-                        <a href="#" class="badge bg-success-subtle text-success " onClick="editRoleList('+ row.id + ')">Edit</a>\
-                    </li>\
-                    <li>\
-                        <a href="#removeItemModal" data-bs-toggle="modal" class="badge bg-danger-subtle text-danger " onClick="removeItem('+ row.id + ')">Delete</a>\
-                    </li>\
-                </ul>');
-                }),
-                sort: false
-            },
-        ],
-        // sort: false,
-        pagination: {
-            limit: 10
-        },
-        data: rolesData,
-    }).render(document.getElementById("roles"));
-};
+            { data: 'id', name: 'id' },
+            { data: 'name', name: 'name' },
+            { data: 'is_active', name: 'is_active', render: function(data) {
+                return data ? 'True' : 'False';
+            }},
+            { data: 'id', name: 'id', orderable: false, searchable: false, render: function (data) {
+                return `<button class="btn btn-sm btn-soft-info edit-role" data-id="${data}">Edit</button>
+                    <button class="btn btn-sm btn-soft-danger delete-role" data-id="${data}">Delete</button>`;
+            }}
+        ]
+    });
 
+    // Delete Role
+    $(document).on("click", ".delete-role", function () {
+        let roleId = $(this).data("id");
+        if (confirm("Are you sure?")) {
+            fetch(`/role/${roleId}`, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                    "Accept": "application/json"
+                }
+            }).then(() => table.ajax.reload())
+            .catch(error => console.error("Error deleting role:", error));
+        }
+    });
 
-// Search result list
-var searchResultList = document.getElementById("searchResultList");
-searchResultList.addEventListener("keyup", function () {
-    var inputVal = searchResultList.value.toLowerCase();
-    function filterItems(arr, query) {
-        return arr.filter(function (el) {
-            return el.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-        })
-    }
-
-    var filterData = filterItems(rolesData, inputVal);
-
-    roleList.updateConfig({
-        data: filterData
-    }).forceRender();
-});
-
-var createRoleForm = document.querySelectorAll('.createRoleForm')
-Array.prototype.slice.call(createRoleForm).forEach(function (form) {
-    form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-            form.classList.add('was-validated');
-        } else {
-            event.preventDefault();
-            var name = document.getElementById('name').value;
-            var isActive = document.querySelector('input[name="is_active"]:checked').value;
-
-            if (name !== "" && isActive !== "" && !editList) {
-                var newRoleId = findNextId();
-                var newRole = {
-                    'id': newRoleId,
-                    "name": name,
-                    "is_active": isActive === "1"
-                };
-
-                rolesData.push(newRole);
-
-                roleList.updateConfig({
-                    data: rolesData
-                }).forceRender();
-                clearVal();
-                form.classList.remove('was-validated');
-
-            }else if(name !== "" && isActive !== "" && editList){
-                var getEditid = document.getElementById("roleid-input").value;
-
-                rolesData = rolesData.map(function (item) {
-                    if (item.id == getEditid) {
-                        var editObj = {
-                            'id': getEditid,
-                            "name": name,
-                            "is_active": isActive === "1"
-                        }
-                        return editObj;
-                    }
-                    return item;
-                });
-
-                roleList.updateConfig({
-                    data: rolesData
-                }).forceRender();
-                clearVal();
-                form.classList.remove('was-validated');
-                editList = false;
-            } else {
+    var createRoleForm = document.querySelectorAll('.createRoleForm')
+    Array.prototype.slice.call(createRoleForm).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
                 form.classList.add('was-validated');
+            } else {
+                event.preventDefault();
+
+                let roleId = document.getElementById("roleid-input").value;
+                let formData = new FormData(this);
+
+                if (roleId) {
+                    formData.append("_method", "PUT");
+                }
+
+                let url = roleId ? `/role/${roleId}` : "/role";
+
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                        "Accept": "application/json"
+                    },
+                    body: formData
+                }).then(response => response.json())
+                .then(() => {
+                    table.ajax.reload();
+                    clearVal();
+                    form.classList.remove('was-validated');
+                })
+                .catch(error => console.error("Error:", error));
             }
-            sortElementsById();
-        }
-    }, false)
-});
+        }, false)
+    });
 
-function fetchIdFromObj(role) {
-    return parseInt(role.id);
-}
+    // Edit Role
+    $(document).on("click", ".edit-role", function () {
+        let roleId = $(this).data("id");
 
-function findNextId() {
-    if (rolesData.length === 0) {
-        return 0;
+        fetch(`/role/${roleId}`)
+            .then(response => response.json())
+            .then(role => {
+                $("#addRoleLabel").text("Edit Role");
+                $("#addNewRole").text("Save");
+                $("#roleid-input").val(role.id);
+                $("#name").val(role.name);
+                $("#is_active_" + (role.is_active ? "1" : "0")).prop("checked", true);
+            })
+            .catch(error => console.error("Error fetching role:", error));
+    });
+
+    function clearVal() {
+        $("#addRoleLabel").text("Create Role");
+        $("#addNewRole").text("Add Role");
+        $("#roleid-input").val("");
+        $("#name").val("");
+        $("#is_active_1").prop("checked", true);
+        $('#createRoleForm').removeClass('was-validated');
     }
-    var lastElementId = fetchIdFromObj(rolesData[rolesData.length - 1]),
-        firstElementId = fetchIdFromObj(rolesData[0]);
-    return (firstElementId >= lastElementId) ? (firstElementId + 1) : (lastElementId + 1);
-}
-
-
-function sortElementsById() {
-    var roles = rolesData.sort(function (a, b) {
-        var x = fetchIdFromObj(a);
-        var y = fetchIdFromObj(b);
-
-        if (x > y) {
-            return -1;
-        }
-        if (x < y) {
-            return 1;
-        }
-        return 0;
-    })
-}
-
-sortElementsById();
-
-
-function editRoleList(elem){
-    var getEditid = elem;
-    rolesData = rolesData.map(function (item) {
-        if (item.id == getEditid) {
-            editList = true;
-            document.getElementById("addRoleLabel").innerHTML = "Edit Role";
-            document.getElementById("addNewRole").innerHTML = "Save";
-            document.getElementById("roleid-input").value = item.id;
-            document.getElementById("name").value = item.name;
-
-            // Set radio button based on item.isActive value
-            if (item.is_active === true) {
-                document.getElementById("is_active_1").checked = true;
-            } else if (item.is_active === false) {
-                document.getElementById("is_active_0").checked = true;
-            }
-        }
-        return item;
-    });
-}
-
-// removeItem event
-function removeItem(elem) {
-    var getid = elem;
-    document.getElementById("remove-role").addEventListener("click", function () {
-        function arrayRemove(arr, value) {
-            return arr.filter(function (ele) {
-                return ele.id != value;
-            });
-        }
-        var filtered = arrayRemove(rolesData, getid);
-
-        rolesData = filtered;
-        roleList.updateConfig({
-            data: rolesData
-        }).forceRender();
-
-        document.getElementById("closeRemoveRoleModal").click();
-    });
-}
-
-
-function clearVal() {
-    document.getElementById("addRoleLabel").innerHTML = "Create Role";
-    document.getElementById("addNewRole").innerHTML = "Add Role";
-    document.getElementById('name').value = "";
-    document.getElementById("is_active_1").checked = true;
-}
+});
