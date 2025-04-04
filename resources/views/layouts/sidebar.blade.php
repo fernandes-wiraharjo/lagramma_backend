@@ -35,10 +35,6 @@
 
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">{{ __('t-menu') }}</span></li>
-                <li class="nav-item">
-                    <a href="index" class="nav-link menu-link"> <i class="bi bi-speedometer2"></i> <span data-key="t-dashboard">{{ __('t-dashboard') }}</span> <span class="badge badge-pill bg-danger-subtle text-danger" data-key="t-hot">{{ __('t-hot') }}</span></a>
-                </li>
-
                 @if (!empty($menus) && $menus->isNotEmpty())
                     @foreach ($menus as $menu)
                         <li class="nav-item">
@@ -78,6 +74,11 @@
                         </li>
                     @endforeach
                 @endif
+
+                <li class="menu-title"><span data-key="t-menu">Template {{ __('t-menu') }}</span></li>
+                <li class="nav-item">
+                    <a href="index" class="nav-link menu-link"> <i class="bi bi-speedometer2"></i> <span data-key="t-dashboard">{{ __('t-dashboard') }}</span> <span class="badge badge-pill bg-danger-subtle text-danger" data-key="t-hot">{{ __('t-hot') }}</span></a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarProducts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProducts">

@@ -17,49 +17,42 @@
                     <h6 class="card-title mb-0" id="addRoleLabel">Create Role</h6>
                 </div>
                 <div class="card-body">
-                    <form autocomplete="off" class="needs-validation createCategory-form" id="createCategory-form" novalidate>
-                        <input type="hidden" id="categoryid-input" class="form-control" value="">
+                    <form autocomplete="off" class="needs-validation createRoleForm" id="createRoleForm" novalidate>
+                        <input type="hidden" id="roleid-input" class="form-control" value="">
                         <div class="row">
                             <div class="col-xxl-12 col-lg-6">
                                 <div class="mb-3">
-                                    <label for="SubcategoryTitle" class="form-label">Sub Category Title <span
+                                    <label for="name" class="form-label">Role Name <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="SubcategoryTitle"
-                                        placeholder="Enter title" required>
-                                    <div class="invalid-feedback">Please enter a sub category title.</div>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Enter name" required>
+                                    <div class="invalid-feedback">Please enter a role name.</div>
                                 </div>
                             </div>
                             <div class="col-xxl-12 col-lg-6">
                                 <div class="mb-3">
-                                    <label for="categorySelect" class="form-label">Category <span
+                                    <label for="is_active" class="form-label">Active <span
                                             class="text-danger">*</span></label>
-                                    <select class="form-control" name="categorySelect" id="categorySelect">
-                                        <option value="">Select Category</option>
-                                        <option value="Headphone">Headphone</option>
-                                        <option value="Watch">Watch</option>
-                                        <option value="Furniture">Furniture</option>
-                                        <option value="Clothing">Clothing</option>
-                                        <option value="Footwear">Footwear</option>
-                                        <option value="Lighting">Lighting</option>
-                                        <option value="Beauty & Personal Care">Beauty & Personal Care</option>
-                                        <option value="Books">Books</option>
-                                        <option value="Other Accessories">Other Accessories</option>
-                                    </select>
-
-                                    <div class="error-msg mt-n3">Please select a category.</div>
-                                </div>
-                            </div>
-                            <div class="col-xxl-12 col-lg-6">
-                                <div class="mb-3">
-                                    <label for="descriptionInput" class="form-label">Description</label>
-                                    <textarea class="form-control" id="descriptionInput" rows="3" placeholder="Description" required></textarea>
-                                    <div class="invalid-feedback">Please enter a description.</div>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="is_active" value="1" id="is_active_1" checked>
+                                            <label class="form-check-label" for="is_active_1">
+                                                True
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="is_active" value="0" id="is_active_0">
+                                            <label class="form-check-label" for="is_active_0">
+                                                False
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="error-msg">Please choose true or false.</div>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="text-end">
-                                    <button type="submit" id="addNewCategory" class="btn btn-success">Add Sub
-                                        Category</button>
+                                    <button type="submit" id="addNewRole" class="btn btn-success">Add Role</button>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +65,7 @@
                 <div class="col-xxl-3 col-lg-6">
                     <div class="search-box mb-3 mb-lg-0">
                         <input type="text" class="form-control" id="searchResultList" autocomplete="off"
-                            placeholder="Search category & sub category...">
+                            placeholder="Search role name...">
                         <i class="ri-search-line search-icon"></i>
                     </div>
                 </div>
@@ -82,12 +75,8 @@
                         id="idStatus">
                         <option value="">Status</option>
                         <option value="all" selected>All</option>
-                        <option value="Today">Today</option>
-                        <option value="Yesterday">Yesterday</option>
-                        <option value="Last 7 Days">Last 7 Days</option>
-                        <option value="Last 30 Days">Last 30 Days</option>
-                        <option value="This Month">This Month</option>
-                        <option value="Last Month">Last Month</option>
+                        <option value="0">False</option>
+                        <option value="1">True</option>
                     </select>
                 </div>
                 <!--end col-->
@@ -96,7 +85,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <div id="product-sub-categories" class="table-card"></div>
+                    <div id="roles" class="table-card"></div>
                 </div>
             </div>
         </div>
@@ -109,7 +98,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn-close" id="close-removecategoryModal" data-bs-dismiss="modal"
+                    <button type="button" class="btn-close" id="closeRemoveRoleModal" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-md-5">
@@ -119,13 +108,13 @@
                         </div>
                         <div class="mt-4 fs-15">
                             <h4 class="mb-1">Are you sure ?</h4>
-                            <p class="text-muted mx-3 fs-16 mb-0">Are you sure you want to remove this sub category ?</p>
+                            <p class="text-muted mx-3 fs-16 mb-0">Are you sure you want to remove this role ?</p>
                         </div>
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                         <button type="button" class="btn w-sm btn-light btn-hover"
                             data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger btn-hover" id="remove-category">Yes, Delete
+                        <button type="button" class="btn w-sm btn-danger btn-hover" id="remove-role">Yes, Delete
                             It!</button>
                     </div>
                 </div>
@@ -138,8 +127,8 @@
     <!-- gridjs js -->
     <script src="{{ URL::asset('build/libs/gridjs/gridjs.umd.js') }}"></script>
 
-    <!-- product-sub-categories js -->
-    <script src="{{ URL::asset('build/js/backend/product-sub-categories.init.js') }}"></script>
+    <!-- roles js -->
+    <script src="{{ URL::asset('build/js/backend/roles.init.js') }}"></script>
 
     <!-- App js -->
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
