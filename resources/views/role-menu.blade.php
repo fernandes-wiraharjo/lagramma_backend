@@ -38,9 +38,9 @@
                             <div class="col-xxl-12 col-lg-6">
                                 <div class="mb-3">
                                     <label for="menu" class="form-label">Menu</label>
-                                    <select class="form-select" id="menu" name="menu_ids[]" data-choices
+                                    <select class="form-control" id="menu" name="menu_ids[]" data-choices
                                         data-choices-removeItem multiple aria-label="menu">
-                                        @foreach ($menus as $index => $menu)
+                                        @foreach ($slMenus as $index => $menu)
                                             <option value="{{ $menu->id }}" {{ $index === 0 ? 'selected' : '' }}>
                                                 {{ $menu->name }}
                                             </option>

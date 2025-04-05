@@ -7,6 +7,7 @@ use App\Models\Menu;
 use App\Models\RoleMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
 class RoleMenuController extends Controller
@@ -14,9 +15,9 @@ class RoleMenuController extends Controller
     public function index()
     {
         $roles = Role::where('is_active', true)->get(['id', 'name']);
-        $menus = Menu::where('is_active', true)->whereNull('parent_id')->get(['id', 'name']);
+        $slMenus = Menu::where('is_active', true)->whereNull('parent_id')->get(['id', 'name']);
 
-        return view('role-menu', compact('roles', 'menus'));
+        return view('role-menu', compact('roles', 'slMenus'));
     }
 
     public function get(Request $request)
@@ -45,7 +46,7 @@ class RoleMenuController extends Controller
         $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'roles.name';
 
         // Get total records count (before filtering)
-        $totalRecords = RoleMenu::select('role_id')->distinct()->count();
+        $totalRecords = RoleMenu::distinct('role_id')->count('role_id');
 
          // Apply search filtering
          if ($request->has('search') && !empty($request->search['value'])) {

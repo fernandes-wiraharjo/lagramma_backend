@@ -9,9 +9,16 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'is_active', name: 'is_active', render: function(data) {
                 return data ? 'True' : 'False';
             }},
-            { data: 'id', name: 'id', orderable: false, searchable: false, render: function (data) {
-                return `<button class="btn btn-sm btn-soft-info edit-role" data-id="${data}">Edit</button>
-                    <button class="btn btn-sm btn-soft-danger delete-role" data-id="${data}">Delete</button>`;
+            { data: null, name: 'id', orderable: false, searchable: false, render: function (data) {
+                // Hide buttons if role is 'admin'
+                if (data.name.toLowerCase() === 'admin') {
+                    return '';
+                }
+
+                return `
+                    <button class="btn btn-sm btn-soft-info edit-role" data-id="${data.id}">Edit</button>
+                    <button class="btn btn-sm btn-soft-danger delete-role" data-id="${data.id}">Delete</button>
+                `;
             }}
         ]
     });

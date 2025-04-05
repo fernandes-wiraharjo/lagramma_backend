@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
@@ -30,6 +31,8 @@ class Controller extends BaseController
                 }])
                 ->orderBy('sequence', 'asc')
                 ->get();
+
+                // Log::debug(json_encode($menus, JSON_PRETTY_PRINT));
 
                 // Share menus globally in all views
                 View::share('menus', $menus);

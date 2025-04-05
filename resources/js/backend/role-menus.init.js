@@ -5,7 +5,16 @@ document.addEventListener('DOMContentLoaded', function () {
         ajax: '/role-menu/list',
         columns: [
             { data: 'role_name', name: 'roles.name' },
-            { data: 'menu_names', name: 'menu_names' },
+            {
+                data: 'menu_names',
+                name: 'menu_names',
+                orderable: false,
+                render: function (data) {
+                    return data.split(',').map(name =>
+                        `<span class="btn btn-sm btn-soft-info" style="pointer-events: none; cursor: default; margin: 2px;">${name.trim()}</span>`
+                    ).join('');
+                }
+            },
             { data: 'role_id', name: 'roles.id', orderable: false, searchable: false, render: function (data) {
                 return `<button class="btn btn-sm btn-soft-info edit-role-menu" data-id="${data}">Edit</button>
                     <button class="btn btn-sm btn-soft-danger delete-role-menu" data-id="${data}">Delete</button>`;
@@ -16,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on("click", ".delete-role-menu", function () {
         let roleId = $(this).data("id");
         if (confirm("Are you sure?")) {
-            fetch(`/role/${roleId}`, {
+            fetch(`/role-menu/${roleId}`, {
                 method: "DELETE",
                 headers: {
                     "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
@@ -102,10 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 $("#addLabel").text("Edit Data");
-                $("#addNew").text("Save");
+                $("#addNew").text("Update");
                 $("#role_id").val(data.role_id);
-                $("#role").val(data.role_id);
-                $("#menu").val(role.menus);
+                $("#role").val(data.role_id).trigger('change');
 
                 // Scroll to top smoothly
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -117,8 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#addLabel").text("Create Role Menu");
         $("#addNew").text("Add");
         $("#role_id").val("");
-        $("#role").val("");
-        $("#menu").val("");
         $('#createRoleMenuForm').removeClass('was-validated');
     }
 });
