@@ -26,8 +26,20 @@ document.addEventListener('DOMContentLoaded', function () {
                     "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
                     "Accept": "application/json"
                 }
-            }).then(() => table.ajax.reload())
-            .catch(error => console.error("Error deleting role:", error));
+            }).then(async response => {
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert("Error:\n" + (data.message || "Failed to delete role."));
+                    throw new Error(data.message || "Request failed");
+                }
+
+                alert("Role deleted successfully!");
+                table.ajax.reload();
+            })
+            .catch(error => {
+                console.error("Error deleting role:", error);
+            });
         }
     });
 
@@ -57,13 +69,32 @@ document.addEventListener('DOMContentLoaded', function () {
                         "Accept": "application/json"
                     },
                     body: formData
-                }).then(response => response.json())
-                .then(() => {
+                }).then(async response => {
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        // Check if it's a validation error (422)
+                        if (response.status === 422 && data?.message) {
+                            const validationMsg = Object.values(data.message).flat().join('\n');
+                            alert("Validation Error:\n" + validationMsg);
+                        } else {
+                            // General server error (500, 400, etc.)
+                            alert("Server Error:\n" + (data.message || "Something went wrong."));
+                        }
+
+                        throw new Error(data.message || "Request failed");
+                    }
+
+                    // Success block
+                    alert("Data saved successfully!");
                     table.ajax.reload();
                     clearVal();
                     form.classList.remove('was-validated');
                 })
-                .catch(error => console.error("Error:", error));
+                .catch(error => {
+                    // This only catches network errors or those re-thrown above
+                    console.error("Error:", error);
+                });
             }
         }, false)
     });
@@ -80,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 $("#roleid-input").val(role.id);
                 $("#name").val(role.name);
                 $("#is_active_" + (role.is_active ? "1" : "0")).prop("checked", true);
+
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             })
             .catch(error => console.error("Error fetching role:", error));
     });

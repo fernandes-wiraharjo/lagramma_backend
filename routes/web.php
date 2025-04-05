@@ -30,12 +30,22 @@ Route::middleware(['auth'])->group(function () {
     // Apply 'checkMenuAccess' middleware to a specific group of routes
     Route::middleware(['menu.access'])->group(function () {
         Route::get('/role', [RoleController::class, 'index'])->name('index-role');
+        Route::get('/role-menu', [RoleMenuController::class, 'index'])->name('index-role-menu');
     });
-    Route::get('/role/list', [RoleController::class, 'getRoles'])->name('list-roles');
+
+    //role
+    Route::get('/role/list', [RoleController::class, 'getRoles'])->name('list-role');
     Route::get('/role/{id}', [RoleController::class, 'getById'])->name('edit-role');
     Route::post('/role', [RoleController::class, 'store'])->name('store-role');
     Route::put('/role/{id}', [RoleController::class, 'update'])->name('update-role');
     Route::delete('/role/{id}', [RoleController::class, 'destroy'])->name('delete-role');
+
+    //role menu
+    Route::get('/role-menu/list', [RoleMenuController::class, 'get'])->name('list-role-menu');
+    Route::get('/role-menu/{id}', [RoleMenuController::class, 'getById'])->name('edit-role-menu');
+    Route::post('/role-menu', [RoleMenuController::class, 'store'])->name('store-role-menu');
+    Route::put('/role-menu/{id}', [RoleMenuController::class, 'update'])->name('update-role-menu');
+    Route::delete('/role-menu/{id}', [RoleMenuController::class, 'destroy'])->name('delete-role-menu');
 
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);

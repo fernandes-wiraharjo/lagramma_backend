@@ -34,8 +34,7 @@
                             </div>
                             <div class="col-xxl-12 col-lg-6">
                                 <div class="mb-3">
-                                    <label for="is_active" class="form-label">Active <span
-                                            class="text-danger">*</span></label>
+                                    <label for="is_active" class="form-label">Active</label>
                                     <div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="is_active" value="1" id="is_active_1" checked>
@@ -50,7 +49,6 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="error-msg">Please choose true or false.</div>
                                 </div>
                             </div>
                             <div class="col-lg-12">

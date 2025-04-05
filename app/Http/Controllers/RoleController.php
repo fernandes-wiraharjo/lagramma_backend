@@ -70,60 +70,75 @@ class RoleController extends Controller
         return response()->json($role);
     }
 
-    // Store a new role
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'is_active' => 'required|boolean',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:100',
+                'is_active' => 'required|boolean',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()], 422);
+            }
+
+            $role = Role::create([
+                'name' => $request->name,
+                'is_active' => $request->is_active,
+                'created_by' => auth()->id(),
+                'updated_at' => null
+            ]);
+
+            return response()->json(['success' => true, 'role' => $role], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create role. ' . $e->getMessage()
+            ], 500);
         }
-
-        $role = Role::create([
-            'name' => $request->name,
-            'is_active' => $request->is_active,
-            'created_by' => auth()->id(),
-            'updated_at' => null
-        ]);
-
-        return response()->json(['success' => true, 'role' => $role]);
     }
 
-    // Update an existing role
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'is_active' => 'required|boolean',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:100',
+                'is_active' => 'required|boolean',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()], 422);
+            }
+
+            $role = Role::find($id);
+            if (!$role) {
+                return response()->json(['message' => 'Role not found'], 404);
+            }
+
+            $role->update([
+                'name' => $request->name,
+                'is_active' => $request->is_active,
+                'updated_by' => auth()->id()
+            ]);
+
+            return response()->json(['success' => true, 'role' => $role]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update role. ' . $e->getMessage()
+            ], 500);
         }
-
-        $role = Role::find($id);
-        if (!$role) {
-            return response()->json(['error' => 'Role not found'], 404);
-        }
-
-        $role->update([
-            'name' => $request->name,
-            'is_active' => $request->is_active,
-            'updated_by' => auth()->id()
-        ]);
-
-        return response()->json(['success' => true, 'role' => $role]);
     }
 
-    // Delete a role
     public function destroy($id)
     {
-        $role = Role::findOrFail($id);
-        $role->delete();
+        try {
+            $role = Role::findOrFail($id);
+            $role->delete();
 
-        return response()->json(['success' => true]);
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete role. ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
