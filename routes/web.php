@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\RoleMenuController;
 use App\Http\Controllers\TonerController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
 
     //role menu
     Route::get('/role-menu/list', [RoleMenuController::class, 'get'])->name('list-role-menu');
-    Route::get('/role-menu/{id}', [RoleMenuController::class, 'getById'])->name('edit-role-menu');
+    Route::get('/role-menu/{role_id}', [RoleMenuController::class, 'getByRoleId'])->name('edit-role-menu');
     Route::post('/role-menu', [RoleMenuController::class, 'store'])->name('store-role-menu');
     Route::put('/role-menu/{id}', [RoleMenuController::class, 'update'])->name('update-role-menu');
     Route::delete('/role-menu/{id}', [RoleMenuController::class, 'destroy'])->name('delete-role-menu');
