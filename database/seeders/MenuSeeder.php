@@ -118,7 +118,7 @@ class MenuSeeder extends Seeder
                 'updated_by' => null,
             ],
             [
-                'name' => 'List',
+                'name' => 'Product List',
                 'url' => 'product',
                 'parent_id' => $productMenu->id,
                 'sequence' => 1,
