@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\Menu;
 use App\Models\RoleMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,7 +13,10 @@ class RoleMenuController extends Controller
 {
     public function index()
     {
-        return view('role-menu');
+        $roles = Role::where('is_active', true)->get(['id', 'name']);
+        $menus = Menu::where('is_active', true)->whereNull('parent_id')->get(['id', 'name']);
+
+        return view('role-menu', compact('roles', 'menus'));
     }
 
     public function get(Request $request)
@@ -67,86 +72,101 @@ class RoleMenuController extends Controller
         ]);
     }
 
-    public function getByRoleId($role_id)
+    public function getByRoleId($roleId)
     {
-        //sampai sini
-        // $role = Role::find($role_id);
+        $menuIds = RoleMenu::where('role_id', $roleId)->pluck('menu_id');
 
-        // if (!$role) {
-        //     return response()->json(['message' => 'Role not found'], 404);
-        // }
-
-        // return response()->json($role);
+        return response()->json([
+            'role_id' => $roleId,
+            'menu_ids' => $menuIds
+        ]);
     }
 
     public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:100',
-                'is_active' => 'required|boolean',
+                'role_id' => 'required|exists:roles,id',
+                'menu_ids' => 'required|array',
+                'menu_ids.*' => 'exists:menus,id'
             ]);
 
             if ($validator->fails()) {
                 return response()->json(['message' => $validator->errors()], 422);
             }
 
-            $role = Role::create([
-                'name' => $request->name,
-                'is_active' => $request->is_active,
-                'created_by' => auth()->id(),
-                'updated_at' => null
-            ]);
+            foreach ($request->menu_ids as $menuId) {
+                RoleMenu::create([
+                    'role_id' => $request->role_id,
+                    'menu_id' => $menuId,
+                    'created_by' => auth()->id(),
+                    'updated_at' => null
+                ]);
+            }
 
-            return response()->json(['success' => true, 'role' => $role], 201);
+            return response()->json(['success' => true], 201);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to create role. ' . $e->getMessage()
+                'message' => 'Failed to create role-menu mapping. ' . $e->getMessage()
             ], 500);
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $roleId)
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:100',
-                'is_active' => 'required|boolean',
+                'menu_ids' => 'required|array',
+                'menu_ids.*' => 'exists:menus,id'
             ]);
 
             if ($validator->fails()) {
                 return response()->json(['message' => $validator->errors()], 422);
             }
 
-            $role = Role::find($id);
-            if (!$role) {
-                return response()->json(['message' => 'Role not found'], 404);
+            $existingMenuIds = RoleMenu::where('role_id', $roleId)->pluck('menu_id')->toArray();
+            $newMenuIds = $request->menu_ids;
+
+            // Get menus to add (in request but not in DB)
+            $menusToAdd = array_diff($newMenuIds, $existingMenuIds);
+
+            // Get menus to delete (in DB but not in request)
+            $menusToDelete = array_diff($existingMenuIds, $newMenuIds);
+
+            // Add new RoleMenu entries
+            foreach ($menusToAdd as $menuId) {
+                RoleMenu::create([
+                    'role_id' => $roleId,
+                    'menu_id' => $menuId,
+                    'created_by' => auth()->id(),
+                    'updated_at' => null
+                ]);
             }
 
-            $role->update([
-                'name' => $request->name,
-                'is_active' => $request->is_active,
-                'updated_by' => auth()->id()
-            ]);
-
-            return response()->json(['success' => true, 'role' => $role]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to update role. ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function destroy($id)
-    {
-        try {
-            $role = Role::findOrFail($id);
-            $role->delete();
+            // Delete removed RoleMenu entries
+            if (!empty($menusToDelete)) {
+                RoleMenu::where('role_id', $roleId)
+                    ->whereIn('menu_id', $menusToDelete)
+                    ->delete();
+            }
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Failed to delete role. ' . $e->getMessage()
+                'message' => 'Failed to update role-menu mapping. ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy($roleId)
+    {
+        try {
+            RoleMenu::where('role_id', $roleId)->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete role-menu mapping. ' . $e->getMessage()
             ], 500);
         }
     }

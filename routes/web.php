@@ -43,10 +43,10 @@ Route::middleware(['auth'])->group(function () {
 
     //role menu
     Route::get('/role-menu/list', [RoleMenuController::class, 'get'])->name('list-role-menu');
-    Route::get('/role-menu/{role_id}', [RoleMenuController::class, 'getByRoleId'])->name('edit-role-menu');
+    Route::get('/role-menu/{roleId}', [RoleMenuController::class, 'getByRoleId'])->name('edit-role-menu');
     Route::post('/role-menu', [RoleMenuController::class, 'store'])->name('store-role-menu');
-    Route::put('/role-menu/{id}', [RoleMenuController::class, 'update'])->name('update-role-menu');
-    Route::delete('/role-menu/{id}', [RoleMenuController::class, 'destroy'])->name('delete-role-menu');
+    Route::put('/role-menu/{roleId}', [RoleMenuController::class, 'update'])->name('update-role-menu');
+    Route::delete('/role-menu/{roleId}', [RoleMenuController::class, 'destroy'])->name('delete-role-menu');
 
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);
