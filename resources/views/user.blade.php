@@ -65,12 +65,35 @@
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" id="email" class="form-control" placeholder="Enter Email"
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email"
                                 required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password_confirmation" class="form-label">Confirm Password</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Enter Confirm Password" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="phone" id="phone" name="phone" class="form-control" placeholder="Enter Phone"
+                                required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select" id="role" name="role_id" aria-label="role">
+                                @foreach ($roles as $index => $role)
+                                    <option value="{{ $role->id }}" {{ $index === 0 ? 'selected' : '' }}>
+                                        {{ $role->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div>
                             <label for="is_active" class="form-label">Status</label>
-                            <select class="form-control" required id="is_active" name="is_active">
+                            <select class="form-select" id="is_active" name="is_active" aria-label="is_active">
                                 <option value="0" selected>False</option>
                                 <option value="1">True</option>
                             </select>

@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    var createForm = document.querySelectorAll('.showModal')
+    var createForm = document.querySelectorAll('.tablelist-form')
     Array.prototype.slice.call(createForm).forEach(function (form) {
         form.addEventListener('submit', function (event) {
             if (!form.checkValidity()) {
@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     table.ajax.reload();
                     clearVal();
                     form.classList.remove('was-validated');
+                    bootstrap.Modal.getOrCreateInstance(document.getElementById("showModal")).hide();
                 })
                 .catch(error => {
                     // This only catches network errors or those re-thrown above
@@ -114,7 +115,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 $("#exampleModalLabel").text("Edit User");
                 $("#add-btn").text("Update");
                 $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#email").val(data.email);
+                $("#phone").val(data.phone);
                 $("#role").val(data.role_id).trigger('change');
+                $("#is_active").val(data.is_active);
+
+                // make password not required in edit
+                $("#password").prop("required", false).val('');
+                $("#password_confirmation").prop("required", false).val('');
             })
             .catch(error => console.error("Error fetching data:", error));
     });
@@ -123,6 +132,18 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#exampleModalLabel").text("Create User");
         $("#add-btn").text("Add User");
         $("#id").val("");
-        $('#showModal').removeClass('was-validated');
+        $("#name, #email, #phone").val("");
+        $("#role").val($("#role option:first").val()).trigger('change');
+        $("#is_active").val("0");
+        $("#password").val('').prop("required", true);
+        $("#password_confirmation").val('').prop("required", true);
+        $('.tablelist-form').removeClass('was-validated');
     }
+
+    // clearVal on modal show (when adding user)
+    $('#showModal').on('show.bs.modal', function (e) {
+        if (!$(e.relatedTarget).hasClass("edit-user")) {
+            clearVal();
+        }
+    });
 });
