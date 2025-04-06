@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             },
             { data: 'id', name: 'users.id', orderable: false, searchable: false, render: function (data) {
-                return `<button class="btn btn-sm btn-soft-info href="#showModal" data-bs-toggle="modal" edit-user" data-id="${data}">Edit</button>
+                return `<button class="btn btn-sm btn-soft-info edit-user" data-bs-toggle="modal" href="#showModal" data-id="${data}">Edit</button>
                     <button class="btn btn-sm btn-soft-danger delete-user" data-id="${data}">Delete</button>`;
             }}
         ]
