@@ -9,7 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
             { data: 'email', name: 'email' },
             { data: 'phone', name: 'phone' },
             { data: 'role_name', name: 'roles.name' },
-            { data: 'is_active', name: 'is_active' },
+            {
+                data: 'is_active',
+                name: 'is_active',
+                render: function (data) {
+                    return data == 1 ? 'True' : 'False';
+                }
+            },
             { data: 'id', name: 'users.id', orderable: false, searchable: false, render: function (data) {
                 return `<button class="btn btn-sm btn-soft-info href="#showModal" data-bs-toggle="modal" edit-user" data-id="${data}">Edit</button>
                     <button class="btn btn-sm btn-soft-danger delete-user" data-id="${data}">Delete</button>`;
