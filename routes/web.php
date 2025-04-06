@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoleMenuController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\TonerController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['menu.access'])->group(function () {
         Route::get('/role', [RoleController::class, 'index'])->name('index-role');
         Route::get('/role-menu', [RoleMenuController::class, 'index'])->name('index-role-menu');
+        Route::get('/user', [UserController::class, 'index'])->name('index-user');
     });
 
     //role
@@ -47,6 +49,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/role-menu', [RoleMenuController::class, 'store'])->name('store-role-menu');
     Route::put('/role-menu/{roleId}', [RoleMenuController::class, 'update'])->name('update-role-menu');
     Route::delete('/role-menu/{roleId}', [RoleMenuController::class, 'destroy'])->name('delete-role-menu');
+
+    //user
+    Route::get('/user/list', [UserController::class, 'get'])->name('list-user');
+    Route::get('/user/{id}', [UserController::class, 'edit'])->name('edit-user');
+    Route::post('/user', [UserController::class, 'store'])->name('store-user');
+    Route::put('/user/{id}', [UserController::class, 'update'])->name('update-user');
+    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('delete-user');
 
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);

@@ -29,8 +29,8 @@ class UserSeeder extends Seeder
     $users = [
       [
         'role_id' => $adminRole->id,
-        'email' => 'fernandeswiraharjo@gmail.com',
-        'name' => 'admin',
+        'email' => 'lagrammagaia@gmail.com',
+        'name' => 'afryandi',
         'password' => Hash::make('12345'),
         'is_active' => true,
         'created_by' => null,

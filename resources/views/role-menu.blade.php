@@ -21,7 +21,7 @@
                 </div>
                 <div class="card-body">
                     <form autocomplete="off" class="needs-validation createRoleMenuForm" id="createRoleMenuForm" novalidate>
-                        <input type="hidden" id="role_id" name="role_id" class="form-control" value="">
+                        <input type="hidden" id="role_id" class="form-control" value="">
                         <div class="row">
                             <div class="col-xxl-12 col-lg-6">
                                 <div class="mb-3">
