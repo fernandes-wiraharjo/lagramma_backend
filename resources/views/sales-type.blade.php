@@ -18,6 +18,12 @@
     <div class="row">
         <div class="col-xxl-9">
             <div class="card">
+                <div class="card-header d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary sync-btn" id="syncBtn">
+                        <span id="syncBtnText">Sync</span>
+                        <span id="syncBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
                 <div class="card-body">
                     <table id="tb_data" class="display table table-bordered dt-responsive"
                         style="width:100%">
