@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/category', [CategoryController::class, 'index'])->name('index-category');
         Route::get('/modifier', [ModifierController::class, 'index'])->name('index-modifier');
         Route::get('/modifier-option', [ModifierController::class, 'indexModifierOption'])->name('index-modifier-option');
+        Route::get('/sales-type', [SalesTypeController::class, 'index'])->name('index-sales-type');
     });
 
     //role
@@ -74,7 +75,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/modifier-option/list', [ModifierController::class, 'getModifierOption'])->name('list-modifier-option');
     Route::post('/modifier-option/{id}/toggle-active', [ModifierController::class, 'toggleActiveModifierOption']);
 
+    //sales type
+    Route::get('/sales-type/list', [SalesTypeController::class, 'get'])->name('list-sales-type');
+    Route::post('/sales-type/sync', [SalesTypeController::class, 'sync'])->name('sync-sales-type');
+    Route::post('/sales-type/{id}/toggle-active', [SalesTypeController::class, 'toggleActive']);
 
+    //template
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);
 });
