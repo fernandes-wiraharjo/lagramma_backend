@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
             title: 'Confirm change?',
             icon: 'question',
             showCancelButton: true,
+            cancelButtonText: 'Cancel',
             confirmButtonText: 'Yes',
         }).then((result) => {
             if (result.isConfirmed) {
