@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', function () {
             title: 'Confirm change?',
             icon: 'question',
             showCancelButton: true,
-            cancelButtonText: 'Cancel',
             confirmButtonText: 'Yes',
+            reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
