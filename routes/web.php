@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoleMenuController;
 use App\Http\Controllers\UserController;
@@ -34,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/role', [RoleController::class, 'index'])->name('index-role');
         Route::get('/role-menu', [RoleMenuController::class, 'index'])->name('index-role-menu');
         Route::get('/user', [UserController::class, 'index'])->name('index-user');
+        Route::get('/category', [CategoryController::class, 'index'])->name('index-category');
     });
 
     //role
@@ -56,6 +58,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/user', [UserController::class, 'store'])->name('store-user');
     Route::put('/user/{id}', [UserController::class, 'update'])->name('update-user');
     Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('delete-user');
+
+    //category
+    Route::get('/category/list', [CategoryController::class, 'get'])->name('list-category');
+    Route::post('/category/sync', [CategoryController::class, 'sync'])->name('sync-category');
 
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);
