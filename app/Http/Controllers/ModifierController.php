@@ -102,9 +102,7 @@ class ModifierController extends Controller
             ->select([
                 'modifier_options.id', 'modifiers.name as modifier_name', 'moka_id_modifier_option', 'modifier_options.name',
                 'price', 'modifier_options.is_active'
-            ])
-            ->orderBy('modifiers.name')
-            ->orderBy('modifier_options.position');
+            ]);
 
          // Define sortable columns based on DataTables column index
          $sortableColumns = [
@@ -114,16 +112,6 @@ class ModifierController extends Controller
             3 => 'price',
             4 => 'modifier_options.is_active'
         ];
-
-        // Retrieve sorting column index and direction from DataTables request
-        $sortColumnIndex = $request->input('order.0.column', 0); // Default to first column
-        $sortDirection = $request->input('order.0.dir', 'asc');  // Default to ascending
-
-        // Determine the column name based on the column index
-        $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'modifiers.name';
-
-        // Get total records count (before filtering)
-        $totalRecords = ModifierOption::count();
 
          // Apply search filtering
          if ($request->has('search') && !empty($request->search['value'])) {
@@ -135,12 +123,26 @@ class ModifierController extends Controller
             });
         }
 
+        // Get total records count (before filtering)
+        $totalRecords = ModifierOption::count();
+
         // Get total filter records count (after filtering)
         $totalFiltered = $query->count();
 
+        // Apply sorting
+        if ($request->has('order')) {
+            $sortColumnIndex = $request->input('order.0.column', 0);
+            $sortDirection = $request->input('order.0.dir', 'asc');
+            $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'modifiers.name';
+
+            $query->orderBy($sortColumn, $sortDirection);
+        } else {
+            // Default sort on initial load
+            $query->orderBy('modifiers.name')->orderBy('modifier_options.position');
+        }
+
         // Apply sorting and pagination
         $data = $query
-            ->orderBy($sortColumn, $sortDirection)
             ->offset($request->input('start', 0))
             ->limit($request->input('length', 10))
             ->get();

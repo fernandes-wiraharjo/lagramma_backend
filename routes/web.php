@@ -67,12 +67,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/category/sync', [CategoryController::class, 'sync'])->name('sync-category');
     Route::post('/category/{id}/toggle-active', [CategoryController::class, 'toggleActive']);
 
-    //modifier
+    //modifier and modifier option
     Route::get('/modifier/list', [ModifierController::class, 'get'])->name('list-modifier');
     Route::post('/modifier/sync', [ModifierController::class, 'sync'])->name('sync-modifier');
     Route::post('/modifier/{id}/toggle-active', [ModifierController::class, 'toggleActive']);
     Route::get('/modifier-option/list', [ModifierController::class, 'getModifierOption'])->name('list-modifier-option');
-    Route::post('/modifier-option/sync', [ModifierController::class, 'syncModifierOption'])->name('sync-modifier-option');
     Route::post('/modifier-option/{id}/toggle-active', [ModifierController::class, 'toggleActiveModifierOption']);
 
 
