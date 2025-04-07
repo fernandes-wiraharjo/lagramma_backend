@@ -2,10 +2,23 @@ document.addEventListener('DOMContentLoaded', function () {
     let table = new DataTable('#tb_data', {
         processing: true,
         serverSide: true,
-        ajax: '/modifier/list',
+        ajax: '/modifier-option/list',
         columns: [
-            { data: 'moka_id_modifier', name: 'moka_id_modifier' },
-            { data: 'name', name: 'name' },
+            { data: 'modifier_name', name: 'modifiers.name' },
+            { data: 'moka_id_modifier_option', name: 'moka_id_modifier_option' },
+            { data: 'name', name: 'modifier_options.name' },
+            {
+                data: 'price',
+                name: 'price',
+                className: 'text-end', // Bootstrap's right-align class
+                render: function (data) {
+                    return new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0
+                    }).format(data);
+                }
+            },
             {
                 data: 'is_active',
                 name: 'is_active',
@@ -22,59 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ]
     });
 
-    const syncBtn = document.getElementById('syncBtn');
-    const btnText = document.getElementById('syncBtnText');
-    const spinner = document.getElementById('syncBtnSpinner');
-
-    syncBtn.addEventListener('click', function () {
-        Swal.fire({
-            title: 'Sync Modifiers?',
-            text: "This will pull the latest modifiers from MOKA.",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, sync it!',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true
-        }).then((result) => {
-            if (!result.isConfirmed) return;
-
-            // Disable button + show spinner
-            syncBtn.disabled = true;
-            btnText.textContent = 'Syncing...';
-            spinner.classList.remove('d-none');
-
-            fetch('/modifier/sync', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Modifiers synced successfully',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-                if (data.success) table.ajax.reload();
-            })
-            .catch(err => {
-                console.error(err);
-                Swal.fire('Error', 'Unexpected error occurred.', 'error');
-            })
-            .finally(() => {
-                syncBtn.disabled = false;
-                btnText.textContent = 'Sync';
-                spinner.classList.add('d-none');
-            });
-        });
-    });
-
     $('#tb_data').on('change', '.toggle-switch', function () {
         const id = $(this).data('id');
         const isActive = $(this).is(':checked') ? 1 : 0;
@@ -87,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: `/modifier/${id}/toggle-active`,
+                    url: `/modifier-option/${id}/toggle-active`,
                     method: 'POST',
                     data: {
                         is_active: isActive,

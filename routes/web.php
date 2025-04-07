@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/user', [UserController::class, 'index'])->name('index-user');
         Route::get('/category', [CategoryController::class, 'index'])->name('index-category');
         Route::get('/modifier', [ModifierController::class, 'index'])->name('index-modifier');
+        Route::get('/modifier-option', [ModifierController::class, 'indexModifierOption'])->name('index-modifier-option');
     });
 
     //role
@@ -64,10 +65,16 @@ Route::middleware(['auth'])->group(function () {
     //category
     Route::get('/category/list', [CategoryController::class, 'get'])->name('list-category');
     Route::post('/category/sync', [CategoryController::class, 'sync'])->name('sync-category');
+    Route::post('/category/{id}/toggle-active', [CategoryController::class, 'toggleActive']);
 
     //modifier
     Route::get('/modifier/list', [ModifierController::class, 'get'])->name('list-modifier');
     Route::post('/modifier/sync', [ModifierController::class, 'sync'])->name('sync-modifier');
+    Route::post('/modifier/{id}/toggle-active', [ModifierController::class, 'toggleActive']);
+    Route::get('/modifier-option/list', [ModifierController::class, 'getModifierOption'])->name('list-modifier-option');
+    Route::post('/modifier-option/sync', [ModifierController::class, 'syncModifierOption'])->name('sync-modifier-option');
+    Route::post('/modifier-option/{id}/toggle-active', [ModifierController::class, 'toggleActiveModifierOption']);
+
 
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);

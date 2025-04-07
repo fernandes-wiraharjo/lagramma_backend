@@ -20,7 +20,7 @@ class CategoryController extends Controller
     {
         $query = Category::query()
             ->select([
-                'moka_id_category', 'name', 'is_active'
+                'id', 'moka_id_category', 'name', 'is_active'
             ]);
 
          // Define sortable columns based on DataTables column index
@@ -79,4 +79,13 @@ class CategoryController extends Controller
         }
     }
 
+    public function toggleActive($id, Request $request)
+    {
+        $category = Category::findOrFail($id);
+        $category->is_active = $request->input('is_active');
+        $category->updated_by = auth()->id();
+        $category->save();
+
+        return response()->json(['success' => true]);
+    }
 }
