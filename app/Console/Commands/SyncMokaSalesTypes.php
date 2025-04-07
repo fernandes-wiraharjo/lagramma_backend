@@ -53,6 +53,7 @@ class SyncMokaSalesTypes extends Command
                     ['moka_id_sales_type' => $data['id']], // Unique identifier for update
                     [
                         'name'        => $data['name'],
+                        'updated_by'  => null,
                         'updated_at'  => now()
                     ]
                 );

@@ -55,6 +55,7 @@ class SyncMokaModifiers extends Command
                     ['moka_id_modifier' => $data['id']], // Unique identifier for update
                     [
                         'name'        => $data['name'],
+                        'updated_by'  => null,
                         'updated_at'  => now()
                     ]
                 );
@@ -69,6 +70,7 @@ class SyncMokaModifiers extends Command
                                 'name'        => $option['name'],
                                 'price'       => $option['price'],
                                 'position'    => $option['position'],
+                                'updated_by'  => null,
                                 'updated_at'  => now()
                             ]
                         );

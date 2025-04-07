@@ -101,6 +101,7 @@ class SyncMokaProducts extends Command
                 'name'        => $data['name'],
                 'description' => $data['description'] ?? null,
                 'is_sales_type_price' => $data['is_sales_type_price'] ?? false,
+                'updated_by'  => null,
                 'updated_at'  => now()
             ]
         );
@@ -119,6 +120,7 @@ class SyncMokaProducts extends Command
                     'track_stock' => $variantData['track_stock'] ?? null,
                     'position'   => $variantData['position'] ?? 0,
                     'sku'   => $variantData['sku'] ?? null,
+                    'updated_by'  => null,
                     'updated_at' => now()
                 ]
             );
@@ -140,6 +142,7 @@ class SyncMokaProducts extends Command
                     [
                         'price'  => $salesType['sales_type_price'] ?? null,
                         'is_default' => $salesType['is_default'] ?? null,
+                        'updated_by'  => null,
                         'updated_at'       => now()
                     ]
                 );
@@ -156,6 +159,7 @@ class SyncMokaProducts extends Command
                 ProductModifier::updateOrCreate(
                     ['id_product' => $product->id, 'id_modifier' => $modifier->id],
                     [
+                        'updated_by'  => null,
                         'updated_at' => now()
                     ]
                 );

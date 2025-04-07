@@ -54,6 +54,7 @@ class SyncMokaCategories extends Command
                     [
                         'name'        => $category['name'],
                         'description' => $category['description'],
+                        'updated_by'  => null,
                         'updated_at'  => now()
                     ]
                 );
