@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    Category
+    Modifier
 @endsection
 @section('css')
     <!-- extra css -->
@@ -13,7 +13,7 @@
     <link href="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
-    <x-breadcrumb title="Category" pagetitle="Master" />
+    <x-breadcrumb title="Modifier" pagetitle="Master" />
 
     <div class="row">
         <div class="col-xxl-9">
@@ -51,11 +51,11 @@
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 
-    <!-- Sweet Alerts js -->
+      <!-- Sweet Alerts js -->
     <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <!-- page js -->
-    <script src="{{ URL::asset('build/js/backend/categories.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/backend/modifiers.init.js') }}"></script>
 
     <!-- App js -->
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
