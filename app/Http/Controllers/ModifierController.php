@@ -113,13 +113,20 @@ class ModifierController extends Controller
             4 => 'modifier_options.is_active'
         ];
 
-         // Apply search filtering
-         if ($request->has('search') && !empty($request->search['value'])) {
+        // Retrieve sorting column index and direction from DataTables request
+        $sortColumnIndex = $request->input('order.0.column', 0); // Default to first column
+        $sortDirection = $request->input('order.0.dir', 'asc');  // Default to ascending
+
+        // Determine the column name based on the column index
+        $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'modifiers.name';
+
+        // Apply search filtering
+        if ($request->has('search') && !empty($request->search['value'])) {
             $searchValue = '%' . $request->search['value'] . '%';
 
             $query->where(function ($q) use ($searchValue) {
                 $q->where('modifiers.name', 'like', $searchValue)
-                  ->orWhere('modifier_options.name', 'like', $searchValue);
+                    ->orWhere('modifier_options.name', 'like', $searchValue);
             });
         }
 
@@ -129,20 +136,9 @@ class ModifierController extends Controller
         // Get total filter records count (after filtering)
         $totalFiltered = $query->count();
 
-        // Apply sorting
-        if ($request->has('order')) {
-            $sortColumnIndex = $request->input('order.0.column', 0);
-            $sortDirection = $request->input('order.0.dir', 'asc');
-            $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'modifiers.name';
-
-            $query->orderBy($sortColumn, $sortDirection);
-        } else {
-            // Default sort on initial load
-            $query->orderBy('modifiers.name')->orderBy('modifier_options.position');
-        }
-
         // Apply sorting and pagination
         $data = $query
+            ->orderBy($sortColumn, $sortDirection)
             ->offset($request->input('start', 0))
             ->limit($request->input('length', 10))
             ->get();
