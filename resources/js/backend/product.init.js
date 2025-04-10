@@ -35,17 +35,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
                                     <a href="#!" class="dropdown-item view-variant-btn" data-id="${row.id}">
-                                        <i class="ri-eye-fill align-bottom me-2 text-muted"></i> View
+                                        Variant
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#!" class="dropdown-item edit-item-btn" data-id="${row.id}">
-                                        <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit
+                                    <a href="#!" class="dropdown-item edit-image-btn" data-id="${row.id}">
+                                        Image
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#!" class="dropdown-item remove-item-btn" data-id="${row.id}">
-                                        <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
+                                    <a href="#!" class="dropdown-item deactivate-date-btn" data-id="${row.id}">
+                                        Deactivate By Date
                                     </a>
                                 </li>
                             </ul>
@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     syncBtn.addEventListener('click', function () {
         Swal.fire({
-            title: 'Sync Sales Types?',
-            text: "This will pull the latest sales types from MOKA.",
+            title: 'Sync Products?',
+            text: "This will pull the latest products from MOKA.",
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Yes, sync it!',
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
             btnText.textContent = 'Syncing...';
             spinner.classList.remove('d-none');
 
-            fetch('/sales-type/sync', {
+            fetch('/product/sync', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     toast: true,
                     position: 'top-end',
                     icon: 'success',
-                    title: 'Sales types synced successfully',
+                    title: 'Products synced successfully',
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: `/sales-type/${id}/toggle-active`,
+                    url: `/product/${id}/toggle-active`,
                     method: 'POST',
                     data: {
                         is_active: isActive,
