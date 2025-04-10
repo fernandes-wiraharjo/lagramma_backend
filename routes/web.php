@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoleMenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TonerController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/modifier', [ModifierController::class, 'index'])->name('index-modifier');
         Route::get('/modifier-option', [ModifierController::class, 'indexModifierOption'])->name('index-modifier-option');
         Route::get('/sales-type', [SalesTypeController::class, 'index'])->name('index-sales-type');
+        Route::get('/product', [ProductController::class, 'index'])->name('index-product');
     });
 
     //role
@@ -80,6 +82,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sales-type/list', [SalesTypeController::class, 'get'])->name('list-sales-type');
     Route::post('/sales-type/sync', [SalesTypeController::class, 'sync'])->name('sync-sales-type');
     Route::post('/sales-type/{id}/toggle-active', [SalesTypeController::class, 'toggleActive']);
+
+    //product
+    Route::get('/product/list', [ProductController::class, 'get'])->name('list-product');
+    Route::post('/product/sync', [ProductController::class, 'sync'])->name('sync-product');
+    Route::post('/product/{id}/toggle-active', [ProductController::class, 'toggleActive']);
 
     //template
     Route::get('{any}', [TonerController::class, 'index']);
