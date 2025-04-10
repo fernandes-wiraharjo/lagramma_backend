@@ -37,32 +37,50 @@
                 <li class="menu-title"><span data-key="t-menu">{{ __('t-menu') }}</span></li>
                 @if (!empty($menus) && $menus->isNotEmpty())
                     @foreach ($menus as $menu)
+                        @php
+                            $isParentActive = false;
+
+                            // If the menu has children, check if any submenu matches the current URL
+                            if ($menu->children && $menu->children->isNotEmpty()) {
+                                foreach ($menu->children as $submenu) {
+                                    if (request()->is($submenu->url)) {
+                                        $isParentActive = true;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // If it's a single menu, check it directly
+                                $isParentActive = request()->is($menu->url);
+                            }
+
+                            $menuSlug = Str::slug($menu->name);
+                        @endphp
+
                         <li class="nav-item">
                             @if ($menu->url)
                                 <!-- If menu has a URL, just add href and class -->
-                                <a class="nav-link menu-link" href="{{ $menu->url }}">
+                                <a class="nav-link menu-link {{ $isParentActive ? 'active' : '' }}" href="{{ url($menu->url) }}">
                                     <i class="{{ $menu->icon ?? '' }}"></i>
                                     <span data-key="{{ $menu->name }}">{{ $menu->name }}</span>
                                 </a>
                             @else
                                 <!-- If menu has no URL, it's a collapsible parent -->
-                                @php $menuSlug = Str::slug($menu->name); @endphp
-                                <a class="nav-link menu-link"
+                                <a class="nav-link menu-link {{ $isParentActive ? 'active' : '' }}"
                                     href="#sidebar-{{ $menuSlug }}"
                                     data-bs-toggle="collapse"
                                     role="button"
-                                    aria-expanded="false"
+                                    aria-expanded="{{ $isParentActive ? 'true' : 'false' }}"
                                     aria-controls="sidebar-{{ $menuSlug }}">
                                         <i class="{{ $menu->icon ?? '' }}"></i>
                                         <span data-key="{{ $menu->name }}">{{ $menu->name }}</span>
                                 </a>
 
                                 @if (isset($menu->children) && $menu->children->isNotEmpty())
-                                    <div class="collapse menu-dropdown" id="sidebar-{{ $menuSlug }}">
+                                    <div class="collapse menu-dropdown {{ $isParentActive ? 'show' : '' }}" id="sidebar-{{ $menuSlug }}">
                                         <ul class="nav nav-sm flex-column">
                                             @foreach ($menu->children as $submenu)
                                                 <li class="nav-item">
-                                                    <a href="{{ $submenu->url }}" class="nav-link" data-key="{{ $submenu->name }}">
+                                                    <a href="{{ url($submenu->url) }}" class="nav-link {{ request()->is($submenu->url) ? 'active' : '' }}" data-key="{{ $submenu->name }}">
                                                         {{ $submenu->name }}
                                                     </a>
                                                 </li>

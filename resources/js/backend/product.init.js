@@ -148,4 +148,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    $(document).on('click', '.view-variant-btn', function () {
+        const idProduct = $(this).data('id');
+        window.location.href = `/product-variant/${idProduct}`;
+    });
 });

@@ -88,6 +88,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/product/sync', [ProductController::class, 'sync'])->name('sync-product');
     Route::post('/product/{id}/toggle-active', [ProductController::class, 'toggleActive']);
 
+    //product variant
+    Route::get('/product-variant/{idProduct}', [ProductController::class, 'indexVariant'])->name('index-product-variant');
+    Route::get('/product-variant/{idProduct}/list', [ProductController::class, 'getVariant'])->name('list-product-variant');
+    Route::post('/product-variant/{id}/toggle-active', [ProductController::class, 'toggleActiveVariant']);
+
     //template
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);
