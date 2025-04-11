@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
@@ -186,6 +189,54 @@ class ProductController extends Controller
         $data->is_active = $request->input('is_active');
         $data->updated_by = auth()->id();
         $data->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function indexImage($idProduct)
+    {
+        $product = Product::findOrFail($idProduct);
+        return view('product-image', [
+            'product' => $product
+        ]);
+    }
+
+    public function storeImage(Request $request, $id)
+    {
+        $request->validate([
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048' // 2MB max
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        if ($product->images()->count() >= 8) {
+            return response()->json(['message' => 'Maximum 8 images allowed.'], 400);
+        }
+
+        foreach ($request->file('images') as $image) {
+            $resized = Image::make($image)->resize(800, 800, function ($c) {
+                $c->aspectRatio();
+                $c->upsize();
+            });
+
+            $filename = uniqid('product_') . '.' . $image->getClientOriginalExtension();
+            $path = 'uploads/products/' . $filename;
+
+            Storage::put('public/' . $path, (string) $resized->encode());
+
+            $product->images()->create([
+                'image_path' => $path
+            ]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function destroyImage($id)
+    {
+        $image = ProductImage::findOrFail($id);
+        Storage::delete('public/' . $image->image_path);
+        $image->delete();
 
         return response()->json(['success' => true]);
     }

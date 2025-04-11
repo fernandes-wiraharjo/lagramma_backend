@@ -151,6 +151,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $(document).on('click', '.view-variant-btn', function () {
         const idProduct = $(this).data('id');
-        window.location.href = `/product-variant/${idProduct}`;
+        window.open(`/product-variant/${idProduct}`, '_blank');
+    });
+
+    $(document).on('click', '.edit-image-btn', function () {
+        const idProduct = $(this).data('id');
+        window.open(`/product-image/${idProduct}`, '_blank');
     });
 });

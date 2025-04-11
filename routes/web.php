@@ -88,6 +88,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/product/sync', [ProductController::class, 'sync'])->name('sync-product');
     Route::post('/product/{id}/toggle-active', [ProductController::class, 'toggleActive']);
 
+    //product image
+    Route::prefix('product-image')->group(function () {
+        Route::get('{idProduct}', [ProductController::class, 'indexImage']);
+        Route::post('{idProduct}', [ProductController::class, 'storeImage']);
+        Route::delete('{id}', [ProductController::class, 'destroyImage']);
+    });
+
     //product variant
     Route::get('/product-variant/{idProduct}', [ProductController::class, 'indexVariant'])->name('index-product-variant');
     Route::get('/product-variant/{idProduct}/list', [ProductController::class, 'getVariant'])->name('list-product-variant');

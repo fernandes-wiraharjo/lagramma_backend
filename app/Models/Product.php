@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\ProductVariant;
 use App\Models\ProductModifier;
+use App\Models\ProductImage;
 
 class Product extends Model
 {
@@ -43,5 +44,10 @@ class Product extends Model
     public function modifiers()
     {
         return $this->hasMany(ProductModifier::class, 'id_product');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }
