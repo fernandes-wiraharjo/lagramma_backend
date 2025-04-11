@@ -12,8 +12,9 @@ return new class extends Migration {
   {
     Schema::create('product_images', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('product_id')->unique();
+      $table->unsignedBigInteger('product_id');
       $table->text('image_path');
+      $table->boolean('is_main')->default(false);
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();

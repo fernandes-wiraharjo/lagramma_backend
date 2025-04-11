@@ -25,7 +25,7 @@
                             </div>
                             <div class="flex-grow-1">
                                 <h5 class="card-title mb-1">Product Image</h5>
-                                <p class="text-muted mb-0">You can add up to 8 product images.</p>
+                                <p class="text-muted mb-0">You can add up to 8 product images. (Max 2MB per file)</p>
                             </div>
                         </div>
                     </div>
@@ -49,6 +49,14 @@
                                         <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 delete-image" data-id="{{ $image->id }}">
                                             &times;
                                         </button>
+
+                                        @if(!$image->is_main)
+                                            <button type="button" class="btn btn-sm btn-outline-primary mt-2 set-main-image" data-id="{{ $image->id }}">
+                                                Set as Main
+                                            </button>
+                                        @else
+                                            <span class="badge bg-success mt-2">Main Image</span>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
@@ -56,9 +64,9 @@
                     </div>
                 </div>
                 <!-- end card -->
-                <div class="text-end mb-3">
+                <!-- <div class="text-end mb-3">
                     <button type="submit" class="btn btn-success w-sm">Submit</button>
-                </div>
+                </div> -->
             </div>
             <!-- end col -->
         </div>
@@ -69,6 +77,10 @@
     <script>
         const idProduct = @json($product->id);;
     </script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!-- dropzone js -->
     <script src="{{ URL::asset('build/libs/dropzone/dropzone-min.js') }}"></script>

@@ -196,38 +196,72 @@ class ProductController extends Controller
     public function indexImage($idProduct)
     {
         $product = Product::findOrFail($idProduct);
-        return view('product-image', [
-            'product' => $product
-        ]);
+        return view('product-image', compact('product'));
     }
 
-    public function storeImage(Request $request, $id)
+    public function storeImage(Request $request, $idProduct)
     {
-        $request->validate([
-            'images.*' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048' // 2MB max
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Max 2MB
         ]);
 
-        $product = Product::findOrFail($id);
-
-        if ($product->images()->count() >= 8) {
-            return response()->json(['message' => 'Maximum 8 images allowed.'], 400);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first('file')], 422);
         }
 
-        foreach ($request->file('images') as $image) {
-            $resized = Image::make($image)->resize(800, 800, function ($c) {
-                $c->aspectRatio();
-                $c->upsize();
-            });
+        $imageCount = ProductImage::where('product_id', $idProduct)->count();
 
-            $filename = uniqid('product_') . '.' . $image->getClientOriginalExtension();
-            $path = 'uploads/products/' . $filename;
-
-            Storage::put('public/' . $path, (string) $resized->encode());
-
-            $product->images()->create([
-                'image_path' => $path
-            ]);
+        if ($imageCount >= 8) {
+            return response()->json(['message' => 'Maximum 8 images allowed per product.'], 422);
         }
+
+        $product = Product::findOrFail($idProduct);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $originalName = $file->getClientOriginalName();
+            $safeName = preg_replace('/[^A-Za-z0-9\-\_\.]/', '_', $originalName);
+            $filename = $idProduct . '_' . time() . '_' . $safeName;
+
+            $image = Image::make($file->getRealPath());
+
+            // Resize if width > 800
+            if ($image->width() > 800) {
+                $image->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+            }
+
+            $path = 'product-images/' . $filename;
+            Storage::disk('public')->put($path, (string) $image->encode());
+
+            $isFirst = !ProductImage::where('product_id', $idProduct)->where('is_main', true)->exists();
+
+            $productImage = new ProductImage();
+            $productImage->product_id = $idProduct;
+            $productImage->image_path = $path;
+            $productImage->is_main = $isFirst; // Set as main only if it's the first image
+            $productImage->created_by = auth()->id();
+            $productImage->save();
+
+            return response()->json(['success' => true, 'image_id' => $productImage->id]);
+        }
+
+        return response()->json(['message' => 'No file uploaded.'], 400);
+    }
+
+    public function setMainImage($id)
+    {
+        $image = ProductImage::findOrFail($id);
+
+        // Unset others
+        ProductImage::where('product_id', $image->product_id)->update(['is_main' => false]);
+
+        // Set current
+        $image->is_main = true;
+        $image->updated_by = auth()->id();
+        $image->save();
 
         return response()->json(['success' => true]);
     }
@@ -235,7 +269,13 @@ class ProductController extends Controller
     public function destroyImage($id)
     {
         $image = ProductImage::findOrFail($id);
-        Storage::delete('public/' . $image->image_path);
+
+        // Delete image file from storage
+        if (Storage::disk('public')->exists($image->image_path)) {
+            Storage::disk('public')->delete($image->image_path);
+        }
+
+        // Delete DB record
         $image->delete();
 
         return response()->json(['success' => true]);

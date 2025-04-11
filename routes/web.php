@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('product-image')->group(function () {
         Route::get('{idProduct}', [ProductController::class, 'indexImage']);
         Route::post('{idProduct}', [ProductController::class, 'storeImage']);
+        Route::post('set-main/{id}', [ProductController::class, 'setMainImage']);
         Route::delete('{id}', [ProductController::class, 'destroyImage']);
     });
 
