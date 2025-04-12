@@ -1,12 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = date.toLocaleString('en-US', { month: 'short' }); // Apr
+        const year = date.getFullYear();
+        return `${day} ${month}, ${year}`;
+    }
+
+    const fp = flatpickr("#date_range", {
+        mode: "range",
+        dateFormat: "d M, Y"
+    });
+
     let table = new DataTable('#tb_data', {
         processing: true,
         serverSide: true,
         searching: false,
         ajax: `/product-deactivate-by-date/${idProduct}/list`,
         columns: [
-            { data: 'start_date', name: 'start_date' },
-            { data: 'end_date', name: 'end_date' },
+            {
+                data: 'start_date',
+                name: 'start_date',
+                render: function (data) {
+                    return formatDate(data); // call your custom function
+                }
+            },
+            {
+                data: 'end_date',
+                name: 'end_date',
+                render: function (data) {
+                    return formatDate(data);
+                }
+            },
             { data: null, name: 'id', orderable: false, searchable: false, render: function (data) {
                 return `
                     <button class="btn btn-sm btn-soft-info edit-data" data-id="${data.id}">Edit</button>
@@ -97,19 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         }, false)
-    });
-
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = date.toLocaleString('en-US', { month: 'short' }); // Apr
-        const year = date.getFullYear();
-        return `${day} ${month}, ${year}`;
-    }
-
-    const fp = flatpickr("#date_range", {
-        mode: "range",
-        dateFormat: "d M, Y"
     });
 
     // Edit

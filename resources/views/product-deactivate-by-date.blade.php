@@ -5,10 +5,9 @@
 @section('css')
     <!-- extra css -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!--datatable css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
-    <!--datatable responsive css-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+    <!-- datatable css -->
+    <link rel="stylesheet" href="{{ URL::asset('datatables/css/dataTables.bootstrap5.min.css') }}" />
+    <link rel="stylesheet" href="{{ URL::asset('datatables/css/responsive.bootstrap.min.css') }}" />
 @endsection
 @section('content')
     <x-breadcrumb title="Deactivate By Date" pagetitle="Master > {{ $product->name }}" />
@@ -68,13 +67,13 @@
         const idProduct = @json($product->id);;
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="{{ URL::asset('jquery/jquery-3.6.0.min.js') }}"></script>
 
-    <!--datatable js-->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <!-- datatable js -->
+    <script src="{{ URL::asset('datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('datatables/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ URL::asset('datatables/js/dataTables.responsive.min.js') }}"></script>
 
     <!-- page js -->
     <script src="{{ URL::asset('build/js/backend/product-deactivate-by-date.init.js') }}"></script>
