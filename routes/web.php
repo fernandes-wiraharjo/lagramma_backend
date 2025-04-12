@@ -88,6 +88,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/product/sync', [ProductController::class, 'sync'])->name('sync-product');
     Route::post('/product/{id}/toggle-active', [ProductController::class, 'toggleActive']);
 
+    //product deactivate by date
+    Route::prefix('product-deactivate-by-date')->group(function () {
+        Route::get('{idProduct}', [ProductController::class, 'indexDeactivateDate']);
+        Route::get('{idProduct}/list', [ProductController::class, 'getDeactivateDate']);
+        Route::get('by-id/{id}', [ProductController::class, 'getDeactivateDateById']);
+        Route::post('{idProduct}', [ProductController::class, 'storeDeactivateDate']);
+        Route::put('{id}', [ProductController::class, 'updateDeactivateDate']);
+        Route::delete('{id}', [ProductController::class, 'destroyDeactivateDate']);
+    });
+
     //product image
     Route::prefix('product-image')->group(function () {
         Route::get('{idProduct}', [ProductController::class, 'indexImage']);

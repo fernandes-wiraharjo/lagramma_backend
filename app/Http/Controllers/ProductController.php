@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductImage;
+use App\Models\ProductDeactivateDate;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -15,6 +17,7 @@ use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
+    //product
     public function index()
     {
         return view('product');
@@ -101,6 +104,8 @@ class ProductController extends Controller
         return response()->json(['success' => true]);
     }
 
+
+    //product variant
     public function indexVariant($idProduct)
     {
         $product = Product::findOrFail($idProduct);
@@ -193,6 +198,8 @@ class ProductController extends Controller
         return response()->json(['success' => true]);
     }
 
+
+    //product image
     public function indexImage($idProduct)
     {
         $product = Product::findOrFail($idProduct);
@@ -279,5 +286,141 @@ class ProductController extends Controller
         $image->delete();
 
         return response()->json(['success' => true]);
+    }
+
+
+    //product deactivate by date
+    public function indexDeactivateDate($idProduct)
+    {
+        $product = Product::findOrFail($idProduct);
+        return view('product-deactivate-by-date', compact('product'));
+    }
+
+    public function getDeactivateDate($idProduct, Request $request)
+    {
+        $query = ProductDeactivateDate::query()
+            ->select(['id', 'start_date', 'end_date'])
+            ->where('product_id', $idProduct);
+
+         // Define sortable columns based on DataTables column index
+         $sortableColumns = [
+            0 => 'start_date',
+            1 => 'end_date'
+        ];
+
+        // Retrieve sorting column index and direction from DataTables request
+        $sortColumnIndex = $request->input('order.0.column', 1); // Default to second column (name)
+        $sortDirection = $request->input('order.0.dir', 'asc');  // Default to ascending
+
+        // Determine the column name based on the column index
+        $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'start_date';
+
+        // Get total records count (before filtering)
+        $totalRecords = ProductDeactivateDate::where('product_id', $idProduct)->count();
+
+        // Apply sorting and pagination
+        $data = $query
+            ->orderBy($sortColumn, $sortDirection)
+            ->offset($request->input('start', 0))
+            ->limit($request->input('length', 10))
+            ->get();
+
+        // Prepare response data
+        return response()->json([
+            'draw' => $request->input('draw'),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $data,
+        ]);
+    }
+
+    public function getDeactivateDateById($id)
+    {
+        $data = ProductDeactivateDate::find($id);
+
+        if (!$data) {
+            return response()->json(['message' => 'Data not found'], 404);
+        }
+
+        return response()->json($data);
+    }
+
+    public function storeDeactivateDate($idProduct, Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'date_range' => 'required|string'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()], 422);
+            }
+
+            $range = explode(' to ', $request->date_range);
+            $start = Carbon::createFromFormat('d M, Y', trim($range[0]));
+            $end = isset($range[1]) ? Carbon::createFromFormat('d M, Y', trim($range[1])) : $start;
+
+            $data = ProductDeactivateDate::create([
+                'product_id' => $idProduct,
+                'start_date' => $start,
+                'end_date' => $end,
+                'created_by' => auth()->id(),
+                'updated_at' => null
+            ]);
+
+            return response()->json(['success' => true, 'data' => $data], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create data. ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateDeactivateDate(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'date_range' => 'required|string'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()], 422);
+            }
+
+            $data = ProductDeactivateDate::find($id);
+            if (!$data) {
+                return response()->json(['message' => 'Data not found'], 404);
+            }
+
+            $range = explode(' to ', $request->date_range);
+            $start = Carbon::createFromFormat('d M, Y', trim($range[0]));
+            $end = isset($range[1]) ? Carbon::createFromFormat('d M, Y', trim($range[1])) : $start;
+
+            $data->update([
+                'start_date' => $start,
+                'end_date' => $end,
+                'updated_by' => auth()->id()
+            ]);
+
+            return response()->json(['success' => true, 'data' => $data]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update data. ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroyDeactivateDate($id)
+    {
+        try {
+            $data = ProductDeactivateDate::findOrFail($id);
+            $data->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete data. ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

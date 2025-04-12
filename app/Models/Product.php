@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\ProductVariant;
 use App\Models\ProductModifier;
 use App\Models\ProductImage;
+use App\Models\ProductDeactivateDate;
 
 class Product extends Model
 {
@@ -49,5 +50,10 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function deactivateDates()
+    {
+        return $this->hasMany(ProductDeactivateDate::class);
     }
 }

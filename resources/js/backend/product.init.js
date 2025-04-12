@@ -158,4 +158,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const idProduct = $(this).data('id');
         window.open(`/product-image/${idProduct}`, '_blank');
     });
+
+    $(document).on('click', '.deactivate-date-btn', function () {
+        const idProduct = $(this).data('id');
+        window.open(`/product-deactivate-by-date/${idProduct}`, '_blank');
+    });
 });
