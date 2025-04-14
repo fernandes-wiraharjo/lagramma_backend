@@ -442,20 +442,24 @@ class ProductController extends Controller
 
     public function getHamperSetting(Request $request)
     {
-        $query = RoleMenu::query()
-            ->join('roles', 'role_menus.role_id', '=', 'roles.id')
-            ->join('menus', 'role_menus.menu_id', '=', 'menus.id')
-            ->groupBy('role_menus.role_id', 'roles.name')
+        $query = HamperSetting::query()
+            ->join('products as hampers', 'hampers_settings.product_id', '=', 'hampers.id')
+            ->leftJoin('hampers_setting_items', 'hampers_settings.id', '=', 'hampers_setting_items.hampers_setting_id')
+            ->leftJoin('products as items', 'hampers_setting_items.product_id', '=', 'items.id')
+            ->whereHas('product.category', function ($q) {
+                $q->where('name', 'Hampers');
+            })
+            ->groupBy('hampers_settings.id', 'hampers.name', 'hampers_settings.max_items')
             ->select([
-                'roles.id as role_id',
-                'roles.name as role_name',
-                DB::raw('GROUP_CONCAT(menus.name ORDER BY menus.name SEPARATOR ", ") as menu_names')
+                'hampers_settings.id',
+                'hampers.name as hampers_name',
+                'hampers_settings.max_items',
+                DB::raw('GROUP_CONCAT(items.name ORDER BY items.name SEPARATOR ", ") as item_names')
             ]);
 
          // Define sortable columns based on DataTables column index
          $sortableColumns = [
-            0 => 'roles.name',
-            1 => 'menu_names'
+            0 => 'hampers.name'
         ];
 
         // Retrieve sorting column index and direction from DataTables request
@@ -463,16 +467,16 @@ class ProductController extends Controller
         $sortDirection = $request->input('order.0.dir', 'asc');  // Default to ascending
 
         // Determine the column name based on the column index
-        $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'roles.name';
-
-        // Get total records count (before filtering)
-        $totalRecords = RoleMenu::distinct('role_id')->count('role_id');
+        $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'hampers.name';
 
          // Apply search filtering
          if ($request->has('search') && !empty($request->search['value'])) {
             $searchValue = '%' . $request->search['value'] . '%';
-            $query->havingRaw('roles.name LIKE ? OR menu_names LIKE ?', [$searchValue, $searchValue]);
+            $query->havingRaw('hampers_name LIKE ? OR item_names LIKE ?', [$searchValue, $searchValue]);
         }
+
+        // Get total records count (before filtering)
+        $totalRecords = HamperSetting::count();
 
         // Get total filter records count (after filtering)
         $totalFiltered = $query->get()->count();
@@ -491,5 +495,91 @@ class ProductController extends Controller
             'recordsFiltered' => $totalFiltered,
             'data' => $data,
         ]);
+    }
+
+    public function editHamperSetting($id)
+    {
+        $hampers = HamperSetting::with('items')->findOrFail($id);
+
+        return response()->json([
+            'id' => $hampers->id,
+            'product_id' => $hampers->product_id,
+            'max_items' => $hampers->max_items,
+            'allowed_items' => $hampers->items->pluck('id')
+        ]);
+    }
+
+    public function storeHamperSetting(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'hampers' => 'required|exists:products,id',
+                'max_items' => 'required|integer|min:1',
+                'allowed_items' => 'required|array',
+                'allowed_items.*' => 'exists:products,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()], 422);
+            }
+
+            $hampers = HamperSetting::create([
+                'product_id' => $request->hampers,
+                'max_items' => $request->max_items,
+                'created_by' => auth()->id()
+            ]);
+
+            $hampers->items()->sync($request->allowed_items);
+
+            return response()->json(['success' => true], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create data. ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateHamperSetting(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'max_items' => 'required|integer|min:1',
+                'allowed_items' => 'required|array',
+                'allowed_items.*' => 'exists:products,id',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()], 422);
+            }
+
+            $hampers = HamperSetting::findOrFail($id);
+            $hampers->update([
+                'max_items' => $request->max_items,
+                'updated_by' => auth()->id()
+            ]);
+
+            $hampers->items()->sync($request->allowed_items);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update data. ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroyHamperSetting($id)
+    {
+        try {
+            $hampers = HamperSetting::findOrFail($id);
+            $hampers->items()->detach();
+            $hampers->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to delete data. ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

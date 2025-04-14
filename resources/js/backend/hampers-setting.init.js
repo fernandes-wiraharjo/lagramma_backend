@@ -1,34 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
-    $('#allowed_items').select2();
+    $('#allowed_items').select2({
+        placeholder: "Select allowed items",
+        width: '100%'
+    });
 
     let table = new DataTable('#tb_data', {
         processing: true,
         serverSide: true,
         ajax: '/hampers-setting/list',
         columns: [
-            { data: 'id', name: 'users.id' },
-            { data: 'name', name: 'users.name' },
-            { data: 'email', name: 'email' },
-            { data: 'phone', name: 'phone' },
-            { data: 'role_name', name: 'roles.name' },
+            { data: 'hampers_name', name: 'hampers.name' },
+            { data: 'max_items', name: 'max_items', orderable: false },
             {
-                data: 'is_active',
-                name: 'is_active',
+                data: 'item_names',
+                name: 'item_names',
+                orderable: false,
                 render: function (data) {
-                    return data == 1 ? 'True' : 'False';
+                    return data.split(',').map(name =>
+                        `<span class="btn btn-sm btn-soft-info" style="pointer-events: none; cursor: default; margin: 2px;">${name.trim()}</span>`
+                    ).join('');
                 }
             },
-            { data: 'id', name: 'users.id', orderable: false, searchable: false, render: function (data) {
-                return `<button class="btn btn-sm btn-soft-info edit-user" data-bs-toggle="modal" href="#showModal" data-id="${data}">Edit</button>
-                    <button class="btn btn-sm btn-soft-danger delete-user" data-id="${data}">Delete</button>`;
+            { data: 'id', name: 'id', orderable: false, searchable: false, render: function (data) {
+                return `<button class="btn btn-sm btn-soft-info edit-data" data-bs-toggle="modal" href="#showModal" data-id="${data}">Edit</button>
+                    <button class="btn btn-sm btn-soft-danger delete-data" data-id="${data}">Delete</button>`;
             }}
         ]
     });
 
-    $(document).on("click", ".delete-user", function () {
+    $(document).on("click", ".delete-data", function () {
         let id = $(this).data("id");
         if (confirm("Are you sure?")) {
-            fetch(`/user/${id}`, {
+            fetch(`/hampers-setting/${id}`, {
                 method: "DELETE",
                 headers: {
                     "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
@@ -68,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     formData.append("_method", "PUT");
                 }
 
-                let url = id ? `/user/${id}` : "/user";
+                let url = id ? `/hampers-setting/${id}` : "/hampers-setting";
 
                 fetch(url, {
                     method: "POST",
@@ -108,43 +111,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }, false)
     });
 
-    $(document).on("click", ".edit-user", function () {
+    $(document).on("click", ".edit-data", function () {
         let id = $(this).data("id");
 
-        fetch(`/user/${id}`)
+        fetch(`/hampers-setting/${id}`)
             .then(response => response.json())
             .then(data => {
-                $("#exampleModalLabel").text("Edit User");
+                $("#exampleModalLabel").text("Edit");
                 $("#add-btn").text("Update");
                 $("#id").val(data.id);
-                $("#name").val(data.name);
-                $("#email").val(data.email);
-                $("#phone").val(data.phone);
-                $("#role").val(data.role_id).trigger('change');
-                $("#is_active").val(data.is_active);
-
-                // make password not required in edit
-                $("#password").prop("required", false).val('');
-                $("#password_confirmation").prop("required", false).val('');
+                $("#hampers").val(data.product_id).prop("disabled", true);
+                $("#allowed_items").val(data.allowed_items).trigger('change');
+                $("#max_items").val(data.max_items);
             })
             .catch(error => console.error("Error fetching data:", error));
     });
 
     function clearVal() {
-        $("#exampleModalLabel").text("Create User");
-        $("#add-btn").text("Add User");
+        $("#exampleModalLabel").text("Create");
+        $("#add-btn").text("Add");
         $("#id").val("");
-        $("#name, #email, #phone").val("");
-        $("#role").val($("#role option:first").val()).trigger('change');
-        $("#is_active").val("0");
-        $("#password").val('').prop("required", true);
-        $("#password_confirmation").val('').prop("required", true);
+        $("#hampers").val("").prop("disabled", false);
+        $("#allowed_items").val("").trigger('change');
+        $("#max_items").val(1);
         $('.tablelist-form').removeClass('was-validated');
     }
 
     // clearVal on modal show (when adding user)
     $('#showModal').on('show.bs.modal', function (e) {
-        if (!$(e.relatedTarget).hasClass("edit-user")) {
+        if (!$(e.relatedTarget).hasClass("edit-data")) {
             clearVal();
         }
     });

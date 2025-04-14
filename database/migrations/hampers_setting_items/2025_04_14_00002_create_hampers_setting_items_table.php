@@ -14,9 +14,6 @@ return new class extends Migration {
       $table->id();
       $table->unsignedBigInteger('hampers_setting_id');
       $table->unsignedBigInteger('product_id');
-      $table->unsignedBigInteger('created_by')->nullable();
-      $table->unsignedBigInteger('updated_by')->nullable();
-      $table->timestamps();
 
       // Define foreign key constraints
       $table
@@ -28,16 +25,6 @@ return new class extends Migration {
         ->foreign('product_id')
         ->references('id')
         ->on('products')
-        ->onDelete('restrict');
-      $table
-        ->foreign('created_by')
-        ->references('id')
-        ->on('users')
-        ->onDelete('restrict');
-      $table
-        ->foreign('updated_by')
-        ->references('id')
-        ->on('users')
         ->onDelete('restrict');
     });
   }

@@ -10,6 +10,11 @@
     <!--datatable css-->
     <link rel="stylesheet" href="{{ URL::asset('datatables/css/dataTables.bootstrap5.min.css') }}" />
     <link rel="stylesheet" href="{{ URL::asset('datatables/css/responsive.bootstrap.min.css') }}" />
+    <style>
+        .select2-container {
+            z-index: 999999 !important;
+        }
+    </style>
 @endsection
 @section('content')
     <x-breadcrumb title="Hampers Setting" pagetitle="Product" />
@@ -30,7 +35,7 @@
                             <tr>
                                 <th>Hampers</th>
                                 <th>Max Items</th>
-                                <th>Items</th>
+                                <th>Allowed Products</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -47,14 +52,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header px-4 pt-4">
-                    <h5 class="modal-title" id="exampleModalLabel">Add</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Create</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         id="close-modal"></button>
                 </div>
                 <form class="tablelist-form" novalidate autocomplete="off">
                     <div class="modal-body p-4">
                         <div id="alert-error-msg" class="d-none alert alert-danger py-2"></div>
-                        <input type="hidden" id="id" />
+                        <input type="hidden" id="id" name="id" />
 
                         <!-- Select a hamper product -->
                         <div class="mb-3">
@@ -71,7 +76,7 @@
                          <!-- Select allowed items (non-hampers) -->
                         <div class="mb-3">
                             <label for="allowed_items" class="form-label">Allowed Items</label>
-                            <select name="item_ids[]" id="allowed_items" class="form-select" multiple required>
+                            <select name="allowed_items[]" id="allowed_items" class="form-control" multiple required>
                                 @foreach ($items as $item)
                                     <option value="{{ $item->id }}">
                                         {{ $item->name }}
@@ -83,7 +88,7 @@
                         <!-- Maximum items allowed -->
                         <div class="mb-3">
                             <label for="max_items" class="form-label">Max Items Allowed</label>
-                            <input type="number" name="max_items" id="max_items" class="form-control" required min="1">
+                            <input type="number" name="max_items" id="max_items" class="form-control" required value="1" min="1">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -102,7 +107,7 @@
     <script src="{{ URL::asset('jquery/jquery-3.6.0.min.js') }}"></script>
 
     <!--select2 js-->
-    <link rel="stylesheet" href="{{ URL::asset('select2/js/select2.min.js') }}" />
+    <script src="{{ URL::asset('select2/js/select2.min.js') }}"></script>
 
     <!--datatable js-->
     <script src="{{ URL::asset('datatables/js/jquery.dataTables.min.js') }}"></script>
