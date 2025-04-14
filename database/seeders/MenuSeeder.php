@@ -128,7 +128,7 @@ class MenuSeeder extends Seeder
             ],
             [
                 'name' => 'Hamper Setting',
-                'url' => 'product-hampers',
+                'url' => 'hampers-setting',
                 'parent_id' => $productMenu->id,
                 'sequence' => 2,
                 'is_active' => true,

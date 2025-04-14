@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleMenuController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TonerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\HamperSettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/modifier-option', [ModifierController::class, 'indexModifierOption'])->name('index-modifier-option');
         Route::get('/sales-type', [SalesTypeController::class, 'index'])->name('index-sales-type');
         Route::get('/product', [ProductController::class, 'index'])->name('index-product');
+        Route::get('/hampers-setting', [HamperSettingController::class, 'indexHamperSetting']);
     });
 
     //role
@@ -110,6 +112,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product-variant/{idProduct}', [ProductController::class, 'indexVariant'])->name('index-product-variant');
     Route::get('/product-variant/{idProduct}/list', [ProductController::class, 'getVariant'])->name('list-product-variant');
     Route::post('/product-variant/{id}/toggle-active', [ProductController::class, 'toggleActiveVariant']);
+
+    Route::prefix('hampers-setting')->group(function () {
+        Route::get('/list', [HamperSettingController::class, 'getHamperSetting']);
+        Route::get('/{id}', [HamperSettingController::class, 'editHamperSetting']);
+        Route::post('/', [HamperSettingController::class, 'storeHamperSetting']);
+        Route::put('/{id}', [HamperSettingController::class, 'updateHamperSetting']);
+        Route::delete('/{id}', [HamperSettingController::class, 'destroyHamperSetting']);
+    });
 
     //template
     Route::get('{any}', [TonerController::class, 'index']);

@@ -9,6 +9,7 @@ use App\Models\ProductVariant;
 use App\Models\ProductModifier;
 use App\Models\ProductImage;
 use App\Models\ProductDeactivateDate;
+use App\Models\HamperSetting;
 
 class Product extends Model
 {
@@ -55,5 +56,15 @@ class Product extends Model
     public function deactivateDates()
     {
         return $this->hasMany(ProductDeactivateDate::class);
+    }
+
+    public function hamperSetting()
+    {
+        return $this->hasOne(HamperSetting::class, 'product_id');
+    }
+
+    public function includedInHampers()
+    {
+        return $this->belongsToMany(HamperSetting::class, 'hampers_setting_items', 'product_id', 'hampers_setting_id');
     }
 }

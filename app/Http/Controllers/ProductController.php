@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductImage;
 use App\Models\ProductDeactivateDate;
+use App\Models\HamperSetting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -422,5 +423,73 @@ class ProductController extends Controller
                 'message' => 'Failed to delete data. ' . $e->getMessage()
             ], 500);
         }
+    }
+
+
+    //hampers setting
+    public function indexHamperSetting()
+    {
+        $hamperProducts = Product::whereHas('category', function ($query) {
+            $query->where('name', 'Hampers');
+        })->get();
+
+        $items = Product::whereHas('category', function ($query) {
+            $query->where('name', '!=', 'Hampers');
+        })->get();
+
+        return view('hampers-setting', compact('hamperProducts', 'items'));
+    }
+
+    public function getHamperSetting(Request $request)
+    {
+        $query = HamperSetting::query()
+            ->join('roles', 'role_menus.role_id', '=', 'roles.id')
+            ->join('menus', 'role_menus.menu_id', '=', 'menus.id')
+            ->groupBy('role_menus.role_id', 'roles.name')
+            ->select([
+                'roles.id as role_id',
+                'roles.name as role_name',
+                DB::raw('GROUP_CONCAT(menus.name ORDER BY menus.name SEPARATOR ", ") as menu_names')
+            ]);
+
+         // Define sortable columns based on DataTables column index
+         $sortableColumns = [
+            0 => 'roles.name',
+            1 => 'menu_names'
+        ];
+
+        // Retrieve sorting column index and direction from DataTables request
+        $sortColumnIndex = $request->input('order.0.column', 0); // Default to first column
+        $sortDirection = $request->input('order.0.dir', 'asc');  // Default to ascending
+
+        // Determine the column name based on the column index
+        $sortColumn = $sortableColumns[$sortColumnIndex] ?? 'roles.name';
+
+        // Get total records count (before filtering)
+        $totalRecords = RoleMenu::distinct('role_id')->count('role_id');
+
+         // Apply search filtering
+         if ($request->has('search') && !empty($request->search['value'])) {
+            $searchValue = '%' . $request->search['value'] . '%';
+            $query->havingRaw('roles.name LIKE ? OR menu_names LIKE ?', [$searchValue, $searchValue]);
+        }
+
+        // Get total filter records count (after filtering)
+        $totalFiltered = $query->get()->count();
+
+        // Apply sorting and pagination
+        $data = $query
+            ->orderBy($sortColumn, $sortDirection)
+            ->offset($request->input('start', 0))
+            ->limit($request->input('length', 10))
+            ->get();
+
+        // Prepare response data
+        return response()->json([
+            'draw' => $request->input('draw'),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalFiltered,
+            'data' => $data,
+        ]);
     }
 }
