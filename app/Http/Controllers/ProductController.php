@@ -442,7 +442,7 @@ class ProductController extends Controller
 
     public function getHamperSetting(Request $request)
     {
-        $query = HamperSetting::query()
+        $query = RoleMenu::query()
             ->join('roles', 'role_menus.role_id', '=', 'roles.id')
             ->join('menus', 'role_menus.menu_id', '=', 'menus.id')
             ->groupBy('role_menus.role_id', 'roles.name')
