@@ -102,7 +102,7 @@
                     </div>
                 </div> -->
 
-                <div class="dropdown topbar-head-dropdown ms-1 header-item dropdown-hover-end">
+                <!-- <div class="dropdown topbar-head-dropdown ms-1 header-item dropdown-hover-end">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle" id="page-header-cart-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                         <i class='bi bi-bag fs-18'></i>
                         <span class="position-absolute topbar-badge cartitem-badge fs-10 translate-middle badge rounded-pill bg-info">5</span>
@@ -247,7 +247,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="ms-1 header-item d-none d-sm-flex">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle" data-toggle="fullscreen">
@@ -430,9 +430,9 @@
                         <!-- item-->
                         <h6 class="dropdown-header">Welcome {{@Auth::user()->name}}!</h6>
                         <a class="dropdown-item" href="account"><i class="bi bi-person-circle text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
-                        <a class="dropdown-item" href="calendar"><i class="bi bi-cart4 text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Order Track</span></a>
-                        <a class="dropdown-item" href="product-list"><i class="bi bi-box-seam text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Products</span></a>
-                        <a class="dropdown-item" href="javascript:void(0)"><i class="bi bi-cassette text-muted fs-15 align-middle me-1"></i> <span class="align-middle">View Store</span></a>
+                        <a class="dropdown-item" href="calendar"><i class="bi bi-cart4 text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Order History</span></a>
+                        <a class="dropdown-item" href="product"><i class="bi bi-box-seam text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Products</span></a>
+                        <a class="dropdown-item" href="{{ config('app.frontend_url') }}" target="_blank"><i class="bi bi-cassette text-muted fs-15 align-middle me-1"></i> <span class="align-middle">View Store</span></a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="account-settings"><i class="bi bi-gear text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
                         <a class="dropdown-item" href="{{ url('logout') }}"><i class="bi bi-box-arrow-right text-muted fs-15 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">{{ __('t-logout') }}</span></a>

@@ -33,7 +33,8 @@ class HomeController extends Controller
             return view('index');
         }
 
-        return view('index');
+        // return view('index');
+        return redirect()->route('index-product');
     }
 
     public function lang($locale) {
