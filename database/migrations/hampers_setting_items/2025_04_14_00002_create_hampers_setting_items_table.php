@@ -13,7 +13,7 @@ return new class extends Migration {
     Schema::create('hampers_setting_items', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('hampers_setting_id');
-      $table->unsignedBigInteger('product_id');
+      $table->unsignedBigInteger('product_variant_id');
 
       // Define foreign key constraints
       $table
@@ -22,9 +22,9 @@ return new class extends Migration {
         ->on('hampers_settings')
         ->onDelete('restrict');
       $table
-        ->foreign('product_id')
+        ->foreign('product_variant_id')
         ->references('id')
-        ->on('products')
+        ->on('product_variants')
         ->onDelete('restrict');
     });
   }

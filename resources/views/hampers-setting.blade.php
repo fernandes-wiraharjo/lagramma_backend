@@ -79,7 +79,7 @@
                             <select name="allowed_items[]" id="allowed_items" class="form-control" multiple required>
                                 @foreach ($items as $item)
                                     <option value="{{ $item->id }}">
-                                        {{ $item->name }}
+                                        {{ $item->combined_name }}
                                     </option>
                                 @endforeach
                             </select>

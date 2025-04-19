@@ -67,9 +67,4 @@ class Product extends Model
     {
         return $this->hasOne(HamperSetting::class, 'product_id');
     }
-
-    public function includedInHampers()
-    {
-        return $this->belongsToMany(HamperSetting::class, 'hampers_setting_items', 'product_id', 'hampers_setting_id');
-    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\ProductVariantSalesType;
+use App\Models\HamperSetting;
 
 class ProductVariant extends Model
 {
@@ -39,5 +40,10 @@ class ProductVariant extends Model
     public function salesTypes()
     {
         return $this->hasMany(ProductVariantSalesType::class, 'id_product_variant');
+    }
+
+    public function includedInHampers()
+    {
+        return $this->belongsToMany(HamperSetting::class, 'hampers_setting_items', 'product_variant_id', 'hampers_setting_id');
     }
 }

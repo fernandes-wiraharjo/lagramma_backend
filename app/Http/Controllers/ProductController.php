@@ -433,9 +433,17 @@ class ProductController extends Controller
             $query->where('name', 'Hampers');
         })->get();
 
-        $items = Product::whereHas('category', function ($query) {
+        $items = ProductVariant::whereHas('product.category', function ($query) {
             $query->where('name', '!=', 'Hampers');
-        })->get();
+        })
+        ->with('product')
+        ->get()
+        ->map(function ($variant) {
+            $variant->combined_name = $variant->name
+                ? $variant->product->name . ' - ' . $variant->name
+                : $variant->product->name;
+            return $variant;
+        });
 
         return view('hampers-setting', compact('hamperProducts', 'items'));
     }
@@ -445,16 +453,21 @@ class ProductController extends Controller
         $query = HamperSetting::query()
             ->join('products as hampers', 'hampers_settings.product_id', '=', 'hampers.id')
             ->leftJoin('hampers_setting_items', 'hampers_settings.id', '=', 'hampers_setting_items.hampers_setting_id')
-            ->leftJoin('products as items', 'hampers_setting_items.product_id', '=', 'items.id')
-            ->whereHas('product.category', function ($q) {
-                $q->where('name', 'Hampers');
-            })
+            ->leftJoin('product_variants as items', 'hampers_setting_items.product_variant_id', '=', 'items.id')
+            ->leftJoin('products as item_products', 'items.id_product', '=', 'item_products.id')
             ->groupBy('hampers_settings.id', 'hampers.name', 'hampers_settings.max_items')
             ->select([
                 'hampers_settings.id',
                 'hampers.name as hampers_name',
                 'hampers_settings.max_items',
-                DB::raw('GROUP_CONCAT(items.name ORDER BY items.name SEPARATOR ", ") as item_names')
+                DB::raw('GROUP_CONCAT(
+                    CASE
+                        WHEN items.name IS NULL OR items.name = ""
+                        THEN item_products.name
+                        ELSE CONCAT(item_products.name, " - ", items.name)
+                    END
+                    ORDER BY items.name SEPARATOR ", "
+                ) as item_names')
             ]);
 
          // Define sortable columns based on DataTables column index
@@ -516,7 +529,7 @@ class ProductController extends Controller
                 'hampers' => 'required|exists:products,id',
                 'max_items' => 'required|integer|min:1',
                 'allowed_items' => 'required|array',
-                'allowed_items.*' => 'exists:products,id',
+                'allowed_items.*' => 'exists:product_variants,id',
             ]);
 
             if ($validator->fails()) {
@@ -545,7 +558,7 @@ class ProductController extends Controller
             $validator = Validator::make($request->all(), [
                 'max_items' => 'required|integer|min:1',
                 'allowed_items' => 'required|array',
-                'allowed_items.*' => 'exists:products,id',
+                'allowed_items.*' => 'exists:product_variants,id',
             ]);
 
             if ($validator->fails()) {

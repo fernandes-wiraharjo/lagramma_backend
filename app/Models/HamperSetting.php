@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
+use App\Models\ProductVariant;
 
 class HamperSetting extends Model
 {
@@ -28,6 +29,6 @@ class HamperSetting extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Product::class, 'hampers_setting_items', 'hampers_setting_id', 'product_id');
+        return $this->belongsToMany(ProductVariant::class, 'hampers_setting_items', 'hampers_setting_id', 'product_variant_id');
     }
 }
