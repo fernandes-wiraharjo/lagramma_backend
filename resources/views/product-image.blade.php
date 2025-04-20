@@ -25,7 +25,9 @@
                             </div>
                             <div class="flex-grow-1">
                                 <h5 class="card-title mb-1">Product Image</h5>
-                                <p class="text-muted mb-0">You can add up to 8 product images. (Max 2MB per file)</p>
+                                <p class="text-muted mb-0">You can add up to 8 product images (max 2MB each). For best
+                                    quality, use a 500×500 or 600×600 PNG with a transparent background.
+                                </p>
                             </div>
                         </div>
                     </div>

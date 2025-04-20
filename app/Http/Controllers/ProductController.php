@@ -231,18 +231,16 @@ class ProductController extends Controller
             $safeName = preg_replace('/[^A-Za-z0-9\-\_\.]/', '_', $originalName);
             $filename = $idProduct . '_' . time() . '_' . $safeName;
 
-            $image = Image::make($file->getRealPath());
+            $image = Image::make($file->getRealPath())->resize(600, 600, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
 
-            // Resize if width > 800
-            if ($image->width() > 800) {
-                $image->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                });
-            }
+            $canvas = Image::canvas(600, 600, null);
+            $canvas->insert($image, 'center');
 
             $path = 'product-images/' . $filename;
-            Storage::disk('public')->put($path, (string) $image->encode());
+            Storage::disk('public')->put($path, (string) $canvas->encode('png'));
 
             $isFirst = !ProductImage::where('product_id', $idProduct)->where('is_main', true)->exists();
 
