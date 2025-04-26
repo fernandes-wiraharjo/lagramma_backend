@@ -47,4 +47,14 @@ class LoginController extends Controller
     {
         return array_merge($request->only($this->username(), 'password'), ['is_active' => 1]);
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($request->has('redirect')) {
+            return redirect($request->get('redirect'));
+        }
+
+        // fallback to intended URL or default
+        return redirect()->intended($this->redirectTo);
+    }
 }

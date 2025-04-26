@@ -24,7 +24,9 @@
                                 <div class="p-2">
                                     <form method="POST" action="{{ route('login') }}">
                                         @csrf
-
+                                        @if(request('redirect'))
+                                            <input type="hidden" name="redirect" value="{{ request('redirect') }}">
+                                        @endif
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
                                             <input id="email" type="email"
