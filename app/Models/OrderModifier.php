@@ -21,6 +21,8 @@ class OrderModifier extends Model
         'modifier_option_name',
         'created_by',
         'updated_by',
+        'created_at',
+        'updated_at'
     ];
 
     /**

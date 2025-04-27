@@ -14,7 +14,7 @@ return new class extends Migration {
       $table->id();
       $table->unsignedBigInteger('order_id');
       $table->unsignedBigInteger('modifier_id');
-      $table->unsignedBigInteger('modfier_option_id');
+      $table->unsignedBigInteger('modifier_option_id');
       $table->string('modifier_name', 50);
       $table->string('modifier_option_name', 50);
       $table->unsignedBigInteger('created_by');

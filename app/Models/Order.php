@@ -27,6 +27,8 @@ class Order extends Model
         'total_price',
         'created_by',
         'updated_by',
+        'created_at',
+        'updated_at'
     ];
 
     /**
