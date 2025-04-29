@@ -10,22 +10,32 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('orders', function (Blueprint $table) {
+    Schema::create('order_modifiers', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('user_id');
-      $table->string('invoice_number', 150);
-      $table->smallInteger('order_quantity');
-      $table->string('status', 50);
-      $table->decimal('order_price', 15, 2);
+      $table->unsignedBigInteger('order_detail_id');
+      $table->unsignedBigInteger('modifier_id');
+      $table->unsignedBigInteger('modifier_option_id');
+      $table->string('modifier_name', 50);
+      $table->string('modifier_option_name', 50);
       $table->unsignedBigInteger('created_by');
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();
 
     // Define foreign key constraints
     $table
-        ->foreign('user_id')
+        ->foreign('order_detail_id')
         ->references('id')
-        ->on('users')
+        ->on('order_details')
+        ->onDelete('restrict');
+    $table
+        ->foreign('modifier_id')
+        ->references('id')
+        ->on('modifiers')
+        ->onDelete('restrict');
+    $table
+        ->foreign('modifier_option_id')
+        ->references('id')
+        ->on('modifier_options')
         ->onDelete('restrict');
       $table
         ->foreign('created_by')
@@ -45,6 +55,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('orders');
+    Schema::dropIfExists('order_modifiers');
   }
 };

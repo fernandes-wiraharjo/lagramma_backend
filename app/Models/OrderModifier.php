@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Modifier;
 use App\Models\ModifierOption;
 use App\Models\User;
@@ -14,7 +14,7 @@ class OrderModifier extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
+        'order_detail_id',
         'modifier_id',
         'modifier_option_id',
         'modifier_name',
@@ -28,9 +28,9 @@ class OrderModifier extends Model
     /**
      * Relationships
      */
-    public function order()
+    public function orderDetail()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(OrderDetail::class);
     }
 
     public function modifier()

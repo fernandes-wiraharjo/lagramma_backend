@@ -10,14 +10,17 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('order_hampers_items', function (Blueprint $table) {
+    Schema::create('order_details', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('order_id');
       $table->unsignedBigInteger('product_id');
       $table->unsignedBigInteger('product_variant_id');
+      $table->string('type', 20);
       $table->string('product_name', 250);
       $table->string('product_variant_name', 250);
       $table->smallInteger('quantity');
+      $table->decimal('price', 15, 2);
+      $table->decimal('total_price', 15, 2);
       $table->unsignedBigInteger('created_by');
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();
@@ -56,6 +59,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('order_hampers_items');
+    Schema::dropIfExists('order_details');
   }
 };

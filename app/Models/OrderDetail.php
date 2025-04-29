@@ -4,22 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\OrderDetail;
+use App\Models\User;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductVariant;
-use App\Models\User;
+use App\Models\OrderHampersItem;
 
-class OrderHampersItem extends Model
+class OrderDetail extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'order_detail_id',
+        'order_id',
         'product_id',
         'product_variant_id',
+        'type',
         'product_name',
         'product_variant_name',
         'quantity',
+        'status',
+        'price',
+        'total_price',
         'created_by',
         'updated_by',
         'created_at',
@@ -29,9 +34,9 @@ class OrderHampersItem extends Model
     /**
      * Relationships
      */
-    public function orderDetail()
+    public function order()
     {
-        return $this->belongsTo(OrderDetail::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function product()
@@ -42,6 +47,11 @@ class OrderHampersItem extends Model
     public function productVariant()
     {
         return $this->belongsTo(ProductVariant::class);
+    }
+
+    public function hampersItems()
+    {
+        return $this->hasMany(OrderHampersItem::class);
     }
 
     public function creator()

@@ -10,32 +10,33 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('order_modifiers', function (Blueprint $table) {
+    Schema::create('order_hampers_items', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('order_id');
-      $table->unsignedBigInteger('modifier_id');
-      $table->unsignedBigInteger('modifier_option_id');
-      $table->string('modifier_name', 50);
-      $table->string('modifier_option_name', 50);
+      $table->unsignedBigInteger('order_detail_id');
+      $table->unsignedBigInteger('product_id');
+      $table->unsignedBigInteger('product_variant_id');
+      $table->string('product_name', 250);
+      $table->string('product_variant_name', 250);
+      $table->smallInteger('quantity');
       $table->unsignedBigInteger('created_by');
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();
 
     // Define foreign key constraints
     $table
-        ->foreign('order_id')
+        ->foreign('order_detail_id')
         ->references('id')
-        ->on('orders')
+        ->on('order_details')
         ->onDelete('restrict');
     $table
-        ->foreign('modifier_id')
+        ->foreign('product_id')
         ->references('id')
-        ->on('modifiers')
+        ->on('products')
         ->onDelete('restrict');
     $table
-        ->foreign('modfier_option_id')
+        ->foreign('product_variant_id')
         ->references('id')
-        ->on('modifier_options')
+        ->on('product_variants')
         ->onDelete('restrict');
       $table
         ->foreign('created_by')
@@ -55,6 +56,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('order_modifiers');
+    Schema::dropIfExists('order_hampers_items');
   }
 };
