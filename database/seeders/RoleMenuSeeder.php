@@ -26,6 +26,13 @@ class RoleMenuSeeder extends Seeder
             throw new \Exception("Admin role not found. Please seed roles first.");
         }
 
+        // Get the role ID where role is 'customer'
+        $customerRole = Role::where('name', 'customer')->first();
+
+        if (!$customerRole) {
+            throw new \Exception("Customer role not found. Please seed roles first.");
+        }
+
         // Get the menu ID where menu is 'master'
         $masterMenu = Menu::where('name', 'Master')->first();
 
@@ -33,11 +40,25 @@ class RoleMenuSeeder extends Seeder
             throw new \Exception("Master menu not found. Please seed menus first.");
         }
 
+        // Get the menu ID where menu is 'product'
+        $productMenu = Menu::where('name', 'Product')->first();
+
+        if (!$productMenu) {
+            throw new \Exception("Product menu not found. Please seed menus first.");
+        }
+
         // Get the menu ID where menu is 'user management'
         $userManagementMenu = Menu::where('name', 'User Management')->first();
 
         if (!$userManagementMenu) {
             throw new \Exception("User Management menu not found. Please seed menus first.");
+        }
+
+        // Get the menu ID where menu is 'account'
+        $accountMenu = Menu::where('name', 'Account')->first();
+
+        if (!$accountMenu) {
+            throw new \Exception("Account menu not found. Please seed menus first.");
         }
 
         // Main Menus
@@ -52,7 +73,31 @@ class RoleMenuSeeder extends Seeder
             ],
             [
                 'role_id' => $adminRole->id,
+                'menu_id' => $productMenu->id,
+                'created_by' => null,
+                'created_at' => $now,
+                'updated_by' => null,
+                'updated_at' => null,
+            ],
+            [
+                'role_id' => $adminRole->id,
                 'menu_id' => $userManagementMenu->id,
+                'created_by' => null,
+                'created_at' => $now,
+                'updated_by' => null,
+                'updated_at' => null,
+            ],
+            [
+                'role_id' => $adminRole->id,
+                'menu_id' => $accountMenu->id,
+                'created_by' => null,
+                'created_at' => $now,
+                'updated_by' => null,
+                'updated_at' => null,
+            ],
+            [
+                'role_id' => $customerRole->id,
+                'menu_id' => $accountMenu->id,
                 'created_by' => null,
                 'created_at' => $now,
                 'updated_by' => null,

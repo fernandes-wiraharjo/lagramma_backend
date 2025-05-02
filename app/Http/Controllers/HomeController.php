@@ -30,7 +30,7 @@ class HomeController extends Controller
 
         // Check if the user is a customer
         if ($user->role->name === 'customer') {
-            return view('index');
+            return redirect()->route('index-my-account');
         }
 
         // return view('index');

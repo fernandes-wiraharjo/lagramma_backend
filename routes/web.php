@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModifierController;
 use App\Http\Controllers\SalesTypeController;
@@ -45,6 +46,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/sales-type', [SalesTypeController::class, 'index'])->name('index-sales-type');
         Route::get('/product', [ProductController::class, 'index'])->name('index-product');
         Route::get('/hampers-setting', [ProductController::class, 'indexHamperSetting']);
+        Route::get('/my-account', [AccountController::class, 'index'])->name('index-my-account');
+        Route::get('/account-setting', [AccountController::class, 'indexSetting'])->name('index-setting-account');
     });
 
     //role
@@ -119,6 +122,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [ProductController::class, 'storeHamperSetting']);
         Route::put('/{id}', [ProductController::class, 'updateHamperSetting']);
         Route::delete('/{id}', [ProductController::class, 'destroyHamperSetting']);
+    });
+
+    Route::prefix('account')->group(function () {
+        Route::post('/', [AccountController::class, 'update'])->name('account.update');
+        Route::post('/addresses', [AccountController::class, 'storeAddress'])->name('addresses.store');
+        Route::put('/addresses/{userAddress}', [AccountController::class, 'updateAddress'])->name('addresses.update');
+        Route::delete('/addresses/{userAddress}', [AccountController::class, 'destroyAddress'])->name('addresses.destroy');
     });
 
     //template

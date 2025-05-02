@@ -49,6 +49,16 @@ class MenuSeeder extends Seeder
                 'created_by' => null,
                 'updated_by' => null,
             ],
+            [
+                'name' => 'Account',
+                'icon' => 'bi bi-person-circle',
+                'url' => null,
+                'parent_id' => null,
+                'sequence' => 4,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
         ];
 
         foreach ($menus as $menu) {
@@ -78,6 +88,13 @@ class MenuSeeder extends Seeder
 
         if (!$userManagementMenu) {
             throw new \Exception("User management menu not found. Please seed menus first.");
+        }
+
+        // Get the menu ID where menu is 'account'
+        $accountMenu = Menu::where('name', 'Account')->first();
+
+        if (!$accountMenu) {
+            throw new \Exception("Account menu not found. Please seed menus first.");
         }
 
         $submenus = [
@@ -162,6 +179,24 @@ class MenuSeeder extends Seeder
                 'created_by' => null,
                 'updated_by' => null,
             ],
+            [
+                'name' => 'My Account',
+                'url' => 'my-account',
+                'parent_id' => $accountMenu->id,
+                'sequence' => 1,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
+            [
+                'name' => 'Setting',
+                'url' => 'account-setting',
+                'parent_id' => $accountMenu->id,
+                'sequence' => 2,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ]
         ];
 
         foreach ($submenus as $submenu) {
