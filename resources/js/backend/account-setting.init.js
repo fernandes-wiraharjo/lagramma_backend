@@ -206,6 +206,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Reset form when modal is closed
     $('#addAddressModal').on('hidden.bs.modal', function () {
+        $('#addAddressModalLabel').text('Add New Address');
+        $('#addNewAddress').text('Add');
         $('#createAddress-form')[0].reset();
         $('#region-select').val(null).trigger('change');
         $('#addressid-input').val('');
