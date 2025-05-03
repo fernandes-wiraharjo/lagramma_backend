@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#region-label').val(data.text);
     });
 
-    // ADD Address
+    // ADD/UPDATE Address
     $('#createAddress-form').on('submit', function (e) {
         e.preventDefault();
 
