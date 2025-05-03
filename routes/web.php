@@ -125,8 +125,10 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('account')->group(function () {
+        Route::get('/komerce/search-region', [AccountController::class, 'searchRegion']);
         Route::post('/', [AccountController::class, 'update'])->name('account.update');
         Route::post('/addresses', [AccountController::class, 'storeAddress'])->name('addresses.store');
+        Route::get('/addresses/{userAddress}', [AccountController::class, 'editAddress'])->name('addresses.edit');
         Route::put('/addresses/{userAddress}', [AccountController::class, 'updateAddress'])->name('addresses.update');
         Route::delete('/addresses/{userAddress}', [AccountController::class, 'destroyAddress'])->name('addresses.destroy');
     });

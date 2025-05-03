@@ -4,7 +4,22 @@
 @endsection
 @section('css')
     <!-- extra css -->
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+     <!-- Include jQuery and Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .pac-container {
+            z-index: 1055 !important;
+        }
+
+        .select2-container {
+            z-index: 9999 !important;
+        }
+        .select2-dropdown {
+            z-index: 9999 !important;
+            position: absolute !important;
+        }
+    </style>
 @endsection
 @section('content')
     <x-breadcrumb title="Settings" pagetitle="Account" />
@@ -117,8 +132,8 @@
                                             <span class="text-muted fw-normal text-wrap mb-1 d-block">
                                                 {{ $address->address }}
                                             </span>
-                                            <span class="mt-3 text-muted fw-normal d-block">
-                                                {{ $address->latitude }}, {{ $address->longitude }}
+                                            <span class="mt-3 text-muted fw-normal d-block text-wrap">
+                                                {{ $address->region_label }}
                                             </span>
                                         </label>
                                     </div>
@@ -126,8 +141,9 @@
                                     <div class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1 fs-13">
                                         <div>
                                             <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal"
-                                                data-bs-target="#addAddressModal"><i
-                                                    class="ri-pencil-fill text-muted align-bottom me-1"></i> Edit</a>
+                                                data-bs-target="#addAddressModal"  data-edit="true"
+                                                data-id="{{ $address->id }}">
+                                                <i class="ri-pencil-fill text-muted align-bottom me-1"></i> Edit</a>
                                         </div>
                                         <div>
                                             <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal"
@@ -162,7 +178,7 @@
     </div>
     <!--end row-->
 
-    <!-- Modal add/edit address -->
+    <!-- Modal add address -->
     <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -185,16 +201,34 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="addaddress-textarea" class="form-label">Address</label>
-                                <textarea class="form-control" id="addaddress-textarea" placeholder="Enter address" rows="2" required></textarea>
-                                <div class="invalid-feedback">Please enter address.</div>
+                                <label for="search-address" class="form-label">Search Address</label>
+                                <input type="text" id="search-address" class="form-control" placeholder="Search location...">
+                            </div>
+                            <div id="map" style="height: 300px; width: 100%; border-radius: 8px;"></div>
+
+                            <div class="mb-3">
+                                <label for="addaddress-lat" class="form-label">Latitude</label>
+                                <input type="text" class="form-control" id="latitude" required readonly>
+                                <div class="invalid-feedback">Please enter a latitude</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="addaddress-phone" class="form-label">Geolocation</label>
-                                <input type="text" class="form-control" id="addaddress-phone"
-                                    placeholder="Enter phone no." required>
-                                <div class="invalid-feedback">Please enter a geolocation</div>
+                                <label for="addaddress-lng" class="form-label">Longitude</label>
+                                <input type="text" class="form-control" id="longitude" required readonly>
+                                <div class="invalid-feedback">Please enter a longitude</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="region-select" class="form-label">Select Region <span class="text-muted small">(search by city/district/subdistrict/postal Code)</span></label>
+                                <select id="region-select" class="form-control" style="width: 100%;" required></select>
+                                <input type="hidden" id="region-label" name="region_label">
+                                <input type="hidden" id="region-id" name="region_id">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="addaddress-textarea" class="form-label">Address</label>
+                                <textarea class="form-control" id="addaddress-textarea" placeholder="Enter address" rows="2" required></textarea>
+                                <div class="invalid-feedback">Please enter address.</div>
                             </div>
                         </div>
 
@@ -236,9 +270,16 @@
 @endsection
 @section('scripts')
     <script>
-        window.mapboxToken = @json(config('services.mapbox.token'));
+        const komerceApiKey = @json(config('app.komerce_api_key'));
     </script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <!-- page js-->
     <script src="{{ URL::asset('build/js/backend/account-setting.init.js') }}"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=initMap&libraries=places&v=weekly"></script>
+
 @endsection

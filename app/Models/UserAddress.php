@@ -14,6 +14,10 @@ class UserAddress extends Model
         'longitude',
         'region_id',
         'region_label',
+        'created_by',
+        'updated_by',
+        'created_at',
+        'updated_at'
     ];
 
     public function user()

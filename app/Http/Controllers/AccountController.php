@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class AccountController extends Controller
 {
@@ -50,40 +51,73 @@ class AccountController extends Controller
 
     public function storeAddress(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'label' => 'required|string|max:255',
             'address' => 'required|string',
             'latitude' => 'required|string',
             'longitude' => 'required|string',
-            'region_id' => 'required|string',
-            'region_label' => 'required|string',
+            'region_id' => 'required',
+            'region_label' => 'required',
         ]);
 
-        Auth::user()->addresses()->create($request->all());
+        $validated['user_id'] = auth()->id();
+        $validated['created_by'] = auth()->id();
+        $validated['updated_at'] = null;
 
-        return redirect()->back()->with('success', 'Address added successfully.');
+        $address = UserAddress::create($validated);
+
+        return response()->json(['success' => true]);
     }
 
     public function updateAddress(Request $request, UserAddress $userAddress)
     {
-        $request->validate([
-            'label' => 'required|string|max:255',
+        $validated = $request->validate([
+            'label' => 'required|string',
             'address' => 'required|string',
             'latitude' => 'required|string',
             'longitude' => 'required|string',
             'region_id' => 'required|string',
-            'region_label' => 'required|string',
+            'region_label' => 'required|string'
         ]);
 
-        $userAddress->update($request->all());
+        $validated['updated_by'] = auth()->id();
 
-        return redirect()->back()->with('success', 'Address updated successfully.');
+        $userAddress->update($validated);
+
+        return response()->json(['success' => true]);
     }
 
     public function destroyAddress(UserAddress $userAddress)
     {
         $userAddress->delete();
 
-        return redirect()->back()->with('success', 'Address deleted successfully.');
+        return response()->json(['success' => true]);
+    }
+
+    public function editAddress(UserAddress $userAddress)
+    {
+        return response()->json($userAddress);
+    }
+
+    public function searchRegion(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $baseUrl = env('KOMERCE_API_URL');
+
+        if (strlen($keyword) < 3) {
+            return response()->json(['error' => 'Minimum 3 characters required.'], 422);
+        }
+
+        $response = Http::withHeaders([
+            'x-api-key' => config('services.komerce.api_key'),
+        ])->get("{$baseUrl}/tariff/api/v1/destination/search", [
+            'keyword' => $keyword
+        ]);
+
+        if ($response->failed()) {
+            return response()->json(['error' => 'Failed to fetch region.'], 500);
+        }
+
+        return $response->json();
     }
 }
