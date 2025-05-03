@@ -181,21 +181,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // EDIT: populate modal with address
     $(document).on('click', '[data-bs-target="#addAddressModal"]', function () {
-        const card = $(this).closest('.col-lg-6');
-        const id = card.find('input[type="radio"]').val();
+        const isEdit = $(this).data('edit') === true;
 
-        $.get(`/account/addresses/${id}`, function (data) {
-            $('#addressid-input').val(data.id);
-            $('#addaddress-Name').val(data.label);
-            $('#addaddress-textarea').val(data.address);
-            $('#latitude').val(data.latitude);
-            $('#longitude').val(data.longitude);
-            $('#region-id').val(data.region_id);
-            $('#region-label').val(data.region_label);
+        if (isEdit) {
+            $('#addAddressModalLabel').text('Edit Address');
+            $('#addNewAddress').text('Update');
+            const card = $(this).closest('.col-lg-6');
+            const id = card.find('input[type="radio"]').val();
 
-            const newOption = new Option(data.region_label, data.region_id, true, true);
-            $('#region-select').append(newOption).trigger('change');
-        });
+            $.get(`/account/addresses/${id}`, function (data) {
+                $('#addressid-input').val(data.id);
+                $('#addaddress-Name').val(data.label);
+                $('#addaddress-textarea').val(data.address);
+                $('#latitude').val(data.latitude);
+                $('#longitude').val(data.longitude);
+                $('#region-id').val(data.region_id);
+                $('#region-label').val(data.region_label);
+
+                const newOption = new Option(data.region_label, data.region_id, true, true);
+                $('#region-select').append(newOption).trigger('change');
+            });
+        }
     });
 
     // Reset form when modal is closed
