@@ -32,7 +32,8 @@ class ProductController extends Controller
             ->leftJoin('modifiers', 'modifiers.id', '=', 'product_modifiers.id_modifier')
             ->select([
                 'products.id', 'products.moka_id_product', 'products.name as product_name', 'categories.name as category_name',
-                'modifiers.name as modifier_name', 'products.is_active'
+                'modifiers.name as modifier_name', 'products.is_active', 'products.weight', 'products.width', 'products.height',
+                'products.length'
             ]);
 
          // Define sortable columns based on DataTables column index
@@ -103,6 +104,27 @@ class ProductController extends Controller
         $data->save();
 
         return response()->json(['success' => true]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            'weight' => 'required|numeric|min:0',
+            'width' => 'required|numeric|min:0',
+            'height' => 'required|numeric|min:0',
+            'length' => 'required|numeric|min:0',
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $product->weight = $request->input('weight');
+        $product->width = $request->input('width');
+        $product->height = $request->input('height');
+        $product->length = $request->input('length');
+        $product->updated_by = auth()->id();
+        $product->save();
+
+        return response()->json(['success' => true, 'message' => 'Product updated successfully']);
     }
 
 

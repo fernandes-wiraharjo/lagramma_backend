@@ -92,6 +92,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product/list', [ProductController::class, 'get'])->name('list-product');
     Route::post('/product/sync', [ProductController::class, 'sync'])->name('sync-product');
     Route::post('/product/{id}/toggle-active', [ProductController::class, 'toggleActive']);
+    Route::post('/product/{id}/update', [ProductController::class, 'update'])->name('update-product');
 
     //product deactivate by date
     Route::prefix('product-deactivate-by-date')->group(function () {

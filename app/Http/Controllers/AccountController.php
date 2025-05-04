@@ -109,7 +109,7 @@ class AccountController extends Controller
         }
 
         $response = Http::withHeaders([
-            'x-api-key' => config('services.komerce.api_key'),
+            'x-api-key' => config('app.komerce_api_key'),
         ])->get("{$baseUrl}/tariff/api/v1/destination/search", [
             'keyword' => $keyword
         ]);
