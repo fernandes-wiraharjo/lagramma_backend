@@ -30,6 +30,16 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function details()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
+    public function delivery()
+    {
+        return $this->hasOne(OrderDelivery::class);
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
