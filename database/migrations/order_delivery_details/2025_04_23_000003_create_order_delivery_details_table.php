@@ -13,7 +13,7 @@ return new class extends Migration {
     Schema::create('order_delivery_details', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('order_delivery_id');
-      $table->decimal('weight', 8, 2); // kg
+      $table->decimal('weight', 8, 2); // gram
       $table->decimal('width', 8, 2); // cm
       $table->decimal('height', 8, 2); // cm
       $table->decimal('length', 8, 2); // cm

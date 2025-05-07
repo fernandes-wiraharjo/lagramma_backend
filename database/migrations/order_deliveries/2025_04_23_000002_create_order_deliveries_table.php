@@ -14,7 +14,7 @@ return new class extends Migration {
       $table->id();
       $table->unsignedBigInteger('order_id');
       $table->unsignedBigInteger('order_delivery_id'); //raja ongkir order id
-      $table->unsignedBigInteger('order_delivery_no'); //raja ongkir order no
+      $table->string('order_delivery_no', 50); //raja ongkir order no
       $table->unsignedBigInteger('address_id');
       $table->timestamp('date');
       $table->string('shipping_name', 50);
@@ -29,6 +29,7 @@ return new class extends Migration {
       $table->string('sto_receiver_name', 150);
       $table->string('sto_receiver_phone', 150);
       $table->text('sto_note');
+      $table->string('status', 50);
       $table->unsignedBigInteger('created_by');
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();

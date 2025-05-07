@@ -24,6 +24,7 @@ class OrderDelivery extends Model
         'sto_receiver_name',
         'sto_receiver_phone',
         'sto_note',
+        'status',
         'created_by',
         'updated_by',
         'created_at',
