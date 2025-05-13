@@ -27,8 +27,8 @@
                                     <label for="date_range" class="form-label">Date Range <span
                                             class="text-danger">*</span></label>
                                     <input type="text" class="form-control" data-provider="flatpickr"
-                                        data-date-format="d M, Y" data-range-date="true" id="date_range"
-                                        name="date_range" placeholder="Enter date range" required>
+                                        data-date-format="d F Y H:i" data-range-date="true" id="date_range"
+                                        name="date_range" placeholder="Enter date and time range" required>
                                     <div class="invalid-feedback">Please enter date range.</div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
 @endsection
 @section('scripts')
     <script>
-        const idProduct = @json($product->id);;
+        const idProduct = @json($product->id);
     </script>
 
     <!-- jQuery -->

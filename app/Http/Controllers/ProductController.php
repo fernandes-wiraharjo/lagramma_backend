@@ -378,8 +378,8 @@ class ProductController extends Controller
             }
 
             $range = explode(' to ', $request->date_range);
-            $start = Carbon::createFromFormat('d M, Y', trim($range[0]));
-            $end = isset($range[1]) ? Carbon::createFromFormat('d M, Y', trim($range[1])) : $start;
+            $start = Carbon::createFromFormat('d F Y H:i', trim($range[0]));
+            $end = isset($range[1]) ? Carbon::createFromFormat('d F Y H:i', trim($range[1])) : $start;
 
             $data = ProductDeactivateDate::create([
                 'product_id' => $idProduct,
@@ -414,8 +414,8 @@ class ProductController extends Controller
             }
 
             $range = explode(' to ', $request->date_range);
-            $start = Carbon::createFromFormat('d M, Y', trim($range[0]));
-            $end = isset($range[1]) ? Carbon::createFromFormat('d M, Y', trim($range[1])) : $start;
+            $start = Carbon::createFromFormat('d F Y H:i', trim($range[0]));
+            $end = isset($range[1]) ? Carbon::createFromFormat('d F Y H:i', trim($range[1])) : $start;
 
             $data->update([
                 'start_date' => $start,
