@@ -15,10 +15,10 @@ function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
         center: pontianak,
         zoom: 14,
-        restriction: {
-            latLngBounds: pontianakBounds,
-            strictBounds: false,
-        },
+        // restriction: {
+        //     latLngBounds: pontianakBounds,
+        //     strictBounds: false,
+        // },
     });
 
     marker = new google.maps.Marker({

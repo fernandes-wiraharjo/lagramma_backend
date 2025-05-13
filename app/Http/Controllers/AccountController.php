@@ -17,12 +17,14 @@ class AccountController extends Controller
     public function index()
     {
         $user = auth()->user();
+        $user->formatted_date = \Carbon\Carbon::parse($user->created_at)->format('j F Y');
         return view('my-account', compact('user'));
     }
 
     public function indexSetting()
     {
         $user = auth()->user();
+        $user->formatted_date = \Carbon\Carbon::parse($user->created_at)->format('j F Y');
         return view('account-setting', compact('user'));
     }
 

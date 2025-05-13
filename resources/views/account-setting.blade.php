@@ -88,7 +88,7 @@
                                     <label for="birdthdatInput" class="form-label">Joining Date</label>
                                     <input type="text" class="form-control" data-provider="flatpickr" id="birdthdatInput"
                                         data-date-format="d M, Y" data-deafult-date="24 Nov, 2021" placeholder="Select date"
-                                        value="{{ $user->created_at }}"
+                                        value="{{ $user->formatted_date }}"
                                         disabled>
                                 </div>
                             </div>

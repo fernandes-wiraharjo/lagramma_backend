@@ -96,7 +96,7 @@
                                                         Joining Date
                                                     </td>
                                                     <td class="fw-medium">
-                                                        {{ $user->created_at }}
+                                                        {{ $user->formatted_date }}
                                                     </td>
                                                 </tr>
                                             </tbody>
