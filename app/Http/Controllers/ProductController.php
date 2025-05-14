@@ -547,7 +547,7 @@ class ProductController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'hampers' => 'required|exists:products,id',
-                'max_items' => 'required|integer|min:1',
+                // 'max_items' => 'required|integer|min:1',
                 'allowed_items' => 'required|array',
                 'allowed_items.*' => 'exists:product_variants,id',
             ]);
@@ -556,9 +556,12 @@ class ProductController extends Controller
                 return response()->json(['message' => $validator->errors()], 422);
             }
 
+            // Calculate max_items as the count of allowed_items
+            $maxItems = count($request->allowed_items);
+
             $hampers = HamperSetting::create([
                 'product_id' => $request->hampers,
-                'max_items' => $request->max_items,
+                'max_items' => $maxItems,
                 'created_by' => auth()->id()
             ]);
 
@@ -576,7 +579,7 @@ class ProductController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'max_items' => 'required|integer|min:1',
+                // 'max_items' => 'required|integer|min:1',
                 'allowed_items' => 'required|array',
                 'allowed_items.*' => 'exists:product_variants,id',
             ]);
@@ -585,9 +588,12 @@ class ProductController extends Controller
                 return response()->json(['message' => $validator->errors()], 422);
             }
 
+            // Calculate max_items as the count of allowed_items
+            $maxItems = count($request->allowed_items);
+
             $hampers = HamperSetting::findOrFail($id);
             $hampers->update([
-                'max_items' => $request->max_items,
+                'max_items' => $maxItems,
                 'updated_by' => auth()->id()
             ]);
 

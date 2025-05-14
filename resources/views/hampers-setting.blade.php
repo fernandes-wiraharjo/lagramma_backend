@@ -86,10 +86,10 @@
                         </div>
 
                         <!-- Maximum items allowed -->
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label for="max_items" class="form-label">Max Items Allowed</label>
                             <input type="number" name="max_items" id="max_items" class="form-control" required value="1" min="1">
-                        </div>
+                        </div> -->
                     </div>
                     <div class="modal-footer">
                         <div class="hstack gap-2 justify-content-end">
