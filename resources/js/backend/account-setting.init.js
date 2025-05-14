@@ -80,6 +80,27 @@ function updateLatLng(lat, lng) {
 window.initMap = initMap;
 
 document.addEventListener('DOMContentLoaded', function () {
+    const phoneInput = document.querySelector("#phoneInput");
+    const fullPhoneInput = document.querySelector("#fullPhone");
+
+    // Initialize the intl-tel-input plugin
+    const iti = intlTelInput(phoneInput, {
+        initialCountry: "id",  // Sets default to Indonesia (+62)
+        separateDialCode: true, // Shows the dial code separately
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+    });
+
+    // Update the hidden input value before form submission
+    phoneInput.addEventListener("change", updateFullNumber);
+    phoneInput.addEventListener("keyup", updateFullNumber);
+
+    function updateFullNumber() {
+        // Get the full phone number with the country code
+        const fullNumber = iti.getNumber();
+        // Update the hidden input value
+        fullPhoneInput.value = fullNumber;
+    }
+
     $('#addAddressModal').on('shown.bs.modal', function () {
         //for region search
         $('#region-select').select2({

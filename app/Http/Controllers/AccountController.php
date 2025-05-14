@@ -35,7 +35,7 @@ class AccountController extends Controller
         $validator = Validator::make($request->all(), [
             'name'  => 'required|string|max:100',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'required|string|max:50',
+            'full_phone' => 'required|string|unique:users,phone,' . $user->id,
         ]);
 
         if ($validator->fails()) {
@@ -44,7 +44,7 @@ class AccountController extends Controller
 
         $user->name  = $request->input('name');
         $user->email = $request->input('email');
-        $user->phone = $request->input('phone');
+        $user->phone = $request->input('full_phone');
         $user->updated_by = $user->id;
         $user->save();
 

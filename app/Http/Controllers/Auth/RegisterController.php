@@ -9,6 +9,8 @@ use App\Models\Role;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendOTP;
 
 class RegisterController extends Controller
 {
@@ -57,8 +59,8 @@ class RegisterController extends Controller
                 // 'last_name' => ['required', 'string', 'max:255'],
                 'name' => ['required', 'string', 'max:100'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'phone' => ['required', 'string', 'max:50'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'full_phone' => ['required', 'string', 'unique:users'],
+                // 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 // 'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             ],
             // [
@@ -90,16 +92,30 @@ class RegisterController extends Controller
             abort(500, "Customer role not found. Please seed roles first.");
         }
 
-        return User::create([
+        $user = User::create([
             // 'first_name' => $data['first_name'],
             // 'last_name' => $data['last_name'],
             'role_id' => $customerRole->id,
             'name' => $data['name'],
             'email' => $data['email'],
-            'phone' => $data['phone'],
-            'password' => Hash::make($data['password']),
+            'phone' => $data['full_phone'],
+            // 'password' => Hash::make($data['password']),
+            'password' => "",
             'updated_at' => null
             // 'avatar' => $avatarName
         ]);
+
+        // Generate OTP and send it
+        $otp = rand(1000, 9999);
+        $user->update([
+            'otp' => Hash::make($otp),
+            'otp_created_at' => now()
+        ]);
+
+        // Send OTP (using Notification)
+        Notification::send($user, new SendOTP($otp));
+
+        // Redirect to OTP page
+        return redirect()->route('auth-otp-register', ['phone' => $user->phone]);
     }
 }

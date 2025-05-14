@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OTPController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ModifierController;
@@ -30,6 +31,10 @@ Route::get('/login', function () {
 Route::get('index/{locale}', [App\Http\Controllers\HomeController::class, 'lang']);
 
 Auth::routes();
+
+Route::get('/register-otp-verify', [OTPController::class, 'showVerifyForm'])->name('register.otp.verify');
+Route::post('/register-otp-verify', [OTPController::class, 'verify'])->name('register.otp.verify.submit');
+Route::post('/register-otp-resend', [OTPController::class, 'resendOtp'])->name('register.otp.resend');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

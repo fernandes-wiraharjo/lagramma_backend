@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
      <!-- Include jQuery and Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/css/intlTelInput.min.css">
     <style>
         .pac-container {
             z-index: 1055 !important;
@@ -75,8 +76,10 @@
                                 <div>
                                     <label for="phoneInput" class="form-label">Phone Number <span
                                     class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="phoneInput"
+                                    <input type="tel" class="form-control" id="phoneInput"
                                         placeholder="Enter phone number" value="{{ old('phone', $user->phone) }}" name="phone">
+                                    <!-- Hidden input to store the full number -->
+                                    <input type="hidden" name="full_phone" id="fullPhone">
                                     @error('phone')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -276,6 +279,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 
     <!-- page js-->
     <script src="{{ URL::asset('build/js/backend/account-setting.init.js') }}"></script>

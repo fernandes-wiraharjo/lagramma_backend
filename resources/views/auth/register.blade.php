@@ -2,80 +2,83 @@
 @section('title')
     Register
 @endsection
+@section('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/css/intlTelInput.min.css">
+@endsection
 @section('content')
     {{-- <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('Register') }}</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('register') }}">
+                            @csrf
 
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
+                            <div class="row mb-3">
+                                <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <div class="col-md-6">
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                            <div class="row mb-3">
+                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                            <div class="row mb-3">
+                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
+                            <div class="row mb-3">
+                                <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <div class="col-md-6">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
+                            <div class="row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ __('Register') }}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div> --}}
+    </div> --}}
 
     <div class="w-100">
         <div class="container">
@@ -149,12 +152,14 @@
                                             </div>
 
                                             <div class="mb-3 col-md-12">
-                                                <label for="phone" class="form-label">Phone <span
+                                                <label for="phone" class="form-label d-block">Phone <span
                                                         class="text-danger">*</span></label>
-                                                <input id="phone" type="text"
+                                                <input id="phone" type="tel"
                                                     class="form-control @error('phone') is-invalid @enderror" name="phone"
                                                     value="{{ old('phone') }}" required autocomplete="phone"
                                                     placeholder="Enter your phone">
+                                                <!-- Hidden input to store the full number -->
+                                                <input type="hidden" name="full_phone" id="fullPhone">
                                                 @error('phone')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -162,7 +167,7 @@
                                                 @enderror
                                             </div>
 
-                                            <div class="mb-3 col-md-12">
+                                            <div class="mb-3 col-md-12 d-none">
                                                 <label class="form-label" for="password-input">Password <span
                                                         class="text-danger">*</span></label>
                                                 <div class="position-relative auth-pass-inputgroup">
@@ -183,7 +188,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="mb-3 col-md-12">
+                                            <div class="mb-3 col-md-12 d-none">
                                                 <label for="password-confirm"
                                                     class="form-label">{{ __('Confirm Password') }} <span
                                                         class="text-danger">*</span></label>
@@ -288,4 +293,28 @@
     <script src="{{ URL::asset('build/js/pages/password-match.init.js') }}"></script>
 
     <script src="{{ URL::asset('build/js/pages/password-addon.init.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+    <script>
+        const phoneInput = document.querySelector("#phone");
+        const fullPhoneInput = document.querySelector("#fullPhone");
+
+        // Initialize the intl-tel-input plugin
+        const iti = intlTelInput(phoneInput, {
+            initialCountry: "id",  // Sets default to Indonesia (+62)
+            separateDialCode: true, // Shows the dial code separately
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+        });
+
+        // Update the hidden input value before form submission
+        phoneInput.addEventListener("change", updateFullNumber);
+        phoneInput.addEventListener("keyup", updateFullNumber);
+
+        function updateFullNumber() {
+            // Get the full phone number with the country code
+            const fullNumber = iti.getNumber();
+            // Update the hidden input value
+            fullPhoneInput.value = fullNumber;
+        }
+    </script>
 @endsection
