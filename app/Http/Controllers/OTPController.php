@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Auth;
 use App\Notifications\SendOTP;
 use App\Models\User;
 
@@ -35,7 +36,16 @@ class OTPController extends Controller
         }
 
         // Update user status
-        $user->update(['is_verified' => true, 'otp' => null, 'otp_created_at' => null]);
+        $user->is_verified = true;
+        $user->otp = null;
+        $user->otp_created_at = null;
+
+        if (!$user->save()) {
+            return back()->withErrors(['otp' => 'Failed to update user verification status.']);
+        }
+
+        // Log in the user after successful verification
+        Auth::login($user);
 
         return redirect()->route('index')->with('success', 'Phone number verified successfully.');
     }
@@ -50,14 +60,13 @@ class OTPController extends Controller
             return back()->withErrors(['otp' => 'Phone number not found.']);
         }
 
-        // Generate a new OTP
+        // Generate OTP
         $otp = rand(1000, 9999);
 
-        // Update the OTP and timestamp in the database
-        $user->update([
-            'otp' => Hash::make($otp),
-            'otp_created_at' => now()
-        ]);
+        // Assign OTP and save
+        $user->otp = Hash::make($otp);
+        $user->otp_created_at = now();
+        $user->save();
 
         // Send OTP (using Notification)
         Notification::send($user, new SendOTP($otp));

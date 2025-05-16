@@ -83,9 +83,9 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
 
-                                        <div class="mt-3">
+                                        <!-- <div class="mt-3">
                                             <button type="submit" class="btn btn-primary w-100">Confirm</button>
-                                        </div>
+                                        </div> -->
                                     </form><!-- end form -->
                                 </div>
                                 <div class="mt-4 text-center">

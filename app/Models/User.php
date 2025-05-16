@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserAddress::class);
     }
+
+    public function routeNotificationForSms($notification)
+    {
+        return $this->phone;
+    }
 }

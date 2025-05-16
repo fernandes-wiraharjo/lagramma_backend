@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Broadcasting\TwilioSmsChannel;
 use Twilio\Rest\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,7 +32,7 @@ class SendOTP extends Notification
     public function via(object $notifiable): array
     {
         // return ['mail'];
-        return ['sms'];
+        return [TwilioSmsChannel::class];
     }
 
     /**
@@ -47,23 +48,7 @@ class SendOTP extends Notification
 
     public function toSms($notifiable)
     {
-        $twilioSid = config('services.twilio.sid');
-        $twilioAuthToken = config('services.twilio.token');
-        $twilioFrom = config('services.twilio.from');
-
-        $client = new Client($twilioSid, $twilioAuthToken);
-
-        try {
-            $client->messages->create(
-                $notifiable->phone,
-                [
-                    'from' => $twilioFrom,
-                    'body' => "Your La Gramma Registration OTP code is: {$this->otp}"
-                ]
-            );
-        } catch (\Exception $e) {
-            \Log::error("Registration OTP SMS sending failed: " . $e->getMessage());
-        }
+        return "Your La Gramma Registration OTP code is: {$this->otp}";
     }
 
     /**

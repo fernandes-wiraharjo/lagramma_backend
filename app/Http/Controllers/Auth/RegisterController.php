@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
@@ -52,6 +53,8 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $data['phone'] = $data['full_phone'];
+
         return Validator::make(
             $data,
             [
@@ -59,7 +62,7 @@ class RegisterController extends Controller
                 // 'last_name' => ['required', 'string', 'max:255'],
                 'name' => ['required', 'string', 'max:100'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'full_phone' => ['required', 'string', 'unique:users'],
+                'phone' => ['required', 'string', 'unique:users'],
                 // 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 // 'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             ],
@@ -92,6 +95,8 @@ class RegisterController extends Controller
             abort(500, "Customer role not found. Please seed roles first.");
         }
 
+        $data['full_phone'] = str_replace('-', '', $data['full_phone']);
+
         $user = User::create([
             // 'first_name' => $data['first_name'],
             // 'last_name' => $data['last_name'],
@@ -105,17 +110,25 @@ class RegisterController extends Controller
             // 'avatar' => $avatarName
         ]);
 
-        // Generate OTP and send it
+        // Generate OTP
         $otp = rand(1000, 9999);
-        $user->update([
-            'otp' => Hash::make($otp),
-            'otp_created_at' => now()
-        ]);
+
+        // Assign OTP and save
+        $user->otp = Hash::make($otp);
+        $user->otp_created_at = now();
+        $user->save();
 
         // Send OTP (using Notification)
         Notification::send($user, new SendOTP($otp));
 
         // Redirect to OTP page
-        return redirect()->route('auth-otp-register', ['phone' => $user->phone]);
+        // return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
+        return $user;
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        // Do not log the user in immediately after registration.
+        return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
     }
 }
