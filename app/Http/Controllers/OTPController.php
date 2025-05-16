@@ -111,7 +111,10 @@ class OTPController extends Controller
         // Forget OTP session
         session()->forget('otp_user_id');
 
-        return redirect()->route('index')->with('success', 'Login successfully.');
+        // Get the redirect URL from session or fallback to index
+        $redirectUrl = session()->pull('login_redirect', route('index'));
+
+        return redirect($redirectUrl)->with('success', 'Login successfully.');
     }
 
     public function resendOtpLogin(Request $request)

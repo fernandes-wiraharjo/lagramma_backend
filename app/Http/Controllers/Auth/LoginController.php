@@ -77,14 +77,21 @@ class LoginController extends Controller
             ]);
         }
 
-        // Generate OTP and send
-        $otp = rand(1000, 9999);
-        $user->update([
-            'otp' => Hash::make($otp),
-            'otp_created_at' => now(),
-        ]);
+        // Store the redirect URL in the session (if present)
+        if ($request->has('redirect')) {
+            session(['login_redirect' => $request->get('redirect')]);
+        }
 
-        Notification::send($user, new SendOTP($otp));
+        if (!app()->environment('local')) {
+            // Generate OTP and send
+            $otp = rand(1000, 9999);
+            $user->update([
+                'otp' => Hash::make($otp),
+                'otp_created_at' => now(),
+            ]);
+
+            Notification::send($user, new SendOTP($otp));
+        }
 
         // Store user id or phone in session to identify for OTP verify
         session([
