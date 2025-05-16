@@ -35,6 +35,9 @@ Auth::routes();
 Route::get('/register-otp-verify', [OTPController::class, 'showVerifyForm'])->name('register.otp.verify');
 Route::post('/register-otp-verify', [OTPController::class, 'verify'])->name('register.otp.verify.submit');
 Route::post('/register-otp-resend', [OTPController::class, 'resendOtp'])->name('register.otp.resend');
+Route::get('/login-otp-verify', [OTPController::class, 'showLoginOtpForm'])->name('login.otp.form');
+Route::post('/login-otp-verify', [OTPController::class, 'verifyOtpLogin'])->name('login.otp.verify');
+Route::post('/login-otp-resend', [OTPController::class, 'resendOtpLogin'])->name('login.otp.resend');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');

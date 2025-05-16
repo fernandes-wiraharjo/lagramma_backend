@@ -40,7 +40,7 @@
                                             @enderror
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-3 d-none">
                                             <!-- <div class="float-end">
                                                 <a href="{{ route('password.request') }}" class="text-muted">Forgot password?</a>
                                             </div> -->
