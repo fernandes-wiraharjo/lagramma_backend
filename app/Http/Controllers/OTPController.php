@@ -93,18 +93,13 @@ class OTPController extends Controller
 
         $user = User::find(session('otp_user_id'));
 
-        if (!$user) {
-            return redirect()->route('login')->withErrors('Please login first.');
+        if (!$user || !Hash::check($otp, $user->otp)) {
+            return back()->withErrors(['otp' => 'Invalid OTP.']);
         }
 
         // Check OTP expiry (5 min)
         if (now()->diffInMinutes($user->otp_created_at) > 5) {
-            session()->forget('otp_user_id');
             return back()->withErrors(['otp' => 'OTP has expired.']);
-        }
-
-        if (!Hash::check($request->otp, $user->otp)) {
-            return back()->withErrors(['otp' => 'Invalid OTP.']);
         }
 
         // Clear OTP fields
@@ -116,7 +111,7 @@ class OTPController extends Controller
         // Forget OTP session
         session()->forget('otp_user_id');
 
-        return redirect()->intended($this->redirectTo);
+        return redirect()->route('index')->with('success', 'Login successfully.');
     }
 
     public function resendOtpLogin(Request $request)
