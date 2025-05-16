@@ -63,9 +63,9 @@ class LoginController extends Controller
 
         // Find user by email
         $user = User::where('email', $request->email)
-                    ->where('is_active', 1)
-                    ->where('is_verified', 1)
-                    ->first();
+            ->where('is_active', 1)
+            ->where('is_verified', 1)
+            ->first();
 
         // if (!$user) {
         //     return back()->withErrors(['email' => 'These credentials do not match our records or user not active/verified.']);
