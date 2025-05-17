@@ -97,6 +97,10 @@
                                         </a>
                                     </p>
                                 </div>
+                                <div class="mt-4 text-center">
+                                    <p class="mb-0"> <a href="{{ route('register') }}"
+                                            class="fw-semibold text-primary text-decoration-underline"> Back </a> </p>
+                                </div>
 
                                 <form id="resend-otp-form" action="{{ route('register.otp.resend') }}" method="POST" style="display: none;">
                                     @csrf
