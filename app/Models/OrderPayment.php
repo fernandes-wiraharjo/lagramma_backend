@@ -6,16 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 
-class Order extends Model
+class OrderPayment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'invoice_number',
-        'order_quantity',
+        'order_id',
+        'vendor_invoice_id',
+        'transaction_date',
         'status',
-        'order_price',
+        'invoice_url',
+        'payment_id',
+        'payment_method',
+        'bank_code',
+        'payment_channel',
+        'payment_destination',
+        'paid_at',
+        'expiry_date',
+        'webhook_id',
         'created_by',
         'updated_by',
         'created_at',
@@ -25,24 +33,9 @@ class Order extends Model
     /**
      * Relationships
      */
-    public function user()
+    public function order()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function details()
-    {
-        return $this->hasMany(OrderDetail::class);
-    }
-
-    public function delivery()
-    {
-        return $this->hasOne(OrderDelivery::class);
-    }
-
-    public function payment()
-    {
-        return $this->hasOne(OrderPayment::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function creator()
