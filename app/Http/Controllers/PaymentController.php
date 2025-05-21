@@ -247,7 +247,7 @@ class PaymentController extends Controller
                     'bank_code' => $data['bank_code'],
                     'payment_channel' => $data['payment_channel'],
                     'payment_destination' => $data['payment_destination'],
-                    'paid_at' => $data['paid_at'],
+                    'paid_at' => Carbon::parse($data['paid_at'])->setTimezone('Asia/Jakarta'),
                     'webhook_id' => $webhookId,
                     'updated_by' => $user->id
                 ]);
