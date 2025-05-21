@@ -59,7 +59,7 @@ class PaymentController extends Controller
 
         if ($existingWebhook) {
             // Already processed, ignore or return response
-            Log::info('Duplicate xendit webhook ID received: ' . $webhookId);
+            Log::error('Duplicate xendit webhook ID received: ' . $webhookId);
             return response()->json(['message' => 'Duplicate webhook'], 400);
         }
 
@@ -77,18 +77,11 @@ class PaymentController extends Controller
             if (in_array($paymentStatus, ['PAID', 'SETTLED']) && $order->status == 'waiting for payment') {
                 $orderDelivery = $order->delivery;
                 $totalVariantsNeeded = [];
+                $roOrderDetails = [];
                 $mokaDetails = [];
 
-                // Step 1: deduct local stock
+                // Step 1: Collect stock
                 foreach ($order->details as $item) {
-                    // variant stock deduction
-                    $variant = ProductVariant::find($item->product_variant_id);
-                    if ($variant) {
-                        $variant->stock -= $item->quantity;
-                        $variant->updated_by = auth()->id();
-                        $variant->save();
-                    }
-
                     //count needed qty for moka deduction
                     $key = $item->product_variant_id;
                     if (!isset($totalVariantsNeeded[$key])) {
@@ -100,22 +93,12 @@ class PaymentController extends Controller
                         // Get hamper items and deduct their variant stock
                         $hamperItems = OrderHampersItem::where('order_detail_id', $item->id)->get();
                         foreach ($hamperItems as $hamperItem) {
-                            $variant = ProductVariant::find($hamperItem->product_variant_id);
-                            if ($variant) {
-                                // Multiply by hamper quantity
-                                $variant->stock -= $hamperItem->quantity;
-                                $variant->updated_by = auth()->id();
-                                $variant->save();
-                            }
-
                             //count needed qty for moka deduction
                             $key = $hamperItem->id;
-                            $neededQty = $hamperItem->quantity;
-
                             if (!isset($totalVariantsNeeded[$key])) {
                                 $totalVariantsNeeded[$key] = 0;
                             }
-                            $totalVariantsNeeded[$key] += $neededQty;
+                            $totalVariantsNeeded[$key] += $hamperItem->quantity;
                         }
                     }
 
@@ -143,9 +126,16 @@ class PaymentController extends Controller
                         : $variant->product->name;
                     if (!$variant || $variant->stock < $neededQty) {
                         DB::rollBack();
-                        Log::info('Error payment invoice no (webhook): ' . $invoiceNo . '. Product ' . $productName . ' only has ' . $variant->stock . ' left.');
-                        return response()->json(['status' => 'failed'], 500);
+                        Log::error('Error payment invoice no (view success) (1): ' . $invoiceNo . '. Product ' . $productName . ' only has ' . $variant->stock . ' left.');
                     }
+                }
+
+                // Deduct stock after validation passed
+                foreach ($totalVariantsNeeded as $variantId => $neededQty) {
+                    $variant = ProductVariant::find($variantId);
+                    $variant->stock -= $neededQty;
+                    $variant->updated_by = $user->id;
+                    $variant->save();
 
                     //prepare moka data
                     if ($variant->track_stock == 1) {
@@ -160,17 +150,7 @@ class PaymentController extends Controller
                 foreach ($mokaDetails as $entry) {
                     $variant = $entry['variant'];
                     $orderedQty = $entry['qty'];
-
-                    $remainingStock = $variant->stock - $orderedQty;
-                    if ($remainingStock < 0) {
-                        DB::rollBack();
-                        $productName = $variant->name
-                            ? "{$variant->product->name} - {$variant->name}"
-                            : $variant->product->name;
-
-                        Log::info('Error payment invoice no (webhook): ' . $invoiceNo . '. Product ' . $productName . ' only has ' . $variant->stock . ' left.');
-                        return response()->json(['status' => 'failed'], 500);
-                    }
+                    $remainingStock = $variant->stock;
 
                     $historyDetails[] = [
                         'item_id' => $variant->product->moka_id_product,
@@ -190,16 +170,14 @@ class PaymentController extends Controller
                     $result = $this->mokaStockAdjustment($payload);
                     if (!$result) {
                         DB::rollBack();
-                        Log::info('Error payment invoice no (webhook): ' . $invoiceNo . '. Terjadi kesalahan saat proses integrasi stock. Harap hubungi admin.' );
-                        return response()->json(['status' => 'failed'], 500);
+                        Log::error('Error payment invoice no (view success) (2): ' . $invoiceNo . '. Terjadi kesalahan saat proses integrasi stock. Harap hubungi admin.' );
                     }
                 } else {
                     DB::rollBack();
-                    Log::info('Error payment invoice no (webhook): ' . $invoiceNo . '. Terjadi kesalahan saat proses integrasi stock. Tidak ada data yang dikirim ke moka.' );
-                    return response()->json(['status' => 'failed'], 500);
+                    Log::error('Error payment invoice no (view success) (3): ' . $invoiceNo . '. Terjadi kesalahan saat proses integrasi stock. Tidak ada data yang dikirim ke moka.' );
                 }
 
-                // Step 5: Store order delivery to raja ongkir
+                // Step 3: Store order delivery to raja ongkir
                 $komercePayload = [
                     "order_date" => $orderDelivery?->date,
                     "brand_name" => env('SHIPPER_BRAND_NAME'),
@@ -229,13 +207,13 @@ class PaymentController extends Controller
                 $baseUrlKomerce = config('app.komerce_api_url');
                 $komerceApiKey = config('app.komerce_api_key');
 
-                // Step 5.1: Send order to Komerce
+                // Step 3.1: Send order to Komerce
                 $komerceResponse = Http::withHeaders([
                     'x-api-key' => $komerceApiKey
                 ])->post("{$baseUrlKomerce}/order/api/v1/orders/store", $komercePayload);
 
                 if (!$komerceResponse->successful() || $komerceResponse['meta']['code'] !== 201) {
-                    Log::error('Error payment invoice no (webhook): ' . $invoiceNo . ', Failed to create Komerce order', [
+                    Log::error('Error payment invoice no (view success) (4): ' . $invoiceNo . ', Failed to create Komerce order', [
                         'status' => $komerceResponse['meta']['code'],
                         'message' => $komerceResponse['meta']['message'],
                         'response' => $komerceResponse->body()
@@ -244,7 +222,7 @@ class PaymentController extends Controller
                 }
                 $komerceData = $komerceResponse['data'];
 
-                // Step 5.2: Update order delivery data and status
+                // Step 3.2: Update order delivery data and status
                 OrderDelivery::where('id', $orderDelivery->id)
                 ->update([
                     'order_delivery_id' => $komerceData['order_id'],
@@ -253,14 +231,14 @@ class PaymentController extends Controller
                     'updated_by' => $user->id,
                 ]);
 
-                // Step 6: Update order status
+                // Step 4: Update order status
                 Order::where('id', $order->id)
                 ->update([
                     'status' => 'pending',
                     'updated_by' => $user->id,
                 ]);
 
-                // Step 7: Update order payment status
+                // Step 5: Update order payment status
                 OrderPayment::where('order_id', $order->id)
                 ->update([
                     'status' => $paymentStatus,
@@ -293,7 +271,7 @@ class PaymentController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::info('Error payment invoice no (webhook): ' . $invoiceNo . ', ' . $e->getMessage());
+            Log::error('Error payment invoice no (webhook) (catch): ' . $invoiceNo . ', ' . $e->getMessage());
             return response()->json(['status' => 'failed'], 500);
         }
 
