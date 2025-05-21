@@ -13,8 +13,8 @@ return new class extends Migration {
     Schema::create('order_deliveries', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('order_id');
-      $table->unsignedBigInteger('order_delivery_id'); //raja ongkir order id
-      $table->string('order_delivery_no', 50); //raja ongkir order no
+      $table->unsignedBigInteger('order_delivery_id')->nullable(); //raja ongkir order id
+      $table->string('order_delivery_no', 50)->nullable(); //raja ongkir order no
       $table->unsignedBigInteger('address_id');
       $table->timestamp('date');
       $table->string('shipping_name', 50);

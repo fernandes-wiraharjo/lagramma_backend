@@ -15,7 +15,7 @@ return new class extends Migration {
       $table->unsignedBigInteger('order_id');
       $table->string('vendor_invoice_id', 100);
       $table->timestamp('transaction_date')->nullable();
-      $table->string('status', 50); //PENDING, EXPIRED, PAID/SETTLED
+      $table->string('status', 50); //PENDING, EXPIRED, PAID, SETTLED, FAILED
       $table->text('invoice_url');
       $table->string('payment_id', 50)->nullable();
       $table->string('payment_method', 50)->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration {
       $table->string('payment_destination', 50)->nullable();
       $table->timestamp('paid_at')->nullable();
       $table->timestamp('expiry_date')->nullable();
-      $table->string('webhook_id', 50)->nullable()->unique();
+      $table->string('webhook_id', 50)->unique()->nullable();
       $table->unsignedBigInteger('created_by');
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();

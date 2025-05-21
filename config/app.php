@@ -214,6 +214,7 @@ return [
     ])->toArray(),
 
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
-    'komerce_api_key' => env('KOMERCE_API_KEY')
+    'komerce_api_url' => env('KOMERCE_API_URL'),
+    'komerce_api_key' => env('KOMERCE_API_KEY'),
 
 ];

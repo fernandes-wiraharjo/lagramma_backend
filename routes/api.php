@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,3 +25,5 @@ Route::middleware('auth:sanctum')->post('/logout-store', function () {
     request()->session()->regenerateToken();
     return response()->json(['message' => 'Logged out']);
 });
+
+Route::post('/invoice-webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
