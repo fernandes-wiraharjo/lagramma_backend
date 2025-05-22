@@ -52,7 +52,14 @@ class PaymentController extends Controller
 
     public function webhook(Request $request)
     {
+        $providedToken = $request->header('x-callback-token');
+        $expectedToken = config('services.xendit.webhook_token_id');
         $webhookId = $request->header('webhook-id');
+
+        if ($providedToken !== $expectedToken) {
+            Log::error('Unauthorized xendit callback token received');
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
         // Check if this webhook-id has already been processed
         $existingWebhook = OrderPayment::where('webhook_id', $webhookId)->first();
@@ -60,17 +67,17 @@ class PaymentController extends Controller
         if ($existingWebhook) {
             // Already processed, ignore or return response
             Log::error('Duplicate xendit webhook ID received: ' . $webhookId);
-            return response()->json(['message' => 'Duplicate webhook'], 400);
+            return response()->json(['error' => 'Duplicate webhook'], 400);
         }
 
         $data = $request->all();
-        $user = auth()->user();
         $invoiceNo = $data['external_id'];
         $paymentStatus = $data['status'];
         $order = Order::with([
             'details.product',
             'delivery.address'  // eager load nested relation
         ])->where('invoice_number', $invoiceNo)->first();
+        $user = $order->user;
 
         DB::beginTransaction();
         try {
@@ -94,7 +101,7 @@ class PaymentController extends Controller
                         $hamperItems = OrderHampersItem::where('order_detail_id', $item->id)->get();
                         foreach ($hamperItems as $hamperItem) {
                             //count needed qty for moka deduction
-                            $key = $hamperItem->id;
+                            $key = $hamperItem->product_variant_id;
                             if (!isset($totalVariantsNeeded[$key])) {
                                 $totalVariantsNeeded[$key] = 0;
                             }
@@ -103,17 +110,19 @@ class PaymentController extends Controller
                     }
 
                     // store to order details for raja ongkir store order
-                    $productPrice = $item->price;
+                    $productQty = intval($item->quantity);
+                    $productTotalPrice = intval($item->total_price); //include modifiers if exist
+                    $productPrice = $productTotalPrice / $productQty;
                     $roOrderDetails[] = [
                         "product_name" => $item->product_name,
                         "product_variant_name" => $item->product_variant_name ?? '',
                         "product_price" => $productPrice,
                         "product_width" => intval($item?->product->width) ?? 1,
                         "product_height" => intval($item?->product->height) ?? 1,
-                        "product_weight" => isset($item?->product->weight) ? $item?->product->weight * 1000 : 1000,
+                        "product_weight" => isset($item?->product->weight) ? intval($item?->product->weight) * 1000 : 1000,
                         "product_length" => intval($item?->product->length) ?? 1,
-                        "qty" => intval($item->quantity),
-                        "subtotal" => $productPrice * $item->quantity
+                        "qty" => $productQty,
+                        "subtotal" => $productTotalPrice
                     ];
                 }
 
@@ -125,8 +134,7 @@ class PaymentController extends Controller
                         ? "{$variant->product->name} - {$variant->name}"
                         : $variant->product->name;
                     if (!$variant || $variant->stock < $neededQty) {
-                        DB::rollBack();
-                        Log::error('Error payment invoice no (view success) (1): ' . $invoiceNo . '. Product ' . $productName . ' only has ' . $variant->stock . ' left.');
+                        throw new \Exception('(1): Product ' . $productName . ' only has ' . $variant->stock . ' left.');
                     }
                 }
 
@@ -140,8 +148,7 @@ class PaymentController extends Controller
                     //prepare moka data
                     if ($variant->track_stock == 1) {
                         $mokaDetails[$variantId] = [
-                            'variant' => $variant,
-                            'qty' => $neededQty
+                            'variant' => $variant
                         ];
                     }
                 }
@@ -149,7 +156,6 @@ class PaymentController extends Controller
                 $historyDetails = [];
                 foreach ($mokaDetails as $entry) {
                     $variant = $entry['variant'];
-                    $orderedQty = $entry['qty'];
                     $remainingStock = $variant->stock;
 
                     $historyDetails[] = [
@@ -169,12 +175,10 @@ class PaymentController extends Controller
 
                     $result = $this->mokaStockAdjustment($payload);
                     if (!$result) {
-                        DB::rollBack();
-                        Log::error('Error payment invoice no (view success) (2): ' . $invoiceNo . '. Terjadi kesalahan saat proses integrasi stock. Harap hubungi admin.' );
+                        throw new \Exception('(2): Terjadi kesalahan saat proses integrasi stock. Harap hubungi admin.');
                     }
                 } else {
-                    DB::rollBack();
-                    Log::error('Error payment invoice no (view success) (3): ' . $invoiceNo . '. Terjadi kesalahan saat proses integrasi stock. Tidak ada data yang dikirim ke moka.' );
+                    throw new \Exception('(3): Terjadi kesalahan saat proses integrasi stock. Tidak ada data yang dikirim ke moka.');
                 }
 
                 // Step 3: Store order delivery to raja ongkir
@@ -195,12 +199,12 @@ class PaymentController extends Controller
                     "shipping" => $orderDelivery?->shipping_name,
                     "shipping_type" => $orderDelivery?->shipping_type,
                     "payment_method" => "BANK TRANSFER",
-                    "shipping_cost" => $orderDelivery?->shipping_cost,
-                    "shipping_cashback" => $orderDelivery?->shipping_cashback,
-                    "service_fee" => $orderDelivery?->service_fee,
+                    "shipping_cost" => intval($orderDelivery?->shipping_cost),
+                    "shipping_cashback" =>intval($orderDelivery?->shipping_cashback),
+                    "service_fee" => intval($orderDelivery?->service_fee),
                     "additional_cost" => 0,
-                    "grand_total" => $orderDelivery?->grand_total,
-                    "cod_value" => $orderDelivery?->grand_total,
+                    "grand_total" => intval($orderDelivery?->grand_total),
+                    "cod_value" => intval($orderDelivery?->grand_total),
                     "insurance_value" => 0,
                     "order_details" => $roOrderDetails
                 ];
@@ -213,12 +217,7 @@ class PaymentController extends Controller
                 ])->post("{$baseUrlKomerce}/order/api/v1/orders/store", $komercePayload);
 
                 if (!$komerceResponse->successful() || $komerceResponse['meta']['code'] !== 201) {
-                    Log::error('Error payment invoice no (view success) (4): ' . $invoiceNo . ', Failed to create Komerce order', [
-                        'status' => $komerceResponse['meta']['code'],
-                        'message' => $komerceResponse['meta']['message'],
-                        'response' => $komerceResponse->body()
-                    ]);
-                    throw new \Exception('Failed to create Komerce order: ' . $komerceResponse['meta']['message']);
+                    throw new \Exception('(4): Failed to create Komerce order: ' . $komerceResponse['meta']['message']);
                 }
                 $komerceData = $komerceResponse['data'];
 
@@ -251,7 +250,9 @@ class PaymentController extends Controller
                     'webhook_id' => $webhookId,
                     'updated_by' => $user->id
                 ]);
-            } elseif ($in_array($paymentStatus, ['FAILED', 'EXPIRED'])) {
+
+                DB::commit();
+            } elseif (in_array($paymentStatus, ['FAILED', 'EXPIRED'])) {
                 // Update order status
                 Order::where('id', $order->id)
                 ->update([
@@ -266,9 +267,9 @@ class PaymentController extends Controller
                     'webhook_id' => $webhookId,
                     'updated_by' => $user->id
                 ]);
-            }
 
-            DB::commit();
+                DB::commit();
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error payment invoice no (webhook) (catch): ' . $invoiceNo . ', ' . $e->getMessage());

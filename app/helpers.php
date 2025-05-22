@@ -72,3 +72,13 @@ function refreshMokaToken()
         return null;
     }
 }
+
+function normalizePhone($phone) {
+    // Remove spaces, dashes, etc.
+    $phone = preg_replace('/\D+/', '', $phone); // Only keep digits
+
+    // Remove leading 0 or + (if they exist)
+    $phone = ltrim($phone, '0+');
+
+    return $phone;
+}

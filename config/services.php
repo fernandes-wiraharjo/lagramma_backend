@@ -36,4 +36,8 @@ return [
         'token' => env('TWILIO_AUTH_TOKEN'),
         'from' => env('TWILIO_PHONE_FROM'),
     ],
+
+    'xendit' => [
+        'webhook_token_id' => env('XENDIT_WEBHOOK_TOKEN_ID')
+    ]
 ];
