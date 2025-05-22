@@ -233,14 +233,14 @@ class PaymentController extends Controller
                 // Step 4: Update order status
                 Order::where('id', $order->id)
                 ->update([
-                    'status' => 'pending',
+                    'status' => 'pending', // or on process
                     'updated_by' => $user->id,
                 ]);
 
                 // Step 5: Update order payment status
                 OrderPayment::where('order_id', $order->id)
                 ->update([
-                    'status' => $paymentStatus,
+                    'status' => 'PAID',
                     'payment_id' => $data['payment_id'],
                     'payment_method' => $data['payment_method'],
                     'bank_code' => $data['bank_code'],
@@ -252,7 +252,7 @@ class PaymentController extends Controller
                 ]);
 
                 DB::commit();
-            } elseif (in_array($paymentStatus, ['FAILED', 'EXPIRED'])) {
+            } elseif (in_array($paymentStatus, ['FAILED', 'EXPIRED']) && $order->status == 'waiting for payment') {
                 // Update order status
                 Order::where('id', $order->id)
                 ->update([
@@ -272,7 +272,7 @@ class PaymentController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error payment invoice no (webhook) (catch): ' . $invoiceNo . ', ' . $e->getMessage());
+            Log::error('Error payment invoice no (webhook): ' . $invoiceNo . ', ' . $e->getMessage());
             return response()->json(['status' => 'failed'], 500);
         }
 
