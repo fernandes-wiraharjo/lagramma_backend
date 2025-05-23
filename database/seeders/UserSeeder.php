@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         'email' => 'lagrammagaia@gmail.com',
         'name' => 'afryandi',
         'phone' => '+6281952684970',
-        'password' => Hash::make('12345'),
+        'password' => Hash::make('12346'),
         'is_active' => true,
         'created_by' => null,
         'created_at' => $now,
