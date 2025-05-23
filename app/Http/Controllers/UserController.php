@@ -114,6 +114,7 @@ class UserController extends Controller
                 'phone' => $request->phone,
                 'password' => Hash::make($request->password),
                 'is_active' => $request->is_active,
+                'is_verified' => true,
                 'created_by' => auth()->id(),
                 'updated_at' => null
             ]);
