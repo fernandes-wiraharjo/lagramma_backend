@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->decimal('weight', 8, 2)->default(1.00)->after('weight'); // kg
-            $table->decimal('width', 8, 2)->default(1.00)->after('width'); // cm
-            $table->decimal('height', 8, 2)->default(1.00)->after('height'); // cm
-            $table->decimal('length', 8, 2)->default(1.00)->after('length'); // cm
+            $table->decimal('weight', 8, 2)->default(1.00)->after('description'); // kg
+            $table->decimal('width', 8, 2)->default(1.00)->after('weight'); // cm
+            $table->decimal('height', 8, 2)->default(1.00)->after('width'); // cm
+            $table->decimal('length', 8, 2)->default(1.00)->after('height'); // cm
         });
     }
 

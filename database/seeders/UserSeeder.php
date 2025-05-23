@@ -31,6 +31,7 @@ class UserSeeder extends Seeder
         'role_id' => $adminRole->id,
         'email' => 'lagrammagaia@gmail.com',
         'name' => 'afryandi',
+        'phone' => '+6281952684970',
         'password' => Hash::make('12345'),
         'is_active' => true,
         'created_by' => null,
