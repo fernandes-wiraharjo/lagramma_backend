@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
         'phone' => '+6281952684970',
         'password' => Hash::make('12345'),
         'is_active' => true,
+        'is_verified' => true,
         'created_by' => null,
         'created_at' => $now,
         'updated_by' => null,
