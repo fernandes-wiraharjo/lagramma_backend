@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let table = new DataTable('#tb_data', {
         processing: true,
         serverSide: true,
-        ajax: '/product/list',
+        ajax: '/orders/list',
         columns: [
             { data: 'moka_id_product', name: 'moka_id_product' },
             { data: 'product_name', name: 'products.name' },
