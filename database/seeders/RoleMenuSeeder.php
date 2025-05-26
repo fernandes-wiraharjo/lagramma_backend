@@ -61,6 +61,13 @@ class RoleMenuSeeder extends Seeder
             throw new \Exception("Account menu not found. Please seed menus first.");
         }
 
+        // Get the menu ID where menu is 'order'
+        $orderMenu = Menu::where('name', 'Order')->first();
+
+        if (!$orderMenu) {
+            throw new \Exception("Order menu not found. Please seed menus first.");
+        }
+
         // Main Menus
         $roleMenus = [
             [
@@ -98,6 +105,22 @@ class RoleMenuSeeder extends Seeder
             [
                 'role_id' => $customerRole->id,
                 'menu_id' => $accountMenu->id,
+                'created_by' => null,
+                'created_at' => $now,
+                'updated_by' => null,
+                'updated_at' => null,
+            ],
+            [
+                'role_id' => $adminRole->id,
+                'menu_id' => $orderMenu->id,
+                'created_by' => null,
+                'created_at' => $now,
+                'updated_by' => null,
+                'updated_at' => null,
+            ],
+            [
+                'role_id' => $customerRole->id,
+                'menu_id' => $orderMenu->id,
                 'created_by' => null,
                 'created_at' => $now,
                 'updated_by' => null,

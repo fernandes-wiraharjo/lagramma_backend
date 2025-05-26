@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TonerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HamperSettingController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/hampers-setting', [ProductController::class, 'indexHamperSetting']);
         Route::get('/my-account', [AccountController::class, 'index'])->name('index-my-account');
         Route::get('/account-setting', [AccountController::class, 'indexSetting'])->name('index-setting-account');
+        Route::get('/orders', [OrderController::class, 'index'])->name('index-order');
     });
 
     //role
@@ -125,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product-variant/{idProduct}/list', [ProductController::class, 'getVariant'])->name('list-product-variant');
     Route::post('/product-variant/{id}/toggle-active', [ProductController::class, 'toggleActiveVariant']);
 
+    //hamper setting
     Route::prefix('hampers-setting')->group(function () {
         Route::get('/list', [ProductController::class, 'getHamperSetting']);
         Route::get('/{id}', [ProductController::class, 'editHamperSetting']);
@@ -133,6 +136,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [ProductController::class, 'destroyHamperSetting']);
     });
 
+    //account
     Route::prefix('account')->group(function () {
         Route::get('/komerce/search-region', [AccountController::class, 'searchRegion']);
         Route::post('/', [AccountController::class, 'update'])->name('account.update');
@@ -141,6 +145,9 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/addresses/{userAddress}', [AccountController::class, 'updateAddress'])->name('addresses.update');
         Route::delete('/addresses/{userAddress}', [AccountController::class, 'destroyAddress'])->name('addresses.destroy');
     });
+
+    // order
+    Route::get('/orders/list', [OrderController::class, 'get'])->name('list-order');
 
     //template
     Route::get('{any}', [TonerController::class, 'index']);

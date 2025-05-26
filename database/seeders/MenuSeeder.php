@@ -59,6 +59,16 @@ class MenuSeeder extends Seeder
                 'created_by' => null,
                 'updated_by' => null,
             ],
+            [
+                'name' => 'Order',
+                'icon' => 'bi bi-cart4',
+                'url' => 'orders',
+                'parent_id' => null,
+                'sequence' => 5,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
         ];
 
         foreach ($menus as $menu) {

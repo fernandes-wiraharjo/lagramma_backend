@@ -182,8 +182,10 @@ class PaymentController extends Controller
                 }
 
                 // Step 3: Store order delivery to raja ongkir
+                $orderDeliveryDate = now()->format('Y-m-d H:i:s');
                 $komercePayload = [
-                    "order_date" => $orderDelivery?->date,
+                    // "order_date" => $orderDelivery?->date,
+                    "order_date" => $orderDeliveryDate,
                     "brand_name" => env('SHIPPER_BRAND_NAME'),
                     "shipper_name" => env('SHIPPER_NAME'),
                     "shipper_phone" => env('SHIPPER_PHONE'),
@@ -226,6 +228,7 @@ class PaymentController extends Controller
                 ->update([
                     'order_delivery_id' => $komerceData['order_id'],
                     'order_delivery_no' => $komerceData['order_no'],
+                    'date' => $orderDeliveryDate,
                     'status' => 'submitted',
                     'updated_by' => $user->id,
                 ]);

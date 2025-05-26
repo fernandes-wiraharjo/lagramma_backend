@@ -16,7 +16,7 @@ return new class extends Migration {
       $table->unsignedBigInteger('order_delivery_id')->nullable(); //raja ongkir order id
       $table->string('order_delivery_no', 50)->nullable(); //raja ongkir order no
       $table->unsignedBigInteger('address_id');
-      $table->timestamp('date');
+      $table->timestamp('date')->nullable();
       $table->string('shipping_name', 50);
       $table->string('shipping_type', 30);
       $table->decimal('shipping_cost', 15, 2);
