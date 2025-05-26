@@ -499,7 +499,7 @@
     <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <!-- page js -->
-    <script src="{{ URL::asset('build/js/backend/product.init.js') }}"></script>
+    <script src="{{ URL::asset('build/js/backend/order.init.js') }}"></script>
 
     <!-- App js -->
     <script src="{{ URL::asset('build/js/app.js') }}"></script>
