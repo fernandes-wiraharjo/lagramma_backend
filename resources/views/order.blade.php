@@ -449,7 +449,7 @@
     <!--end row-->
 
     <!-- Edit Order Status Modal -->
-    <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form id="editProductForm">
             @csrf
@@ -484,7 +484,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 @endsection
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
