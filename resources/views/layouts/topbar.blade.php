@@ -430,7 +430,8 @@
                         <!-- item-->
                         <h6 class="dropdown-header">Welcome {{@Auth::user()->name}}!</h6>
                         <a class="dropdown-item" href="my-account"><i class="bi bi-person-circle text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
-                        <a class="dropdown-item" href="calendar"><i class="bi bi-cart4 text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Order History</span></a>
+                        <a class="dropdown-item" href="orders"><i class="bi bi-cart4 text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Order History</span></a>
+                        <!-- <a class="dropdown-item" href="calendar"><i class="bi bi-cart4 text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Order History</span></a> -->
 
                         @unless(Auth::user()->role->name === 'customer')
                             <a class="dropdown-item" href="product"><i class="bi bi-box-seam text-muted fs-15 align-middle me-1"></i> <span class="align-middle">Products</span></a>

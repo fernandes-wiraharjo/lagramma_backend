@@ -15,7 +15,7 @@
 @section('content')
     <x-breadcrumb title="Order" pagetitle="Master" />
 
-    <div class="row row-cols-xxl-5 row-cols-lg-3 row-cols-md-2 row-cols-1">
+    <div class="row row-cols-xxl-5 row-cols-lg-4 row-cols-md-2 row-cols-1">
         <div class="col">
             <div class="card shadow-sm border-0 overflow-hidden card-animate">
                 <div class="position-absolute end-0 start-0 top-0 z-0">
@@ -205,6 +205,71 @@
                             <h4 class="fs-22 fw-semibold mb-1"><span class="counter-value" data-target="{{ $packed }}"></span>
                             </h4>
                             <p class="mb-0 fw-medium text-uppercase fs-14">Packed Orders</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end col-->
+        <div class="col">
+            <div class="card shadow-sm border-0 overflow-hidden card-animate">
+                <div class="position-absolute end-0 start-0 top-0 z-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="400" height="250" preserveAspectRatio="none" viewBox="0 0 400 250">
+                        <g mask="url(&quot;#SvgjsMask1571&quot;)" fill="none">
+                            <path d="M306 65L446 -75" stroke-width="8" stroke="url(#SvgjsLinearGradient1561)"
+                                stroke-linecap="round" class="BottomLeft"></path>
+                            <path d="M399 2L315 86" stroke-width="10" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M83 77L256 -96" stroke-width="6" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M281 212L460 33" stroke-width="6" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M257 62L76 243" stroke-width="6" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M305 123L214 214" stroke-width="6" stroke="url(#SvgjsLinearGradient1561)"
+                                stroke-linecap="round" class="BottomLeft"></path>
+                            <path d="M327 222L440 109" stroke-width="6" stroke="url(#SvgjsLinearGradient1561)"
+                                stroke-linecap="round" class="BottomLeft"></path>
+                            <path d="M287 109L362 34" stroke-width="10" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M259 194L332 121" stroke-width="8" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M376 186L240 322" stroke-width="8" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M308 153L123 338" stroke-width="6" stroke="url(#SvgjsLinearGradient1562)"
+                                stroke-linecap="round" class="TopRight"></path>
+                            <path d="M218 62L285 -5" stroke-width="8" stroke="url(#SvgjsLinearGradient1561)"
+                                stroke-linecap="round" class="BottomLeft"></path>
+                        </g>
+                        <defs>
+                            <mask id="SvgjsMask1571">
+                                <rect width="400" height="250" fill="#ffffff"></rect>
+                            </mask>
+                            <linearGradient x1="100%" y1="0%" x2="0%" y2="100%"
+                                id="SvgjsLinearGradient1561">
+                                <stop stop-color="rgba(var(--tb-secondary-rgb), 0)" offset="0"></stop>
+                                <stop stop-color="rgba(var(--tb-secondary-rgb), 0.1)" offset="1"></stop>
+                            </linearGradient>
+                            <linearGradient x1="0%" y1="100%" x2="100%" y2="0%"
+                                id="SvgjsLinearGradient1562">
+                                <stop stop-color="rgba(var(--tb-secondary-rgb), 0)" offset="0"></stop>
+                                <stop stop-color="rgba(var(--tb-secondary-rgb), 0.1)" offset="1"></stop>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="card-body p-4 z-1 position-relative">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="flex-shrink-0 avatar-sm">
+                            <div class="avatar-title bg-secondary-subtle text-secondary fs-3 rounded">
+                                <i class="ph-cube"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="fs-22 fw-semibold mb-1"><span class="counter-value" data-target="{{ $requestPickedUp }}"></span>
+                            </h4>
+                            <p class="mb-0 fw-medium text-uppercase fs-14">Request Pickups</p>
                         </div>
                     </div>
                 </div>
