@@ -50,8 +50,10 @@ class OrderController extends Controller
         $user = auth()->user();
 
         $query = Order::query()
+            ->leftJoin('users', 'users.id', 'orders.user_id')
             ->leftJoin('order_payments', 'orders.id', '=', 'order_payments.order_id')
-            ->select(['orders.created_at as order_date', 'invoice_number', 'orders.status', 'order_price', 'payment_method']);
+            ->select(['orders.id', 'orders.created_at as order_date', 'invoice_number', 'orders.status', 'order_price',
+                'payment_method', 'users.name as user_name']);
 
         if ($user->role->name === 'customer') {
             $query->where('orders.user_id', $user->id);
@@ -70,9 +72,10 @@ class OrderController extends Controller
          // Define sortable columns based on DataTables column index
          $sortableColumns = [
             0 => 'orders.created_at',
-            2 => 'orders.status',
-            3 => 'order_price',
-            4 => 'payment_method'
+            1 => 'users.name',
+            3 => 'orders.status',
+            4 => 'order_price',
+            5 => 'payment_method'
         ];
 
         // Retrieve sorting column index and direction from DataTables request
@@ -89,7 +92,8 @@ class OrderController extends Controller
             $query->where(function ($q) use ($searchValue) {
                 $q->where('invoice_number', 'like', $searchValue)
                   ->orWhere('orders.status', 'like', $searchValue)
-                  ->orWhere('payment_method', 'like', $searchValue);
+                  ->orWhere('payment_method', 'like', $searchValue)
+                  ->orWhere('users.name', 'like', $searchValue);
             });
         }
 
@@ -117,5 +121,39 @@ class OrderController extends Controller
             'recordsFiltered' => $totalFiltered,
             'data' => $data,
         ]);
+    }
+
+    public function getDetail($invoice_number)
+    {
+        $order = Order::with([
+            'user',
+            'delivery.address',
+            'details.product.mainImage',
+            'details.modifiers',
+            'payment'
+        ])
+        ->where('invoice_number', $invoice_number)
+        ->first();
+
+        if (!$order) {
+            abort(404, 'Order not found');
+        }
+
+        return view('order-detail', compact('order'));
+    }
+
+    public function update($id, Request $request)
+    {
+        $request->validate([
+            'status' => 'required',
+        ]);
+
+        $order = Order::findOrFail($id);
+
+        $order->status = $request->input('status');
+        $order->updated_by = auth()->id();
+        $order->save();
+
+        return response()->json(['success' => true, 'message' => 'Order updated successfully']);
     }
 }

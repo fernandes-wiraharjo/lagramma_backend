@@ -148,6 +148,8 @@ Route::middleware(['auth'])->group(function () {
 
     // order
     Route::get('/orders/list', [OrderController::class, 'get'])->name('list-order');
+    Route::get('/orders/{invoice_number}/detail', [OrderController::class, 'getDetail'])->name('order-detail');
+    Route::post('/orders/{id}/update', [OrderController::class, 'update'])->name('update-order');
 
     //template
     Route::get('{any}', [TonerController::class, 'index']);

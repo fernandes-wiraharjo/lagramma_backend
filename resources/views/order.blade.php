@@ -11,9 +11,15 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
     <!-- Sweet Alert css-->
     <link href="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <style>
+        .modal {
+            overflow: visible !important;
+        }
+    </style>
 @endsection
 @section('content')
-    <x-breadcrumb title="Order" pagetitle="Master" />
+    <x-breadcrumb title="Order" pagetitle="Menu" />
 
     <div class="row row-cols-xxl-5 row-cols-lg-4 row-cols-md-2 row-cols-1">
         <div class="col">
@@ -494,11 +500,14 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table id="tb_data" class="display table table-bordered dt-responsive"
+                    <table id="tb_data" data-user-role="{{ auth()->user()->role->name }}" class="display table table-bordered dt-responsive"
                         style="width:100%">
                         <thead>
                             <tr>
                                 <th>Date</th>
+                                @if (auth()->user()->role->name !== 'customer')
+                                    <th>Customer</th>
+                                @endif
                                 <th>Invoice No</th>
                                 <th>Status</th>
                                 <th>Amount</th>
@@ -515,42 +524,32 @@
     <!--end row-->
 
     <!-- Edit Order Status Modal -->
-    <!-- <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="editProductForm">
+            <form id="editOrderForm">
             @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Edit Product</h5>
+                        <h5 class="modal-title">Edit Order</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" id="edit_product_id">
+                        <input type="hidden" id="edit_order_id">
                         <div class="mb-3">
-                            <label for="edit_weight" class="form-label">Weight (kg)</label>
-                            <input type="number" class="form-control" id="edit_weight" name="weight" step="0.50" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_width" class="form-label">Width (cm)</label>
-                            <input type="number" class="form-control" id="edit_width" name="width" step="0.50">
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_height" class="form-label">Height (cm)</label>
-                            <input type="number" class="form-control" id="edit_height" name="height" step="0.50">
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_length" class="form-label">Length (cm)</label>
-                            <input type="number" class="form-control" id="edit_length" name="length" step="0.50">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-control w-50" id="status" name="status" required>
+                                <option value="packed" selected>Packed</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             </form>
         </div>
-    </div> -->
+    </div>
 @endsection
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
