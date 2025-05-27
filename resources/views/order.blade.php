@@ -503,6 +503,7 @@
                                 <th>Status</th>
                                 <th>Amount</th>
                                 <th>Payment Method</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>

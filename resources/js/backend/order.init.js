@@ -70,13 +70,22 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         order: [[0, 'desc']],
         columns: [
-            {   data: 'order_date',
+            {
+                data: 'order_date',
                 name: 'orders.created_at' ,
                 render: function (data) {
                     return formatIndonesianDate(data);
                 }
             },
-            { data: 'invoice_number', name: 'invoice_number', orderable: false, searchable: false },
+            {
+                data: 'invoice_number',
+                name: 'invoice_number',
+                orderable: false,
+                searchable: false,
+                render: function (data) {
+                    return '<a href="javascript:void(0);" class="fw-medium link-primary">#' + data + '</a>';
+                }
+            },
             {
                 data: 'status',
                 name: 'orders.status',
@@ -84,7 +93,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     return isStatus(data);
                 }
             },
-            {   data: 'order_price',
+            {
+                data: 'order_price',
                 name: 'order_price',
                 render: function (data) {
                     return new Intl.NumberFormat('id-ID', {
@@ -95,49 +105,53 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             },
             { data: 'payment_method', name: 'payment_method' },
-            // {
-            //     data: null,
-            //     orderable: false,
-            //     searchable: false,
-            //     render: function (data, type, row) {
-            //         return `
-            //             <div class="dropdown d-inline-block">
-            //                 <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
-            //                     data-bs-toggle="dropdown" aria-expanded="false">
-            //                     <i class="ri-more-fill align-middle"></i>
-            //                 </button>
-            //                 <ul class="dropdown-menu dropdown-menu-end">
-            //                     <li>
-            //                         <a href="#!" class="dropdown-item edit-product-btn"
-            //                             data-id="${row.id}"
-            //                             data-weight="${row.weight ?? 0}"
-            //                             data-width="${row.width ?? 0}"
-            //                             data-height="${row.height ?? 0}"
-            //                             data-length="${row.length ?? 0}"
-            //                         >
-            //                             Edit
-            //                         </a>
-            //                     </li>
-            //                     <li>
-            //                         <a href="#!" class="dropdown-item view-variant-btn" data-id="${row.id}">
-            //                             Variant
-            //                         </a>
-            //                     </li>
-            //                     <li>
-            //                         <a href="#!" class="dropdown-item edit-image-btn" data-id="${row.id}">
-            //                             Image
-            //                         </a>
-            //                     </li>
-            //                     <li>
-            //                         <a href="#!" class="dropdown-item deactivate-date-btn" data-id="${row.id}">
-            //                             Deactivate By Date
-            //                         </a>
-            //                     </li>
-            //                 </ul>
-            //             </div>
-            //         `;
-            //     }
-            // }
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    let dropdownHTML = `
+                        <!-- <li>
+                            <a href="#!" class="dropdown-item edit-product-btn"
+                                data-id="${row.id}"
+                                data-weight="${row.weight ?? 0}"
+                                data-width="${row.width ?? 0}"
+                                data-height="${row.height ?? 0}"
+                                data-length="${row.length ?? 0}"
+                            >
+                                Edit
+                            </a>
+                        </li> -->
+                        <li>
+                            <a href="#!" class="dropdown-item view-btn" data-id="${row.invoice_number}">
+                                <i class="ri-eye-fill align-bottom me-2 text-muted"></i> View
+                            </a>
+                        </li>
+                        <!-- <li>
+                            <a href="#!" class="dropdown-item edit-image-btn" data-id="${row.id}">
+                                Image
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#!" class="dropdown-item deactivate-date-btn" data-id="${row.id}">
+                                Deactivate By Date
+                            </a>
+                        </li> -->
+                    `;
+
+                    return `
+                        <div class="dropdown d-inline-block">
+                            <button class="btn btn-soft-secondary btn-sm dropdown" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="ri-more-fill align-middle"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                ${dropdownHTML}
+                            </ul>
+                        </div>
+                    `;
+                }
+            }
         ]
     });
 
