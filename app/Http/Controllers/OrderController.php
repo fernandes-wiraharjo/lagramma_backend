@@ -57,6 +57,16 @@ class OrderController extends Controller
             $query->where('orders.user_id', $user->id);
         }
 
+        if ($request->start_date || $request->end_date) {
+            if (!$request->end_date) {
+                $request->end_date = $request->start_date;
+            }
+            $start = Carbon::createFromFormat('d M, Y', $request->start_date)->startOfDay();
+            $end = Carbon::createFromFormat('d M, Y', $request->end_date)->endOfDay();
+
+            $query->whereBetween('orders.created_at', [$start, $end]);
+        }
+
          // Define sortable columns based on DataTables column index
          $sortableColumns = [
             0 => 'orders.created_at',
@@ -85,7 +95,7 @@ class OrderController extends Controller
 
         // Get total records count (before filtering)
         if ($user->role->name === 'customer') {
-            $totalRecords = Order::count()->where('orders.user_id', $user->id);
+            $totalRecords = Order::where('orders.user_id', $user->id)->count();
         } else {
             $totalRecords = Order::count();
         }
