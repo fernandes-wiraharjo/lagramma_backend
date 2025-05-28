@@ -188,17 +188,31 @@ class OrderController extends Controller
             if ($totalWeight >= 10) $vehicle = 'Truck';
             elseif ($totalWeight > 5) $vehicle = 'Mobil';
 
-            // Step 4: Call external pickup API
-            $response = Http::withHeaders([
-                'x-api-key' => $komerceApiKey
-            ])->post("{$baseUrlKomerce}/order/api/v1/pickup/request", [
+            $apiRequestBody = [
                 'pickup_date' => $pickupDate,
                 'pickup_time' => $pickupTime,
                 'pickup_vehicle' => $vehicle,
                 'orders' => [
                     ['order_no' => $orderDeliveryNo]
                 ]
-            ]);
+            ];
+            $apiRequestUrl = "{$baseUrlKomerce}/order/api/v1/pickup/request";
+            $apiHeaders = ['x-api-key' => $komerceApiKey];
+
+            // Step 4: Call external pickup API
+            $response = Http::withHeaders($apiHeaders)->post($apiRequestUrl, $apiRequestBody);
+
+            // Log both success and failed for now
+            insertApiErrorLog(
+                'Pickup Request',
+                $apiRequestUrl,
+                'POST',
+                json_encode([]),
+                json_encode([]),
+                json_encode($apiRequestBody),
+                $response->status(),
+                $response->body()
+            );
 
             if ($response->status() !== 201 || empty($response['data'][0]['awb'])) {
                 return response()->json([
