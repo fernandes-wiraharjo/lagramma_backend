@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
             searchable: false,
             render: function (data, type, row) {
                 const isPending = row.status === 'pending';
+                const isPacked = row.status === 'packed';
 
                 let dropdownHTML = `
                     <li>
@@ -131,6 +132,16 @@ document.addEventListener('DOMContentLoaded', function () {
                                 data-id="${row.id}"
                             >
                                 <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit
+                            </a>
+                        </li>
+                    `;
+                } else if (!isCustomer && isPacked) {
+                    dropdownHTML += `
+                        <li>
+                            <a href="#!" class="dropdown-item request-pickup-btn"
+                                data-id="${row.id}"
+                            >
+                                <i class="ri-truck-fill align-bottom me-2 text-muted"></i> Request Pickup
                             </a>
                         </li>
                     `;
@@ -172,6 +183,26 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '.edit-order-btn', function () {
         $('#edit_order_id').val($(this).data('id'));
         $('#editOrderModal').modal('show');
+    });
+
+    $(document).on('click', '.request-pickup-btn', async function () {
+        const orderId = $(this).data('id');
+
+        $.ajax({
+            url: `/orders/${orderId}/request-pickup`,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (res) {
+                alert(res.message);
+                $('#tb_data').DataTable().ajax.reload(null, false);
+            },
+            error: function (xhr) {
+                const res = xhr.responseJSON;
+                alert(res?.meta?.message || 'Pickup failed');
+            }
+        });
     });
 
     $('#editOrderForm').submit(function (e) {

@@ -39,5 +39,9 @@ return [
 
     'xendit' => [
         'webhook_token_id' => env('XENDIT_WEBHOOK_TOKEN_ID')
+    ],
+
+    'raja_ongkir' => [
+        'webhook_token_id' => env('RO_WEBHOOK_TOKEN_ID')
     ]
 ];

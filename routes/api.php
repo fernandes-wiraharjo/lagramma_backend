@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\DeliveryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,3 +28,4 @@ Route::middleware('auth:sanctum')->post('/logout-store', function () {
 });
 
 Route::post('/invoice-webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
+Route::put('/delivery-webhook', [DeliveryController::class, 'webhook'])->name('delivery.webhook');
