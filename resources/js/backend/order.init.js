@@ -188,21 +188,41 @@ document.addEventListener('DOMContentLoaded', function () {
     $(document).on('click', '.request-pickup-btn', async function () {
         const orderId = $(this).data('id');
 
-        $.ajax({
-            url: `/orders/${orderId}/request-pickup`,
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (res) {
-                alert(res.message);
-                $('#tb_data').DataTable().ajax.reload(null, false);
-            },
-            error: function (xhr) {
-                const res = xhr.responseJSON;
-                alert(res?.meta?.message || 'Pickup failed');
-            }
+        const result = await Swal.fire({
+            title: 'Schedule Pickup',
+            text: 'Pickup will be scheduled 90 minutes from now. Do you want to proceed?',
+            icon: 'info',
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Yes, proceed'
         });
+
+        if (result.isConfirmed) {
+             Swal.fire({
+                title: 'Processing...',
+                text: 'Sending pickup request...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            $.ajax({
+                url: `/orders/${orderId}/request-pickup`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (res) {
+                    Swal.fire('Success', res.meta.message, 'success');
+                    $('#tb_data').DataTable().ajax.reload(null, false);
+                },
+                error: function (xhr) {
+                    const res = xhr.responseJSON;
+                    Swal.fire('Error', res?.meta?.message || 'Pickup failed', 'error');
+                }
+            });
+        }
     });
 
     $('#editOrderForm').submit(function (e) {

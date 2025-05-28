@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderDelivery;
+use App\Models\Notification;
+use App\Mail\PickupRequestedMail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -155,5 +160,99 @@ class OrderController extends Controller
         $order->save();
 
         return response()->json(['success' => true, 'message' => 'Order updated successfully']);
+    }
+
+    public function requestPickup(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $order = Order::with(['details.product', 'delivery', 'user'])->findOrFail($id);
+
+            // Step 1: Calculate pickup time
+            $pickupDateTime = now()->addMinutes(95);
+            $pickupDate = $pickupDateTime->format('Y-m-d');
+            $pickupTime = $pickupDateTime->format('H:i');
+            $baseUrlKomerce = config('app.komerce_api_url');
+            $komerceApiKey = config('app.komerce_api_key');
+            $orderDeliveryNo = $order->delivery->order_delivery_no;
+            $invoiceNumber = $order->invoice_number;
+
+            // Step 2: Calculate total weight
+            $totalWeight = $order->details->sum(function ($detail) {
+                return optional($detail->product)->weight * $detail->qty;
+            });
+
+            // Step 3: Determine vehicle type
+            $vehicle = 'Motor';
+            if ($totalWeight >= 10) $vehicle = 'Truck';
+            elseif ($totalWeight > 5) $vehicle = 'Mobil';
+
+            // Step 4: Call external pickup API
+            $response = Http::withHeaders([
+                'x-api-key' => $komerceApiKey
+            ])->post("{$baseUrlKomerce}/order/api/v1/pickup/request", [
+                'pickup_date' => $pickupDate,
+                'pickup_time' => $pickupTime,
+                'pickup_vehicle' => $vehicle,
+                'orders' => [
+                    ['order_no' => $orderDeliveryNo]
+                ]
+            ]);
+
+            if ($response->status() !== 201 || empty($response['data'][0]['awb'])) {
+                return response()->json([
+                    'meta' => [
+                        'message' => $response['meta']['message'] ?? 'Pickup request failed',
+                        'code' => $response->status(),
+                        'status' => 'error',
+                    ],
+                    'data' => null
+                ], $response->status());
+            }
+
+            $awb = $response['data'][0]['awb'];
+
+            // Step 5: Update order and delivery
+            $order->update(['status' => 'request picked up']);
+
+            OrderDelivery::where('order_id', $id)
+                ->update(['receipt_number' => $awb]);
+
+            // Step 6: Notification + Email
+            Notification::create([
+                'user_id' => $order->user_id,
+                'title' => 'Pickup Requested',
+                'type' => 'info_resi',
+                'message' => 'Order #' . $invoiceNumber . ' has been scheduled for pickup. Resi no: ' . $awb,
+                'link' => url("/orders/{$invoiceNumber}/detail#track-order")
+            ]);
+
+            Mail::to($order->user->email)->send(new PickupRequestedMail($order, $awb));
+
+            DB::commit();
+
+            return response()->json([
+                'meta' => [
+                    'message' => 'Pickup requested successfully. Pickup will be approximately at ' . now()->addMinutes(90)->format('H:i') . '.',
+                    'code' => 201,
+                    'status' => 'success'
+                ],
+                'data' => [
+                    'order_no' => $orderDeliveryNo,
+                    'awb' => $awb
+                ]
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'meta' => [
+                    'message' => $e->getMessage(),
+                    'code' => 500,
+                    'status' => 'error',
+                ],
+                'data' => null
+            ], 500);
+        }
     }
 }

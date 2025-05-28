@@ -5,6 +5,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DeliveryController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,12 @@ Route::middleware('auth:sanctum')->post('/logout-store', function () {
 
 Route::post('/invoice-webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
 Route::put('/delivery-webhook', [DeliveryController::class, 'webhook'])->name('delivery.webhook');
+
+// Route::get('/test-email', function () {
+//     Mail::raw('This is a test email', function ($message) {
+//         $message->to('fernandeswiraharjo@gmail.com')
+//             ->subject('Test Email');
+//     });
+
+//     return 'Email sent!';
+// });

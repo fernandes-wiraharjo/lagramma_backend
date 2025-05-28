@@ -150,7 +150,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/list', [OrderController::class, 'get'])->name('list-order');
     Route::get('/orders/{invoice_number}/detail', [OrderController::class, 'getDetail'])->name('order-detail');
     Route::post('/orders/{id}/update', [OrderController::class, 'update'])->name('update-order');
-    Route::post('/orders/{id}/request-pickup', [OrderController::class, 'requestPickUp'])->name('request-pickup-order');
+    Route::post('/orders/{id}/request-pickup', [OrderController::class, 'requestPickup'])->name('request-pickup-order');
 
     //template
     Route::get('{any}', [TonerController::class, 'index']);
