@@ -12,6 +12,7 @@ use App\Http\Controllers\TonerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HamperSettingController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -151,6 +152,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{invoice_number}/detail', [OrderController::class, 'getDetail'])->name('order-detail');
     Route::post('/orders/{id}/update', [OrderController::class, 'update'])->name('update-order');
     Route::post('/orders/{id}/request-pickup', [OrderController::class, 'requestPickup'])->name('request-pickup-order');
+
+    // notification
+    Route::get('/notifications', [NotificationController::class, 'getNotifications']);
+    Route::post('/notifications/{id}/mark-read', [NotificationController::class, 'markRead']);
 
     //template
     Route::get('{any}', [TonerController::class, 'index']);

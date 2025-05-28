@@ -260,16 +260,16 @@
                         <i class="bi bi-sun align-middle fs-20"></i>
                     </button>
                     <div class="dropdown-menu p-2 dropdown-menu-end" id="light-dark-mode">
-                        <a href="#!" class="dropdown-item" data-mode="light"><i class="bi bi-sun align-middle me-2"></i> Defualt (light mode)</a>
+                        <a href="#!" class="dropdown-item" data-mode="light"><i class="bi bi-sun align-middle me-2"></i> Default (light mode)</a>
                         <a href="#!" class="dropdown-item" data-mode="dark"><i class="bi bi-moon align-middle me-2"></i> Dark</a>
-                        <a href="#!" class="dropdown-item" data-mode="auto"><i class="bi bi-moon-stars align-middle me-2"></i> Auto (system defualt)</a>
+                        <a href="#!" class="dropdown-item" data-mode="auto"><i class="bi bi-moon-stars align-middle me-2"></i> Auto (system default)</a>
                     </div>
                 </div>
 
                 <div class="dropdown topbar-head-dropdown ms-1 header-item dropdown-hover-end" id="notificationDropdown">
                     <button type="button" class="btn btn-icon btn-topbar btn-ghost-dark rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown"  data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                         <i class='bi bi-bell fs-18'></i>
-                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger"><span class="notification-badge">4</span><span class="visually-hidden">unread messages</span></span>
+                        <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger"><span class="notification-badge">0</span><span class="visually-hidden">unread messages</span></span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
 
@@ -277,17 +277,18 @@
                             <div class="p-3 border-bottom border-bottom-dashed">
                                 <div class="row align-items-center">
                                     <div class="col">
-                                        <h6 class="mb-0 fs-16 fw-semibold"> Notifications <span class="badge bg-danger-subtle text-danger fs-13 notification-badge"> 4</span></h6>
-                                        <p class="fs-14 text-muted mt-1 mb-0">You have <span class="fw-semibold notification-unread">3</span> unread messages</p>
+                                        <!-- <h6 class="mb-0 fs-16 fw-semibold"> Notifications <span class="badge bg-danger-subtle text-danger fs-13 notification-badge"> 4</span></h6> -->
+                                         <h6 class="mb-0 fs-16 fw-semibold"> Notifications </h6>
+                                        <p class="fs-14 text-muted mt-1 mb-0">You have <span class="badge bg-danger-subtle text-danger fs-13 notification-badge">0</span> unread messages</p>
                                     </div>
-                                    <div class="col-auto dropdown">
+                                    <!-- <div class="col-auto dropdown">
                                         <a href="javascript:void(0);" data-bs-toggle="dropdown" class="link-secondar2 fs-15"><i class="bi bi-three-dots-vertical"></i></a>
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" href="#">All Clear</a></li>
                                             <li><a class="dropdown-item" href="#">Mark all as read</a></li>
                                             <li><a class="dropdown-item" href="#">Archive All</a></li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
@@ -295,7 +296,7 @@
 
                         <div class="py-2 ps-2" id="notificationItemsTabContent">
                             <div data-simplebar style="max-height: 300px;" class="pe-2">
-                                <h6 class="text-overflow text-muted fs-13 my-2 text-uppercase notification-title">New</h6>
+                                <!-- <h6 class="text-overflow text-muted fs-13 my-2 text-uppercase notification-title">New</h6> -->
                                 <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
                                     <div class="d-flex">
                                         <div class="avatar-xs me-3 flex-shrink-0">
@@ -313,16 +314,16 @@
                                                 <span><i class="mdi mdi-clock-outline"></i> Just 30 sec ago</span>
                                             </p>
                                         </div>
-                                        <div class="px-2 fs-15">
+                                        <!-- <div class="px-2 fs-15">
                                             <div class="form-check notification-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="all-notification-check01">
                                                 <label class="form-check-label" for="all-notification-check01"></label>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 
-                                <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
+                                <!-- <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
                                     <div class="d-flex">
                                         <div class="position-relative me-3 flex-shrink-0">
                                             <img src="{{ URL::asset('build/images/users/avatar-2.jpg') }}" class="rounded-circle avatar-xs" alt="user-pic">
@@ -348,9 +349,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
+                                <!-- <div class="text-reset notification-item d-block dropdown-item position-relative unread-message">
                                     <div class="d-flex">
                                         <div class="avatar-xs me-3 flex-shrink-0">
                                             <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-16">
@@ -373,11 +374,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <h6 class="text-overflow text-muted fs-13 my-2 text-uppercase notification-title">Read Before</h6>
+                                <!-- <h6 class="text-overflow text-muted fs-13 my-2 text-uppercase notification-title">Read Before</h6> -->
 
-                                <div class="text-reset notification-item d-block dropdown-item position-relative">
+                                <!-- <div class="text-reset notification-item d-block dropdown-item position-relative">
                                     <div class="d-flex">
 
                                         <div class="position-relative me-3 flex-shrink-0">
@@ -405,13 +406,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
-                            <div class="notification-actions" id="notification-actions">
+                            <!-- <div class="notification-actions" id="notification-actions">
                                 <div class="d-flex text-muted justify-content-center align-items-center">
                                     Select <div id="select-content" class="text-body fw-semibold px-1">0</div> Result <button type="button" class="btn btn-link link-danger p-0 ms-2" data-bs-toggle="modal" data-bs-target="#removeNotificationModal">Remove</button>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

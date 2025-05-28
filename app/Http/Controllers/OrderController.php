@@ -239,7 +239,10 @@ class OrderController extends Controller
                 'title' => 'Pickup Requested',
                 'type' => 'info_resi',
                 'message' => 'Order #' . $invoiceNumber . ' has been scheduled for pickup. Resi no: ' . $awb,
-                'link' => url("/orders/{$invoiceNumber}/detail#track-order")
+                'link' => url("/orders/{$invoiceNumber}/detail#track-order"),
+                'is_read' => false,
+                'created_by' => auth()->id(),
+                'updated_at' => null
             ]);
 
             Mail::to($order->user->email)->send(new PickupRequestedMail($order, $awb));
