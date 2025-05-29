@@ -2,6 +2,41 @@
 @section('title')
     Order Overview
 @endsection
+@section('css')
+    <style>
+        .timeline {
+            list-style: none;
+            padding: 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #dee2e6;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 10px;
+            width: 10px;
+            height: 10px;
+            background-color: #0d6efd;
+            border-radius: 50%;
+        }
+    </style>
+@endsection
 @section('content')
     <x-breadcrumb title="Overview" pagetitle="Orders" />
 
@@ -175,6 +210,7 @@
                                 <i class="bi bi-truck fs-1"></i>
                                 <h5 class="fs-18">{{ $order->delivery->shipping_name }} </h5>
                                 <p class="mb-0">ID: {{ $order->delivery->order_delivery_no }}</p>
+                                 <p class="mb-0">Resi: {{ $order->delivery->receipt_number }}</p>
                                 <p class="mb-0">Shipping Type : {{ $order->delivery->shipping_type }}</p>
                                 <p class="mb-0">Status : {{ $order->delivery->status }}</p>
                             </div>
@@ -240,6 +276,27 @@
                 </div>
                 <div class="card-body">
                     <div class="row justify-content-between">
+                        @if(!$trackingFounded)
+                            <div class="col-12">
+                                <div class="alert alert-warning mb-0">No tracking info available.</div>
+                            </div>
+                        @else
+                            <div class="col-12">
+                                <p><strong>Last Status:</strong> {{ $trackingData['last_status'] }}</p>
+
+                                <ul class="timeline">
+                                    @foreach($trackingData['history'] as $history)
+                                        <li class="timeline-item mb-4">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span><strong>{{ $history['desc'] }}</strong></span>
+                                                <span class="text-muted">{{ \Carbon\Carbon::parse($history['date'])->format('d M Y H:i') }}</span>
+                                            </div>
+                                            <div class="text-muted small">{{ $history['status'] }} ({{ $history['code'] }})</div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                     <!--end row-->
                 </div>

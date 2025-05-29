@@ -144,7 +144,32 @@ class OrderController extends Controller
             abort(404, 'Order not found');
         }
 
-        return view('order-detail', compact('order'));
+        $trackingFounded = false;
+        $trackingData = [];
+        if ($order->delivery->receipt_number != "") {
+            $shippingName = $order->delivery->shipping_name;
+            $airwayBill = $order->delivery->receipt_number;
+            $apiKey = config('app.komerce_api_key');
+            $baseUrlKomerce = config('app.komerce_api_url');
+
+            $response = Http::withHeaders([
+                'x-api-key' => $apiKey,
+            ])->get("{$baseUrlKomerce}/order/api/v1/orders/history-airway-bill", [
+                'shipping' => $shippingName,
+                'airway_bill' => $airwayBill
+            ]);
+
+            $result = $response->json();
+
+            if ($response->successful() && $result['meta']['status'] === 'success') {
+                $trackingFounded = true;
+                $trackingData = $result['data'];
+            } else {
+                $trackingFounded = false;
+            }
+        }
+
+        return view('order-detail', compact('order', 'trackingFounded', 'trackingData'));
     }
 
     public function update($id, Request $request)
