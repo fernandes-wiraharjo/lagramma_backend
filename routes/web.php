@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HamperSettingController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,6 +60,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/my-account', [AccountController::class, 'index'])->name('index-my-account');
         Route::get('/account-setting', [AccountController::class, 'indexSetting'])->name('index-setting-account');
         Route::get('/orders', [OrderController::class, 'index'])->name('index-order');
+        Route::get('/report/sales-summary', [ReportController::class, 'salesSummary'])->name('report-sales-summary');
+        Route::get('/report/top-products', [ReportController::class, 'topProducts'])->name('report-top-products');
     });
 
     //role
@@ -156,6 +159,10 @@ Route::middleware(['auth'])->group(function () {
     // notification
     Route::get('/notifications', [NotificationController::class, 'getNotifications']);
     Route::post('/notifications/{id}/mark-read', [NotificationController::class, 'markRead']);
+
+    // report
+    Route::get('/report/sales-summary/list', [ReportController::class, 'getSalesSummary']);
+    Route::get('/report/top-products/list', [ReportController::class, 'getTopProducts']);
 
     //template
     Route::get('{any}', [TonerController::class, 'index']);

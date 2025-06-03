@@ -69,6 +69,16 @@ class MenuSeeder extends Seeder
                 'created_by' => null,
                 'updated_by' => null,
             ],
+            [
+                'name' => 'Report',
+                'icon' => 'bi bi-pie-chart',
+                'url' => null,
+                'parent_id' => null,
+                'sequence' => 6,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
         ];
 
         foreach ($menus as $menu) {
@@ -105,6 +115,13 @@ class MenuSeeder extends Seeder
 
         if (!$accountMenu) {
             throw new \Exception("Account menu not found. Please seed menus first.");
+        }
+
+        // Get the menu ID where menu is 'report'
+        $reportMenu = Menu::where('name', 'Report')->first();
+
+        if (!$reportMenu) {
+            throw new \Exception("Report menu not found. Please seed menus first.");
         }
 
         $submenus = [
@@ -202,6 +219,24 @@ class MenuSeeder extends Seeder
                 'name' => 'Setting',
                 'url' => 'account-setting',
                 'parent_id' => $accountMenu->id,
+                'sequence' => 2,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
+            [
+                'name' => 'Sales Summary',
+                'url' => 'report/sales-summary',
+                'parent_id' => $reportMenu->id,
+                'sequence' => 1,
+                'is_active' => true,
+                'created_by' => null,
+                'updated_by' => null,
+            ],
+            [
+                'name' => 'Top Selling Products',
+                'url' => 'report/top-products',
+                'parent_id' => $reportMenu->id,
                 'sequence' => 2,
                 'is_active' => true,
                 'created_by' => null,
