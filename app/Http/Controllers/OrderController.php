@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class OrderController extends Controller
 {
@@ -294,6 +295,38 @@ class OrderController extends Controller
                     'status' => 'error',
                 ],
                 'data' => null
+            ], 500);
+        }
+    }
+
+    public function printInvoiceBarcode(Request $request, $invoiceNo)
+    {
+        try {
+            // Generate barcode image
+            $generator = new BarcodeGeneratorPNG();
+            $barcodeBinary = $generator->getBarcode($invoiceNo, $generator::TYPE_CODE_128, 2, 60);
+
+            // Convert to base64
+            $barcodeBase64 = base64_encode($barcodeBinary);
+            $barcodeSrc = 'data:image/png;base64,' . $barcodeBase64;
+
+            // Return HTML directly with embedded base64 image
+            $html = view('print-invoice-barcode', [
+                'invoiceNo' => $invoiceNo,
+                'barcodeUrl' => $barcodeSrc
+            ])->render();
+
+            return response()->json([
+                'meta' => [
+                    'message' => 'Barcode generated successfully.',
+                    'html' => $html
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'meta' => [
+                    'message' => 'Failed to generate barcode: ' . $e->getMessage()
+                ]
             ], 500);
         }
     }

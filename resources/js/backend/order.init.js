@@ -134,6 +134,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit
                             </a>
                         </li>
+                        <li>
+                            <a href="#!" class="dropdown-item print-invoice-barcode"
+                                data-invoice-no="${row.invoice_number}"
+                            >
+                                <i class="ri-printer-fill align-bottom me-2 text-muted"></i> Print Invoice Barcode
+                            </a>
+                        </li>
                     `;
                 } else if (!isCustomer && isPacked) {
                     dropdownHTML += `
@@ -248,5 +255,47 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Failed to update order.');
             }
         });
+    });
+
+    $(document).on('click', '.print-invoice-barcode', async function () {
+        const invoiceNo = $(this).data('invoice-no');
+
+        const result = await Swal.fire({
+            title: 'Print Invoice Barcode',
+            text: 'Do you want to print the barcode for this invoice?',
+            icon: 'info',
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Yes, print it'
+        });
+
+        if (result.isConfirmed) {
+             Swal.fire({
+                title: 'Processing...',
+                text: 'Preparing the print preview...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            $.ajax({
+                url: `/orders/${invoiceNo}/print-barcode`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (res) {
+                    Swal.close();
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write(res.meta.html);
+                    printWindow.document.close();
+                },
+                error: function (xhr) {
+                    const res = xhr.responseJSON;
+                    Swal.fire('Error', res?.meta?.message || 'Print failed', 'error');
+                }
+            });
+        }
     });
 });
