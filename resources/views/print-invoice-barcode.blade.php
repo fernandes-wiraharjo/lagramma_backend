@@ -7,7 +7,8 @@
             size: 50mm 20mm;
             margin: 0;
         }
-         body {
+
+        body {
             margin: 0;
             padding: 0;
             width: 50mm;
@@ -27,7 +28,7 @@
 
         .barcode-img {
             width: auto;
-            height: 18mm; /* force a specific height to stretch it */
+            height: 16mm;
             display: block;
         }
 
@@ -39,7 +40,7 @@
 </head>
 <body onload="window.print()">
     <div class="barcode-container">
-        <img class="barcode-img" src="{{ $barcodeUrl }}" alt="Invoice Barcode">
+        <img class="barcode-img" src="{{ $barcodeUrl }}" alt="Barcode: {{ $barcodeCode }}">
         <div class="barcode-text">{{ $invoiceNo }}</div>
     </div>
 </body>

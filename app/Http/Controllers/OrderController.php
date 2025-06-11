@@ -302,17 +302,21 @@ class OrderController extends Controller
     public function printInvoiceBarcode(Request $request, $invoiceNo)
     {
         try {
-            // Generate barcode image
-            $generator = new BarcodeGeneratorPNG();
-            $barcodeBinary = $generator->getBarcode($invoiceNo, $generator::TYPE_CODE_128, 2, 60);
+            // Extract last 5 characters of invoice number
+            $shortCode = substr($invoiceNo, -5); // e.g., "B0E35"
 
-            // Convert to base64
+            // Generate barcode image using shortCode
+            $generator = new BarcodeGeneratorPNG();
+            $barcodeBinary = $generator->getBarcode($shortCode, $generator::TYPE_CODE_128, 2, 60);
+
+            // Convert image to base64
             $barcodeBase64 = base64_encode($barcodeBinary);
             $barcodeSrc = 'data:image/png;base64,' . $barcodeBase64;
 
-            // Return HTML directly with embedded base64 image
+            // Return the blade view
             $html = view('print-invoice-barcode', [
-                'invoiceNo' => $invoiceNo,
+                'invoiceNo' => $invoiceNo,     // Full invoice number for display
+                'barcodeCode' => $shortCode,   // Last 5 chars for barcode
                 'barcodeUrl' => $barcodeSrc
             ])->render();
 
