@@ -40,6 +40,12 @@
 @section('content')
     <x-breadcrumb title="Overview" pagetitle="Orders" />
 
+    @if (session('error'))
+        <div class="alert alert-danger mt-2">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="row mb-4 align-items-center">
         <div class="col">
             <h6 class="fs-18 mb-0">Order ID: #{{ $order->id }}</h6>
@@ -197,11 +203,25 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header d-flex align-items-center">
+                        <div class="card-header d-flex align-items-center flex-wrap gap-2">
                             <h5 class="card-title flex-grow-1 mb-0">Logistics Details</h5>
+                            @if (in_array($order->status, ['request picked up', 'picked up', 'delivered']))
+                                <div class="flex-shrink-0">
+                                    <a href="{{ route('orders.print-label', $order->delivery->order_delivery_no) }}" target="_blank"
+                                        class="btn btn-sm btn-primary print-label-btn">
+                                        Print Label
+                                    </a>
+                                </div>
+
+                                @if ($order->delivery->is_send_to_other)
+                                    <div class="flex-shrink-0">
+                                        <a href="#track-order" class="btn btn-sm btn-success">Print Greeting</a>
+                                    </div>
+                                @endif
+                            @endif
                             @if ($order->delivery->order_delivery_no)
                                 <div class="flex-shrink-0">
-                                    <a href="#track-order" class="btn btn-sm btn-info">Track Order</a>
+                                    <a href="#track-order" class="btn btn-sm btn-warning">Track Order</a>
                                 </div>
                              @endif
                         </div>

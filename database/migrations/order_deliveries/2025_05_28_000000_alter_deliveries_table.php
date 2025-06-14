@@ -11,7 +11,7 @@ return new class extends Migration {
   public function up(): void
   {
     Schema::table('order_deliveries', function (Blueprint $table) {
-        $table->string('receipt_number', 100)->after('sto_note');
+        $table->string('receipt_number', 100)->default('')->after('sto_note');
     });
   }
 

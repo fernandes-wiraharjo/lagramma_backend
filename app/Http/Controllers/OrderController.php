@@ -334,4 +334,42 @@ class OrderController extends Controller
             ], 500);
         }
     }
+
+    public function printLabel(Request $request, $orderDeliveryNo)
+    {
+        try {
+            $baseUrlKomerce = config('app.komerce_api_url');
+            $komerceApiKey = config('app.komerce_api_key');
+
+            $queryParams = http_build_query([
+                'order_no' => $orderDeliveryNo,
+                'page' => 'page_6',
+            ]);
+
+            $url = "$baseUrlKomerce/order/api/v1/orders/print-label?$queryParams";
+
+            $response = Http::withHeaders([
+                'x-api-key' => $komerceApiKey,
+            ])->post($url);
+
+            if ($response->status() !== 200) {
+                $meta = $response->json('meta');
+                $message = $meta['message'] ?? 'Failed to generate label.';
+                return back()->with('error', $message);
+            }
+
+            $data = $response->json('data');
+            $base64 = $data['base_64'] ?? null;
+
+            if ($base64) {
+                return response(base64_decode($base64))
+                    ->header('Content-Type', 'application/pdf')
+                    ->header('Content-Disposition', 'inline; filename="label-' . $orderDeliveryNo . '.pdf"');
+            }
+
+            return back()->with('error', 'No label data found.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
 }

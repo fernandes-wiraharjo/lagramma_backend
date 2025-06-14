@@ -156,6 +156,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/{id}/update', [OrderController::class, 'update'])->name('update-order');
     Route::post('/orders/{id}/request-pickup', [OrderController::class, 'requestPickup'])->name('request-pickup-order');
     Route::post('/orders/{invoiceNo}/print-barcode', [OrderController::class, 'printInvoiceBarcode'])->name('print-invoice-barcode');
+    Route::get('/orders/{orderDeliveryNo}/print-label', [OrderController::class, 'printLabel'])->name('orders.print-label');
+
 
     // notification
     Route::get('/notifications', [NotificationController::class, 'getNotifications']);
