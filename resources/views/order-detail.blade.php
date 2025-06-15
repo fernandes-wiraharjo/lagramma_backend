@@ -213,9 +213,14 @@
                                     </a>
                                 </div>
 
-                                @if ($order->delivery->is_send_to_other)
+                                @if ($order->delivery && $order->delivery->is_send_to_other)
                                     <div class="flex-shrink-0">
-                                        <a href="#track-order" class="btn btn-sm btn-success">Print Greeting</a>
+                                        <a href="{{ route('print.greeting', $order->id) }}"
+                                            class="btn btn-sm btn-success"
+                                            target="_blank"
+                                        >
+                                            Print Greeting
+                                        </a>
                                     </div>
                                 @endif
                             @endif

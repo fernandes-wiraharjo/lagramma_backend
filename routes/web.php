@@ -157,7 +157,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/orders/{id}/request-pickup', [OrderController::class, 'requestPickup'])->name('request-pickup-order');
     Route::post('/orders/{invoiceNo}/print-barcode', [OrderController::class, 'printInvoiceBarcode'])->name('print-invoice-barcode');
     Route::get('/orders/{orderDeliveryNo}/print-label', [OrderController::class, 'printLabel'])->name('orders.print-label');
-
+    Route::get('/orders/{order}/print-greeting', [OrderController::class, 'printGreeting'])->name('print.greeting');
 
     // notification
     Route::get('/notifications', [NotificationController::class, 'getNotifications']);

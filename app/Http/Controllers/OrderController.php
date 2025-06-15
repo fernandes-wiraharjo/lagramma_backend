@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class OrderController extends Controller
@@ -371,5 +372,22 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
+    }
+
+    public function printGreeting(Order $order)
+    {
+        $delivery = $order->delivery;
+
+        if (!$delivery) {
+            return abort(404, 'Delivery data not found.');
+        }
+
+        return response()->view('print-greeting', [
+            'stoPicName' => $delivery->sto_pic_name,
+            'stoPicPhone' => $delivery->sto_pic_phone,
+            'stoReceiverName' => $delivery->sto_receiver_name,
+            'stoReceiverPhone' => $delivery->sto_receiver_phone,
+            'stoNote' => $delivery->sto_note,
+        ]);
     }
 }
