@@ -205,7 +205,8 @@
                     <div class="card">
                         <div class="card-header d-flex align-items-center flex-wrap gap-2">
                             <h5 class="card-title flex-grow-1 mb-0">Logistics Details</h5>
-                            @if (in_array($order->status, ['request picked up', 'picked up', 'delivered']))
+                            @if (in_array($order->status, ['request picked up', 'picked up', 'delivered'])
+                                && auth()->user()->role->name !== 'customer')
                                 <div class="flex-shrink-0">
                                     <a href="{{ route('orders.print-label', $order->delivery->order_delivery_no) }}" target="_blank"
                                         class="btn btn-sm btn-primary print-label-btn">
@@ -233,7 +234,7 @@
                         <div class="card-body">
                             <div class="text-center">
                                 <i class="bi bi-truck fs-1"></i>
-                                <h5 class="fs-18">{{ $order->delivery->shipping_name }} </h5>
+                                <h5 class="fs-18">{{ $order->delivery->shipping_name }}</h5>
                                 <p class="mb-0">ID: {{ $order->delivery->order_delivery_no }}</p>
                                  <p class="mb-0">Resi: {{ $order->delivery->receipt_number }}</p>
                                 <p class="mb-0">Shipping Type : {{ $order->delivery->shipping_type }}</p>
