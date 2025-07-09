@@ -118,8 +118,10 @@ class RegisterController extends Controller
         $user->otp_created_at = now();
         $user->save();
 
-        // Send OTP (using Notification)
-        Notification::send($user, new SendOTP($otp));
+        if (!app()->environment('local')) {
+            // Send OTP (using Notification)
+            Notification::send($user, new SendOTP($otp));
+        }
 
         // Redirect to OTP page
         // return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
