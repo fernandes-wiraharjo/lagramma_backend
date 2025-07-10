@@ -2,7 +2,7 @@
 <div class="app-menu navbar-menu">
     <!-- LOGO -->
     <div class="navbar-brand-box">
-        <a href="index" class="logo logo-dark" style="color:black">
+        <a href="my-account" class="logo logo-dark" style="color:black">
             <span class="logo-sm">
                 LA GRAMMA
                 <!-- <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="26"> -->
@@ -12,7 +12,7 @@
                 <!-- <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="26"> -->
             </span>
         </a>
-        <a href="index" class="logo logo-light" style="color:black">
+        <a href="my-account" class="logo logo-light" style="color:black">
             <span class="logo-sm">
                 LA GRAMMA
                 <!-- <img src="{{ URL::asset('build/images/logo-sm.png') }}" alt="" height="24"> -->
@@ -93,7 +93,7 @@
                     @endforeach
                 @endif
 
-                <li class="menu-title"><span data-key="t-menu">Template {{ __('t-menu') }}</span></li>
+                <!-- <li class="menu-title"><span data-key="t-menu">Template {{ __('t-menu') }}</span></li>
                 <li class="nav-item">
                     <a href="index" class="nav-link menu-link"> <i class="bi bi-speedometer2"></i> <span data-key="t-dashboard">{{ __('t-dashboard') }}</span> <span class="badge badge-pill bg-danger-subtle text-danger" data-key="t-hot">{{ __('t-hot') }}</span></a>
                 </li>
@@ -321,7 +321,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> -->
 
             </ul>
         </div>
