@@ -28,6 +28,9 @@
                                         {{ session('success') }}
                                     </div>
                                 @endif
+                                <div id="resend-success-message" class="d-none alert alert-success">
+                                    OTP has been resent successfully.
+                                </div>
 
                                 <p class="text-muted fs-15">
                                     Please enter the 4 digit code sent to <span class="fw-semibold">{{ request('phone') }}</span>.
@@ -88,7 +91,8 @@
                                         </div> -->
                                     </form><!-- end form -->
                                 </div>
-                                <div class="mt-4 text-center">
+
+                                <!-- <div class="mt-4 text-center">
                                     <p class="mb-0">Didn't receive a code ?
                                         <a href="#"
                                             onclick="event.preventDefault(); document.getElementById('resend-otp-form').submit();"
@@ -96,16 +100,30 @@
                                             Resend
                                         </a>
                                     </p>
-                                </div>
+                                </div> -->
                                 <div class="mt-4 text-center">
-                                    <p class="mb-0"> <a href="{{ route('register') }}"
-                                            class="fw-semibold text-primary text-decoration-underline"> Back </a> </p>
+                                    <p class="mb-0">
+                                        Didn't receive a code ?
+                                        <a href="#" id="resend-link"
+                                        onclick="handleResendRegisterOTP(event)"
+                                        class="fw-semibold text-primary text-decoration-underline">
+                                            Resend
+                                        </a>
+                                        <span id="resend-timer" style="display: none; color: gray; font-weight: 500;"></span>
+                                    </p>
                                 </div>
 
-                                <form id="resend-otp-form" action="{{ route('register.otp.resend') }}" method="POST" style="display: none;">
+                                <div class="mt-4 text-center">
+                                    <p class="mb-0">
+                                        <a href="{{ route('register') }}"
+                                            class="fw-semibold text-primary text-decoration-underline"> Back </a>
+                                    </p>
+                                </div>
+
+                                <!-- <form id="resend-otp-form" action="{{ route('register.otp.resend') }}" method="POST" style="display: none;">
                                     @csrf
                                     <input type="hidden" name="phone" value="{{ request('phone') }}">
-                                </form>
+                                </form> -->
                             </div>
                         </div>
                     </div>
