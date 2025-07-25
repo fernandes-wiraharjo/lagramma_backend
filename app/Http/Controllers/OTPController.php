@@ -131,9 +131,9 @@ class OTPController extends Controller
         $user = User::find(session('otp_user_id'));
 
         if (!$user) {
-            // if ($request->expectsJson()) {
-            //     return response()->json(['message' => 'Please login again.'], 404);
-            // }
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Please login again.'], 404);
+            }
             return back()->withErrors(['otp' => 'Please login again.']);
         }
 
@@ -150,9 +150,9 @@ class OTPController extends Controller
             Notification::send($user, new SendOTP($otp));
         }
 
-        // if ($request->expectsJson()) {
-        //     return response()->json(['message' => 'OTP has been resent successfully.']);
-        // }
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'OTP has been resent successfully.']);
+        }
 
         return back()->with('success', 'OTP has been resent successfully.');
     }
