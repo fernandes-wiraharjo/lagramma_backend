@@ -12,7 +12,10 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        fetchNotifications();
+        window.isLoggedIn = @json(auth()->check());
+        if (window.isLoggedIn) {
+            fetchNotifications();
+        }
 
         function fetchNotifications() {
             fetch('/notifications')
