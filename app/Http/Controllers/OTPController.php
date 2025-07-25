@@ -57,19 +57,28 @@ class OTPController extends Controller
         $user = User::where('phone', $request->phone)->first();
 
         if (!$user) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Phone number not found.'], 404);
+            }
             return back()->withErrors(['otp' => 'Phone number not found.']);
         }
 
-        // Generate OTP
-        $otp = rand(1000, 9999);
+        if (!app()->environment('local')) {
+            // Generate OTP
+            $otp = rand(1000, 9999);
 
-        // Assign OTP and save
-        $user->otp = Hash::make($otp);
-        $user->otp_created_at = now();
-        $user->save();
+            // Assign OTP and save
+            $user->otp = Hash::make($otp);
+            $user->otp_created_at = now();
+            $user->save();
 
-        // Send OTP (using Notification)
-        Notification::send($user, new SendOTP($otp));
+            // Send OTP (using Notification)
+            Notification::send($user, new SendOTP($otp));
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'OTP has been resent successfully.']);
+        }
 
         return back()->with('success', 'OTP has been resent successfully.');
     }
@@ -122,19 +131,28 @@ class OTPController extends Controller
         $user = User::find(session('otp_user_id'));
 
         if (!$user) {
+            // if ($request->expectsJson()) {
+            //     return response()->json(['message' => 'Please login again.'], 404);
+            // }
             return back()->withErrors(['otp' => 'Please login again.']);
         }
 
-        // Generate OTP
-        $otp = rand(1000, 9999);
+        if (!app()->environment('local')) {
+            // Generate OTP
+            $otp = rand(1000, 9999);
 
-        // Assign OTP and save
-        $user->otp = Hash::make($otp);
-        $user->otp_created_at = now();
-        $user->save();
+            // Assign OTP and save
+            $user->otp = Hash::make($otp);
+            $user->otp_created_at = now();
+            $user->save();
 
-        // Send OTP (using Notification)
-        Notification::send($user, new SendOTP($otp));
+            // Send OTP (using Notification)
+            Notification::send($user, new SendOTP($otp));
+        }
+
+        // if ($request->expectsJson()) {
+        //     return response()->json(['message' => 'OTP has been resent successfully.']);
+        // }
 
         return back()->with('success', 'OTP has been resent successfully.');
     }

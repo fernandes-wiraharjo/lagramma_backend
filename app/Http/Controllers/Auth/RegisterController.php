@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\SendOTP;
+// use Illuminate\Auth\Events\Registered;
+// use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -110,15 +112,15 @@ class RegisterController extends Controller
             // 'avatar' => $avatarName
         ]);
 
-        // Generate OTP
-        $otp = rand(1000, 9999);
-
-        // Assign OTP and save
-        $user->otp = Hash::make($otp);
-        $user->otp_created_at = now();
-        $user->save();
-
         if (!app()->environment('local')) {
+            // Generate OTP
+            $otp = rand(1000, 9999);
+
+            // Assign OTP and save
+            $user->otp = Hash::make($otp);
+            $user->otp_created_at = now();
+            $user->save();
+
             // Send OTP (using Notification)
             Notification::send($user, new SendOTP($otp));
         }
@@ -133,4 +135,14 @@ class RegisterController extends Controller
         // Do not log the user in immediately after registration.
         return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
     }
+
+    // public function register(Request $request)
+    // {
+    //     $this->validator($request->all())->validate();
+
+    //     event(new Registered($user = $this->create($request->all())));
+
+    //     return $this->registered($request, $user)
+    //         ?: redirect($this->redirectPath());
+    // }
 }
