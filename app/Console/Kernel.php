@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:sync-moka-categories')->everyThirtyMinutes();
         $schedule->command('app:sync-moka-modifiers')->everyThirtyMinutes();
         $schedule->command('app:sync-moka-sales-types')->everyThirtyMinutes();
-        $schedule->command('app:sync-moka-products')->everyThirtyMinutes();
+        $schedule->command('app:sync-moka-products')->everyFiveMinutes();
     }
 
     /**
