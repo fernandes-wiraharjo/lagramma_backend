@@ -15,13 +15,13 @@ class DeliveryController extends Controller
 {
     public function webhook(Request $request)
     {
-        $providedToken = $request->header('x-callback-token');
-        $expectedToken = config('services.raja_ongkir.webhook_token_id');
+        // $providedToken = $request->header('x-callback-token');
+        // $expectedToken = config('services.raja_ongkir.webhook_token_id');
 
-        if ($providedToken !== $expectedToken) {
-            Log::error('Unauthorized raja ongkir callback token received');
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        // if ($providedToken !== $expectedToken) {
+        //     Log::error('Unauthorized raja ongkir callback token received');
+        //     return response()->json(['error' => 'Unauthorized'], 401);
+        // }
 
         $data = $request->all();
         $orderNo = $data['order_no'];
