@@ -167,7 +167,8 @@
                                                 @enderror
                                             </div>
 
-                                            <div class="mb-3 col-md-12 d-none">
+                                            <!-- <div class="mb-3 col-md-12 d-none"> -->
+                                            <div class="mb-3 col-md-12">
                                                 <label class="form-label" for="password-input">Password <span
                                                         class="text-danger">*</span></label>
                                                 <div class="position-relative auth-pass-inputgroup">
@@ -188,7 +189,8 @@
                                                 </div>
                                             </div>
 
-                                            <div class="mb-3 col-md-12 d-none">
+                                            <!-- <div class="mb-3 col-md-12 d-none"> -->
+                                            <div class="mb-3 col-md-12">
                                                 <label for="password-confirm"
                                                     class="form-label">{{ __('Confirm Password') }} <span
                                                         class="text-danger">*</span></label>

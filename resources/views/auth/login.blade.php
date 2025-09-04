@@ -40,15 +40,19 @@
                                             @enderror
                                         </div>
 
-                                        <div class="mb-3 d-none">
+                                        <!-- <div class="mb-3 d-none"> -->
+                                        <div class="mb-3">
                                             <!-- <div class="float-end">
                                                 <a href="{{ route('password.request') }}" class="text-muted">Forgot password?</a>
                                             </div> -->
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup mb-3">
+                                                <!-- <input id="password" type="password"
+                                                    class="form-control password-input @error('password') is-invalid @enderror"
+                                                    name="password" autocomplete="current-password" placeholder="Enter your password" value=""> -->
                                                 <input id="password" type="password"
                                                     class="form-control password-input @error('password') is-invalid @enderror"
-                                                    name="password" autocomplete="current-password" placeholder="Enter your password" value="">
+                                                    name="password" required autocomplete="current-password" placeholder="Enter your password" value="">
                                                 <button
                                                     class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                                     type="button" id="password-addon"><i

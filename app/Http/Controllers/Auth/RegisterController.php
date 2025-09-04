@@ -65,7 +65,7 @@ class RegisterController extends Controller
                 'name' => ['required', 'string', 'max:100'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'phone' => ['required', 'string', 'unique:users'],
-                // 'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
                 // 'avatar' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             ],
             // [
@@ -99,42 +99,44 @@ class RegisterController extends Controller
 
         $data['full_phone'] = str_replace('-', '', $data['full_phone']);
 
-        $user = User::create([
+        // $user = User::create([
+        return User::create([
             // 'first_name' => $data['first_name'],
             // 'last_name' => $data['last_name'],
             'role_id' => $customerRole->id,
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['full_phone'],
-            // 'password' => Hash::make($data['password']),
-            'password' => "",
+            'password' => Hash::make($data['password']),
+            // 'password' => "",
+            'is_verified' => true,
             'updated_at' => null
             // 'avatar' => $avatarName
         ]);
 
-        if (!app()->environment('local')) {
-            // Generate OTP
-            $otp = rand(1000, 9999);
+        // if (!app()->environment('local')) {
+        //     // Generate OTP
+        //     $otp = rand(1000, 9999);
 
-            // Assign OTP and save
-            $user->otp = Hash::make($otp);
-            $user->otp_created_at = now();
-            $user->save();
+        //     // Assign OTP and save
+        //     $user->otp = Hash::make($otp);
+        //     $user->otp_created_at = now();
+        //     $user->save();
 
-            // Send OTP (using Notification)
-            Notification::send($user, new SendOTP($otp));
-        }
+        //     // Send OTP (using Notification)
+        //     Notification::send($user, new SendOTP($otp));
+        // }
 
-        // Redirect to OTP page
-        // return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
-        return $user;
+        // // Redirect to OTP page
+        // // return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
+        // return $user;
     }
 
-    protected function registered(Request $request, $user)
-    {
-        // Do not log the user in immediately after registration.
-        return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
-    }
+    // protected function registered(Request $request, $user)
+    // {
+    //     // Do not log the user in immediately after registration.
+    //     return redirect()->route('register.otp.verify', ['phone' => $user->phone]);
+    // }
 
     public function register(Request $request)
     {
