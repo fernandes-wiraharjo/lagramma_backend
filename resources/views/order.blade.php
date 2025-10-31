@@ -564,6 +564,10 @@
     <script src="{{ URL::asset('build/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
     <!-- page js -->
+    <script>
+        const FRONTEND_URL = "{{ config('app.frontend_url') }}";
+    </script>
+
     <script src="{{ URL::asset('build/js/backend/order.init.js') }}"></script>
 
     <!-- App js -->

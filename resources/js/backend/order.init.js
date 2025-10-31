@@ -123,6 +123,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             <i class="ri-eye-fill align-bottom me-2 text-muted"></i> View
                         </a>
                     </li>
+                    <li>
+                        <a href="${FRONTEND_URL}/payment/confirmation/${row.invoice_number}" target="_blank" class="dropdown-item">
+                            <i class="ri-coins-fill align-bottom me-2 text-muted"></i> Payment Confirmation
+                        </a>
+                    </li>
                 `;
 
                 if (!isCustomer && isPending) {
