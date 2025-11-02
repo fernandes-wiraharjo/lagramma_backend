@@ -44,6 +44,8 @@ class User extends Authenticatable
         'password'
     ];
 
+    protected $appends = ['role_name'];
+
     /**
      * Get the role of the user.
      */
@@ -65,5 +67,10 @@ class User extends Authenticatable
     public function routeNotificationForSms($notification)
     {
         return $this->phone;
+    }
+
+    public function getRoleNameAttribute()
+    {
+        return $this->role ? $this->role->name : null;
     }
 }

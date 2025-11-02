@@ -248,22 +248,23 @@
                     <div class="card">
                         <div class="card-header d-flex align-items-center">
                             <h5 class="card-title flex-grow-1 mb-0">Payment Detail:</h5>
-                            @if ($order->status === 'waiting for payment')
+                            <!-- @if ($order->status === 'waiting for payment')
                                 <div class="flex-shrink-0">
                                     <a href="{{ $order->payment->invoice_url }}" class="btn btn-sm btn-success">Pay</a>
                                 </div>
-                            @endif
+                            @endif -->
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-sm table-borderless align-middle description-table mb-0">
-                                    <tr>
+                                    <!-- <tr>
                                         <td>Transactions:</td>
                                         <td><span class="fw-medium">#{{ $order->payment->vendor_invoice_id }}</span></td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <td>Payment Method</td>
-                                        <td><span class="fw-medium">{{ $order->payment->payment_method ?? '-' }}</span></td>
+                                        <!-- <td><span class="fw-medium">{{ $order->payment->payment_method ?? '-' }}</span></td> -->
+                                        <td><span class="fw-medium">Bank Transfer (Manual Confirmation)</span></td>
                                     </tr>
                                     <!-- <tr>
                                         <td>Card Number:</td>
@@ -278,8 +279,16 @@
                                         <td><span class="fw-medium">{{ $order->payment->status }}</span></td>
                                     </tr>
                                     <tr>
-                                        <td>Total Amount</td>
+                                        <td>Subtotal</td>
                                         <td><span class="fw-medium">IDR {{ number_format($order->order_price, 0, ',', '.') }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Unique Code</td>
+                                        <td><span class="fw-medium">IDR {{ number_format($order->payment->unique_code, 0, ',', '.') }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Amount</td>
+                                        <td><span class="fw-medium">IDR {{ number_format($order->order_price + $order->payment->unique_code, 0, ',', '.') }}</span></td>
                                     </tr>
                                 </table>
                             </div>
