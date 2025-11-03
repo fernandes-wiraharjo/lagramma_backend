@@ -31,6 +31,11 @@ Route::middleware('auth:sanctum')->post('/logout-store', function () {
 Route::post('/invoice-webhook', [PaymentController::class, 'webhook'])->name('payment.webhook');
 Route::put('/delivery-webhook', [DeliveryController::class, 'webhook'])->name('delivery.webhook');
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/payments/{invoiceNo}/approve', [PaymentController::class, 'approve']);
+    Route::post('/payments/{invoiceNo}/reject', [PaymentController::class, 'reject']);
+});
+
 // Route::get('/test-email', function () {
 //     Mail::raw('This is a test email', function ($message) {
 //         $message->to('fernandeswiraharjo@gmail.com')
