@@ -288,6 +288,7 @@ class PaymentController extends Controller
             'details.product',
             'delivery.address'  // eager load nested relation
         ])->where('invoice_number', $invoiceNo)->first();
+        $user = $order->user;
 
         DB::beginTransaction();
         try {
