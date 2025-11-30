@@ -61,7 +61,7 @@
                         <input type="hidden" id="edit_product_id">
                         <div class="mb-3">
                             <label for="edit_weight" class="form-label">Weight (kg)</label>
-                            <input type="number" class="form-control" id="edit_weight" name="weight" step="0.50" required>
+                            <input type="number" class="form-control" id="edit_weight" name="weight" step="0.01" required>
                         </div>
                         <div class="mb-3">
                             <label for="edit_width" class="form-label">Width (cm)</label>
