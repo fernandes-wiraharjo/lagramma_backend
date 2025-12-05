@@ -99,7 +99,7 @@
                             <div class="card-body">
                                 <p class="text-muted fs-15">Get your free La Gramma account now</p>
                                 <div class="p-2">
-                                    <form class="needs-validation" novalidate method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                                    <form class="needs-validation" novalidate method="POST" action="{{ route('register', ['redirect' => request('redirect')]) }}" enctype="multipart/form-data">
                                         @csrf
 
                                         <div class="row">

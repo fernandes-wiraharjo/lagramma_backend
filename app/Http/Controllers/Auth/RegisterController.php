@@ -144,7 +144,15 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request->all())));
 
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+        // return $this->registered($request, $user)
+        //     ?: redirect($this->redirectPath());
+
+        $redirect = $request->get('redirect');
+
+        if ($redirect) {
+            return redirect()->route('login', ['redirect' => $redirect]);
+        }
+
+        return redirect()->route('login');
     }
 }

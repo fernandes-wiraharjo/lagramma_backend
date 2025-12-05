@@ -92,7 +92,7 @@
                                     </form>
 
                                     <div class="text-center mt-5">
-                                        <p class="mb-0">Don't have an account ? <a href="{{ route('register') }}"
+                                        <p class="mb-0">Don't have an account ? <a href="{{ route('register', ['redirect' => request('redirect')]) }}"
                                                 class="fw-semibold text-secondary text-decoration-underline"> Sign Up</a>
                                         </p>
                                     </div>
