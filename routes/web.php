@@ -171,4 +171,3 @@ Route::middleware(['auth'])->group(function () {
     Route::get('{any}', [TonerController::class, 'index']);
     Route::get('components/{any}', [TonerController::class, 'components']);
 });
-

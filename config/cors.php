@@ -15,10 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout', 'account/*'],
 
     'allowed_methods' => ['*'],
 
+    // 'allowed_origins' => ['https://lagramma.com', 'https://backend.lagramma.com'],
     'allowed_origins' => ['http://lagramma.test', 'http://backend.lagramma.test'],
 
     'allowed_origins_patterns' => [],
