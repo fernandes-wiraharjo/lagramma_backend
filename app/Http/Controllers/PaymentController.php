@@ -424,12 +424,25 @@ class PaymentController extends Controller
             $komerceApiKey = config('app.komerce_api_key');
 
             // Step 3.1: Send order to Komerce
+            $komerceUrl = "{$baseUrlKomerce}/order/api/v1/orders/store";
+
             $komerceResponse = Http::withHeaders([
                 'x-api-key' => $komerceApiKey
-            ])->post("{$baseUrlKomerce}/order/api/v1/orders/store", $komercePayload);
+            ])->post($komerceUrl, $komercePayload);
 
-            if (!$komerceResponse->successful() || $komerceResponse['meta']['code'] !== 201) {
-                throw new \Exception('(4): Failed to create Komerce order: ' . $komerceResponse['meta']['message']);
+            if (!$komerceResponse->successful() || ($komerceResponse['meta']['code'] ?? null) !== 201) {
+                insertApiErrorLog(
+                    'Create Komerce Order',
+                    $komerceUrl,
+                    'POST',
+                    null,
+                    null,
+                    json_encode($komercePayload),      // request body
+                    $komerceResponse->status(),        // status code
+                    $komerceResponse->body()           // response body
+                );
+
+                throw new \Exception('(4): Failed to create Komerce order: ' . ($komerceResponse['meta']['message'] ?? 'Unknown error'));
             }
             $komerceData = $komerceResponse['data'];
 
