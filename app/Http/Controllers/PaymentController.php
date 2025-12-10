@@ -44,7 +44,7 @@ class PaymentController extends Controller
                     'body' => $response->body(),
                     'payload' => $payload
                 ]);
-                insertApiErrorLog('Adjust MOKA Item', "{$baseUrl}/v1/outlets/outlet_id/adjustment/items", 'POST', null, null, json_encode($payload), $status, $response->body());
+                // insertApiErrorLog('Adjust MOKA Item', "{$baseUrl}/v1/outlets/outlet_id/adjustment/items", 'POST', null, null, json_encode($payload), $status, $response->body());
                 return false;
             }
         }
@@ -431,16 +431,27 @@ class PaymentController extends Controller
             ])->post($komerceUrl, $komercePayload);
 
             if (!$komerceResponse->successful() || ($komerceResponse['meta']['code'] ?? null) !== 201) {
-                insertApiErrorLog(
-                    'Create Komerce Order',
-                    $komerceUrl,
-                    'POST',
-                    null,
-                    null,
-                    json_encode($komercePayload),      // request body
-                    $komerceResponse->status(),        // status code
-                    $komerceResponse->body()           // response body
-                );
+                $curlCommand = "curl -X POST '{$komerceUrl}' "
+                    . "-H 'x-api-key: {$komerceApiKey}' "
+                    . "-H 'Content-Type: application/json' "
+                    . "-d '" . json_encode($komercePayload, JSON_UNESCAPED_SLASHES) . "'";
+
+                Log::error('Create Komerce Order API failed', [
+                    'status' => $komerceResponse->status(),
+                    'body' => $komerceResponse->body(),
+                    'curl' => $curlCommand
+                ]);
+
+                // insertApiErrorLog(
+                //     'Create Komerce Order',
+                //     $komerceUrl,
+                //     'POST',
+                //     null,
+                //     null,
+                //     json_encode($komercePayload),      // request body
+                //     $komerceResponse->status(),        // status code
+                //     $komerceResponse->body()           // response body
+                // );
 
                 throw new \Exception('(4): Failed to create Komerce order: ' . ($komerceResponse['meta']['message'] ?? 'Unknown error'));
             }
