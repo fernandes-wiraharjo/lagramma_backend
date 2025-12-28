@@ -296,6 +296,7 @@ class PaymentController extends Controller
             $totalVariantsNeeded = [];
             $roOrderDetails = [];
             $mokaDetails = [];
+            $isStockIntegrationEnabled = !app()->environment(['local', 'development']);
 
             // Step 1: Collect stock
             foreach ($order->details as $item) {
@@ -338,57 +339,64 @@ class PaymentController extends Controller
 
             // Step 2: update MOKA stock
             // Step 2.1: Validate total stock
-            foreach ($totalVariantsNeeded as $variantId => $neededQty) {
-                $variant = ProductVariant::with('product')->find($variantId);
-                $productName = $variant->name
-                    ? "{$variant->product->name} - {$variant->name}"
-                    : $variant->product->name;
-                if (!$variant || $variant->stock < $neededQty) {
-                    throw new \Exception('(1): Product ' . $productName . ' only has ' . $variant->stock . ' left.');
+            if ($isStockIntegrationEnabled) {
+                foreach ($totalVariantsNeeded as $variantId => $neededQty) {
+                    $variant = ProductVariant::with('product')->find($variantId);
+                    $productName = $variant->name
+                        ? "{$variant->product->name} - {$variant->name}"
+                        : $variant->product->name;
+                    if (!$variant || $variant->stock < $neededQty) {
+                        throw new \Exception('(1): Product ' . $productName . ' only has ' . $variant->stock . ' left.');
+                    }
                 }
-            }
 
-            // Deduct stock after validation passed
-            foreach ($totalVariantsNeeded as $variantId => $neededQty) {
-                $variant = ProductVariant::find($variantId);
-                $variant->stock -= $neededQty;
-                $variant->updated_by = auth()->id();
-                $variant->save();
+                // Deduct stock after validation passed
+                foreach ($totalVariantsNeeded as $variantId => $neededQty) {
+                    $variant = ProductVariant::find($variantId);
+                    $variant->stock -= $neededQty;
+                    $variant->updated_by = auth()->id();
+                    $variant->save();
 
-                //prepare moka data
-                if ($variant->track_stock == 1) {
-                    $mokaDetails[$variantId] = [
-                        'variant' => $variant
+                    //prepare moka data
+                    if ($variant->track_stock == 1) {
+                        $mokaDetails[$variantId] = [
+                            'variant' => $variant
+                        ];
+                    }
+                }
+
+                $historyDetails = [];
+                foreach ($mokaDetails as $entry) {
+                    $variant = $entry['variant'];
+                    $remainingStock = $variant->stock;
+
+                    $historyDetails[] = [
+                        'item_id' => $variant->product->moka_id_product,
+                        'item_variant_id' => $variant->moka_id_product_variant,
+                        'actual_stock' => $remainingStock
                     ];
                 }
-            }
 
-            $historyDetails = [];
-            foreach ($mokaDetails as $entry) {
-                $variant = $entry['variant'];
-                $remainingStock = $variant->stock;
+                if (count($historyDetails) > 0) {
+                    $payload = [
+                        'adjustment' => [
+                            'note' => "ecomm:{$order->id}:{$invoiceNo}",
+                            'history_details' => $historyDetails
+                        ]
+                    ];
 
-                $historyDetails[] = [
-                    'item_id' => $variant->product->moka_id_product,
-                    'item_variant_id' => $variant->moka_id_product_variant,
-                    'actual_stock' => $remainingStock
-                ];
-            }
-
-            if (count($historyDetails) > 0) {
-                $payload = [
-                    'adjustment' => [
-                        'note' => "ecomm:{$order->id}:{$invoiceNo}",
-                        'history_details' => $historyDetails
-                    ]
-                ];
-
-                $result = $this->mokaStockAdjustment($payload);
-                if (!$result) {
-                    throw new \Exception('(2): Terjadi kesalahan saat proses integrasi stock. Harap hubungi admin.');
+                    $result = $this->mokaStockAdjustment($payload);
+                    if (!$result) {
+                        throw new \Exception('(2): Terjadi kesalahan saat proses integrasi stock. Harap hubungi admin.');
+                    }
+                } else {
+                    throw new \Exception('(3): Terjadi kesalahan saat proses integrasi stock. Tidak ada data yang dikirim ke moka.');
                 }
             } else {
-                throw new \Exception('(3): Terjadi kesalahan saat proses integrasi stock. Tidak ada data yang dikirim ke moka.');
+                Log::info('Local/dev environment: stock deduction skipped', [
+                    'invoice_no' => $invoiceNo,
+                    'variants' => $totalVariantsNeeded
+                ]);
             }
 
             // Step 3: Store order delivery to raja ongkir
