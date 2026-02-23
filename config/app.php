@@ -213,7 +213,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
-    'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
+    'frontend_url' => env('FRONTEND_URL', 'http://lagramma_frontend.test:8080'),
     'komerce_api_url' => env('KOMERCE_API_URL'),
     'komerce_api_key' => env('KOMERCE_API_KEY'),
 
