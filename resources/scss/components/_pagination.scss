@@ -12,6 +12,26 @@
     }
 }
 
+.lagramma-page-link {
+    margin-left: 0.35rem;
+    display: inline-flex;
+    min-width: 32px;
+    min-height: 32px;
+    align-items: center;
+    justify-content: center;
+}
+
+.lagramma-page-link-hover {
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+        background-color: #0c3e3c !important;
+        border-color: #0c3e3c !important;
+        color: #ffffff !important;
+    }
+}
+
 // Pagination rounded (Custom)
 .pagination-rounded {
     .page-link {
