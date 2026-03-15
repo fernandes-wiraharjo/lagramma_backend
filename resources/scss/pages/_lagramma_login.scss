@@ -27,16 +27,26 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:first-child {
+        border-top-left-radius: 20px;
+    }
+
+    &:last-child {
+        border-top-right-radius: 20px;
+    }
+}
+
+.iti, .intl-tel-input {
+  width: 100% !important;
 }
 
 .lagramma-auth-tab-active {
-    border-top-left-radius: 20px;
     background-color: $lagramma_green;
     color: #FFFFFF;
 }
 
 .lagramma-auth-tab-inactive {
-    border-top-right-radius: 20px;
     background-color: #ffffff;
     color: $lagramma_green;
     cursor: pointer;
