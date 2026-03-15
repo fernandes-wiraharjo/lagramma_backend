@@ -3,38 +3,36 @@
     Login
 @endsection
 @section('content')
-    <div style="height: 480px;">
+    <div class="lagramma-auth-wrapper">
         <div class="w-100">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div class="auth-card mx-lg-3">
-                            <div class="card border-0 mb-0">
-                                <div class="card-header bg-primary border-0">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-3">
-                                            <img src="{{ URL::asset('build/images/auth/img-1.png') }}" alt=""
-                                                class="img-fluid">
-                                        </div>
-                                        <div class="col-lg-8 col-9">
-                                            <h1 class="text-white lh-base fw-lighter">La Gramma Account Login</h1>
-                                        </div>
+                            <div class="card border-0 mb-0 shadow-blur lagramma-auth-card">
+                                <div class="card-header d-flex p-0 lagramma-auth-card-header" style="border-border-top-left-radius: 20px; border-top-right-radius: 20px;">
+                                    <div class="lagramma-auth-tab lagramma-auth-tab-active">
+                                        SIGN IN
+                                    </div>
+                                    <div
+                                        class="lagramma-auth-tab lagramma-auth-tab-inactive"
+                                        onclick="window.location.href='{{ route('register') }}'"
+                                    >
+                                        SIGN UP
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <p class="text-muted fs-15">Sign in.</p>
-                                    <div class="p-2">
+                                    <div style="padding: 24px 48px 24px 48px;">
                                         <form method="POST" action="{{ route('login') }}">
                                             @csrf
                                             @if (request('redirect'))
                                                 <input type="hidden" name="redirect" value="{{ request('redirect') }}">
                                             @endif
                                             <div class="mb-3">
-                                                <label for="email" class="form-label">Email</label>
+                                                <label for="email" class="form-label lagramma-form-label">Email</label>
                                                 <input id="email" type="email"
-                                                    class="form-control @error('email') is-invalid @enderror" name="email"
-                                                    value="" required autocomplete="email" autofocus
-                                                    placeholder="Enter your email">
+                                                    class="form-control @error('email') is-invalid @enderror lagramma-form-input" name="email"
+                                                    value="" required autocomplete="email" autofocus>
                                                 @error('email')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -47,15 +45,15 @@
                                                 <!-- <div class="float-end">
                                                     <a href="{{ route('password.request') }}" class="text-muted">Forgot password?</a>
                                                 </div> -->
-                                                <label class="form-label" for="password-input">Password</label>
+                                                <label class="form-label lagramma-form-label" for="password-input">Password</label>
                                                 <div class="position-relative auth-pass-inputgroup mb-3">
                                                     <!-- <input id="password" type="password"
                                                         class="form-control password-input @error('password') is-invalid @enderror"
                                                         name="password" autocomplete="current-password" placeholder="Enter your password" value=""> -->
                                                     <input id="password" type="password"
-                                                        class="form-control password-input @error('password') is-invalid @enderror"
+                                                        class="form-control password-input @error('password') is-invalid @enderror lagramma-form-input"
                                                         name="password" required autocomplete="current-password"
-                                                        placeholder="Enter your password" value="">
+                                                        value="">
                                                     <button
                                                         class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
                                                         type="button" id="password-addon"><i
@@ -74,7 +72,7 @@
                                             </div> -->
 
                                             <div class="mt-4">
-                                                <button class="btn btn-primary w-100" type="submit">Sign In</button>
+                                                <button class="lagramma-button-solid w-100 py-2 lagramma-auth-button" type="submit">Sign In</button>
                                             </div>
 
                                             <!-- <div class="mt-4 pt-2 text-center">
@@ -94,13 +92,13 @@
                                             </div> -->
                                         </form>
 
-                                        <div class="text-center mt-5">
+                                        {{-- <div class="text-center mt-5">
                                             <p class="mb-0">Don't have an account ? <a
                                                     href="{{ route('register', ['redirect' => request('redirect')]) }}"
                                                     class="fw-semibold text-secondary text-decoration-underline"> Sign
                                                     Up</a>
                                             </p>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>

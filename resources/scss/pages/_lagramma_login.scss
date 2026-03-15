@@ -1,0 +1,60 @@
+//
+// _lagramma_login.scss
+// Lagramma Authentication Page Styles
+//
+
+.lagramma-auth-wrapper {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.lagramma-auth-card {
+    border-radius: 20px !important;
+}
+
+.lagramma-auth-card-header {
+    height: 48px;
+    border-bottom: 2px solid $lagramma_green;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.lagramma-auth-tab {
+    font-weight: 700;
+    font-size: 1rem;
+    width: 50%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lagramma-auth-tab-active {
+    border-top-left-radius: 20px;
+    background-color: $lagramma_green;
+    color: #FFFFFF;
+}
+
+.lagramma-auth-tab-inactive {
+    border-top-right-radius: 20px;
+    background-color: #ffffff;
+    color: $lagramma_green;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.lagramma-form-label {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.lagramma-form-input {
+    border-radius: 10px !important;
+}
+
+.lagramma-auth-button {
+    border-radius: 10px !important;
+}
