@@ -39,7 +39,9 @@
             <!-- End Page-content -->
 
             <!-- footer -->
-            @include('layouts.footer')
+            @if (!session())
+                @include('layouts.footer')
+            @endif
         </div>
         <!-- end main content-->
 
