@@ -34,8 +34,7 @@
                                 <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=4483549">Lapis Legit</a></li>
                                 <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=66457309">Nastar</a></li>
                                 <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=4483551">Cookies</a></li>
-                                <li><a href="#!">Patisserie</a></li>
-                                <li><a href="#!">PIA</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=116729812">Hampers</a></li>
                             </ul>
                         </div>
                     </div>
