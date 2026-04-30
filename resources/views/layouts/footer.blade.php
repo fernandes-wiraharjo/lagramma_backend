@@ -10,13 +10,13 @@
                     <div class="footer-social mt-auto pt-3">
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item">
-                                <a href="#!" class="text-reset social-link">
+                                <a target="_blank" href="https://www.instagram.com/lagrammahomemade/" class="text-reset social-link" target="_blank">
                                     <img src="{{ URL::asset('build/images/instagram.png') }}" alt="Instagram"
                                         class="social-logo">
                                 </a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="#!" class="text-reset social-link">
+                                <a target="_blank" href="https://www.tiktok.com/@lagrammahomemade_" class="text-reset social-link" target="_blank">
                                     <img src="{{ URL::asset('build/images/tiktok.png') }}" alt="Tiktok"
                                         class="social-logo">
                                 </a>
@@ -31,11 +31,10 @@
                         <div class="mt-lg-0 mt-4">
                             <h5 class="footer-title text-uppercase">Our Product</h5>
                             <ul class="list-unstyled footer-link mt-3">
-                                <li><a href="#!">Lapis Legit</a></li>
-                                <li><a href="#!">Nastar</a></li>
-                                <li><a href="#!">Cookies</a></li>
-                                <li><a href="#!">Patisserie</a></li>
-                                <li><a href="#!">PIA</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=4483549">Lapis Legit</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=66457309">Nastar</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=4483551">Cookies</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=116729812">Hampers</a></li>
                             </ul>
                         </div>
                     </div>
@@ -43,9 +42,9 @@
                         <div class="mt-lg-0 mt-4">
                             <h5 class="footer-title text-uppercase">Support</h5>
                             <ul class="list-unstyled footer-link mt-3">
-                                <li><a href="#!">FAQs</a></li>
-                                <li><a href="#!">Contacts</a></li>
-                                <li><a href="#!">Terms and Condition</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/frequently-asked-questions">FAQs</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/contact-us">Contacts</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/e-commerce-term-and-condition">Terms and Condition</a></li>
                             </ul>
                         </div>
                     </div>
@@ -54,7 +53,7 @@
                         <div class="mt-lg-0 mt-4">
                             <h5 class="footer-title text-uppercase">My Account</h5>
                             <ul class="list-unstyled footer-link mt-3">
-                                <li><a href="">Cart</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/view-cart">Cart</a></li>
                                 <li><a href="/orders" data-footer-view-my-order
                                         class="d-none" target="_blank">Order</a></li>
                             </ul>
@@ -67,8 +66,7 @@
         {{-- Author Section --}}
         <div class="row mt-4 pb-3 pt-3 align-items-center fs-12">
             <div class="col-sm-6 lg-footer-meta-text">
-                <script>document.write(new Date().getFullYear())</script> © La Gramma. Develop by <a href="https://fernandesdev.com/" target=
-                "_blank" class="text-reset text-decoration-underline">Fernandes Wiraharjo</a>
+                <script>document.write(new Date().getFullYear())</script> © La Gramma. Develop by Fernandes Wiraharjo
             </div>
 
             <span>
