@@ -31,10 +31,10 @@
                         <div class="mt-lg-0 mt-4">
                             <h5 class="footer-title text-uppercase">Our Product</h5>
                             <ul class="list-unstyled footer-link mt-3">
-                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=4483549">Lapis Legit</a></li>
-                                <li><a href="{{ config('app.frontend_url') }}/product-detail/51">Nastar</a></li>
-                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=4483551">Cookies</a></li>
-                                <li><a href="{{ config('app.frontend_url') }}/product-detail/50">Hampers</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=3">Lapis Legit</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=4">Nastar</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=5">Cookies</a></li>
+                                <li><a href="{{ config('app.frontend_url') }}/catalogue?category_id=9">Hampers</a></li>
                             </ul>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                             <h5 class="footer-title text-uppercase">My Account</h5>
                             <ul class="list-unstyled footer-link mt-3">
                                 <li><a href="{{ config('app.frontend_url') }}/view-cart">Cart</a></li>
-                                <li><a href="/orders" data-footer-view-my-order
+                                <li><a href="{{ config('app.frontend_url') }}/orders" data-footer-view-my-order
                                         class="d-none" target="_blank">Order</a></li>
                             </ul>
                         </div>
