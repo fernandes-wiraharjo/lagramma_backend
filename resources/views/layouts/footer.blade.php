@@ -62,35 +62,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- Author Section --}}
-        <div class="row mt-4 pb-3 pt-3 align-items-center fs-12">
-            <div class="col-sm-6 lg-footer-meta-text">
-                <script>document.write(new Date().getFullYear())</script> © La Gramma. Develop by Fernandes Wiraharjo
-            </div>
-
-            <span>
-                <img src="{{ URL::asset('build/images/search-icon.png') }}" alt="La Gramma Logo" class="lg-mobile-footer-accent">
-            </span>
-            <!-- <div class="col-sm-6">
-                <div class="text-sm-end d-none d-sm-block">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item">
-                            <a href="#!"><img src="{{ URL::asset('build/images/ecommerce/payment/visa.png') }}" alt="" height="30"></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#!"><img src="{{ URL::asset('build/images/ecommerce/payment/discover.png') }}" alt="" height="30"></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#!"><img src="{{ URL::asset('build/images/ecommerce/payment/american-express.png') }}" alt="" height="30"></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a href="#!"><img src="{{ URL::asset('build/images/ecommerce/payment/paypal.png') }}" alt="" height="30"></a>
-                        </li>
-                    </ul>
-                </div>
-            </div> -->
-        </div>
     </div>
 </section>
 
