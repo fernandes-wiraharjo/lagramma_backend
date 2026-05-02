@@ -79,9 +79,7 @@
             <div class="lg-mobile-footer-meta lg-mobile-footer-meta-small">
                 <script>
                     document.write(new Date().getFullYear())
-                </script> &copy; La Gramma . Develop by
-                <a href="https://fernandesdev.com/" target="_blank"
-                    class="text-reset text-decoration-underline">Fernandes Wiraharjo</a>
+                </script> &copy; La Gramma . Develop by Fernandes Wiraharjo | M Putra Sofyan | Edy Tanto
             </div>
 
             <span>
