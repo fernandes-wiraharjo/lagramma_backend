@@ -120,21 +120,22 @@
                     class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('catalogue') ? 'lg-navbar-menu-link-active' : '' }}">
                     SHOP NOW
                 </a>
-                <a href="#!"
-                    class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('story-of-love') ? 'lg-navbar-menu-link-active' : '' }}">
+                <a href="/a-story-of-love"
+                    class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('a-story-of-love') ? 'lg-navbar-menu-link-active' : '' }}">
                     A STORY OF
                     LOVE</a>
-                <a href="#!"
-                    class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('location') ? 'lg-navbar-menu-link-active' : '' }}">
+                <a href="/locations"
+                    class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('locations') ? 'lg-navbar-menu-link-active' : '' }}">
                     LOCATION
                 </a>
             </div>
 
             {{-- WhatsApp Order Now --}}
             <div class="position-absolute top-50 end-0 translate-middle-y pe-3">
-                <a href="#!"
-                    class="text-decoration-none text-black lg-navbar-menu-link {{ request()->is('order-now') ? 'lg-navbar-menu-link-active' : '' }}">
-                    Order Now
+                <a target="_blank" href="https://wa.me/6282213706036?text=Hello%20Lagramma!%20Saya%20ingin%20bertanya%20terkait"
+                    class="d-flex justify-content-center align-items-center gap-4 text-decoration-none text-black lg-navbar-menu-link {{ request()->is('order-now') ? 'lg-navbar-menu-link-active' : '' }}">
+                    <img src="{{ URL::asset('build/images/icons/whatsapp-black.svg') }}" width="24"/>
+                    ORDER NOW
                 </a>
             </div>
         </div>
@@ -155,10 +156,10 @@
                 <a class="nav-link" href="/catalogue">SHOP NOW</a>
             </li>
             <li class="nav-item d-lg-none">
-                <a class="nav-link" href="#!">A STORY OF LOVE</a>
+                <a class="nav-link" href="/a-story-of-love">A STORY OF LOVE</a>
             </li>
             <li class="nav-item d-lg-none">
-                <a class="nav-link" href="#!">LOCATION</a>
+                <a class="nav-link" href="/locations">LOCATION</a>
             </li>
         </ul>
     </div>
@@ -167,180 +168,12 @@
     </div>
 </nav>
 
-<!--cart -->
-<div class="offcanvas offcanvas-end product-list" tabindex="-1" id="ecommerceCart"
-    aria-labelledby="ecommerceCartLabel">
-    <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title" id="ecommerceCartLabel">My Cart
-            @if ($cartCount > 0)
-                <span class="badge bg-danger align-middle ms-1 lg-cartitem-badge">{{ $cartCount }}</span>
-            @endif
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body px-0">
-        <div data-simplebar class="h-100">
-            <ul class="list-group list-group-flush cartlist">
-                <!-- <li class="list-group-item product">
-                    <div class="d-flex gap-3">
-                        <div class="flex-shrink-0">
-                            <div class="avatar-md lg-cart-avatar">
-                                <div class="avatar-title bg-warning-subtle rounded-3">
-                                    <img src="{{ URL::asset('build/images/products/img-4.png') }}" alt="" class="avatar-sm">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <a href="#!">
-                                <h5 class="fs-15">Borosil Paper Cup</h5>
-                            </a>
-                            <div class="d-flex mb-3 gap-2">
-                                <div class="text-muted fw-medium mb-0">$<span class="product-price">24.00</span></div>
-                                <div class="vr"></div>
-                                <span class="text-success fw-medium">In Stock</span>
-                            </div>
-                            <div class="input-step">
-                                <button type="button" class="minus">–</button>
-                                <input type="number" class="product-quantity" value="2" min="0" max="100" readonly>
-                                <button type="button" class="plus">+</button>
-                            </div>
-                        </div>
-                        <div class="flex-shrink-0 d-flex flex-column justify-content-between align-items-end">
-                            <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary remove-item-btn" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-close-fill fs-16"></i></button>
-                            <div class="fw-medium mb-0 fs-16">$<span class="product-line-price">48.00</span></div>
-                        </div>
-                    </div>
-                </li> -->
-                @foreach ($cart as $key => $item)
-                    <li class="list-group-item product">
-                        <div class="d-flex gap-3">
-                            <div class="flex-shrink-0">
-                                <div class="avatar-md lg-cart-avatar">
-                                    <div class="avatar-title bg-warning-subtle rounded-3">
-                                        <img src="{{ $item['image'] }}" alt="{{ $item['product_name'] }}"
-                                            class="avatar-sm">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex-grow-1">
-                                <a href="#!">
-                                    <h5 class="fs-15">
-                                        {{ $item['product_name'] }}{{ !empty($item['product_variant_name']) ? ' - ' . $item['product_variant_name'] : '' }}
-                                    </h5>
-                                </a>
-                                <div class="d-flex mb-3 gap-2">
-                                    <div class="text-muted fw-medium mb-0">IDR<span
-                                            class="product-price">{{ number_format($item['price'], 0, ',', '.') }}</span>
-                                    </div>
-                                    <div class="vr"></div>
-                                </div>
-
-                                {{-- Show Modifiers if available --}}
-                                @if (!empty($item['modifiers']))
-                                    <div class="mt-2">
-                                        <!-- <h6 class="fs-13 fw-semibold text-muted mb-1">Topping:</h6> -->
-                                        <ul class="mb-2 ps-3">
-                                            @foreach ($item['modifiers'] as $modifier)
-                                                <li>
-                                                    {{ $modifier['modifier_name'] }}:
-                                                    {{ $modifier['modifier_option_name'] }}
-                                                    <span class="text-muted">(+IDR
-                                                        {{ number_format($modifier['price'], 0, ',', '.') }})</span>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-
-                                {{-- For Hampers: Show item details --}}
-                                @if ($item['type'] === 'hampers' && !empty($item['items']))
-                                    <div class="mt-2">
-                                        <h6 class="fs-13 fw-semibold text-muted mb-1">Items:</h6>
-                                        <ul class="mb-2 ps-3">
-                                            @foreach ($item['items'] as $subItem)
-                                                <li>
-                                                    {{ $subItem['product_name'] }}{{ !empty($subItem['name']) ? ' - ' . $subItem['name'] : '' }}
-                                                    x {{ $subItem['quantity'] }}
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-
-                                <div class="input-step">
-                                    <button type="button" class="cart-header-minus"
-                                        data-key="{{ $key }}">–</button>
-                                    <input type="number" class="product-quantity" data-key="{{ $key }}"
-                                        value="{{ $item['quantity'] }}" min="1" max="100" readonly>
-                                    <button type="button" class="cart-header-plus"
-                                        data-key="{{ $key }}">+</button>
-                                </div>
-                            </div>
-
-                            <div class="flex-shrink-0 d-flex flex-column justify-content-between align-items-end">
-                                <button type="button" class="btn btn-icon btn-sm btn-ghost-secondary remove-item-btn"
-                                    data-key="{{ $key }}">
-                                    <i class="ri-close-fill fs-16"></i>
-                                </button>
-                                <div class="fw-medium mb-0 fs-16">
-                                    IDR<span class="product-line-price" data-key="{{ $key }}"
-                                        data-price="{{ ($item['price'] ?? 0) + (!empty($item['modifiers']) ? array_sum(array_column($item['modifiers'], 'price')) : 0) }}">
-                                        {{ number_format($item['total_price'], 0, ',', '.') }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-
-            <div class="table-responsive mx-2 border-top border-top-dashed">
-                <table class="table table-borderless mb-0 fs-14 fw-semibold">
-                    <tbody>
-                        <tr>
-                            <td>Sub Total :</td>
-                            <td class="text-end cart-lg-subtotal">IDR{{ number_format($subtotal, 0, ',', '.') }}</td>
-                        </tr>
-                        <!-- <tr>
-                            <td>Discount <span class="text-muted">(Toner15)</span>:</td>
-                            <td class="text-end cart-discount">- $177.54</td>
-                        </tr> -->
-                        <tr>
-                            <td>Shipping Charge :</td>
-                            <td class="text-end cart-shipping">-</td>
-                        </tr>
-                        <!-- <tr>
-                            <td>Estimated Tax (12.5%) : </td>
-                            <td class="text-end cart-tax">$147.95</td>
-                        </tr> -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="offcanvas-footer border-top p-3 text-center">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="m-0 fs-16 text-muted">Total:</h6>
-            <div class="px-2">
-                <h6 class="m-0 fs-16 cart-total">-</h6>
-            </div>
-        </div>
-        <div class="row g-2">
-            <div class="col-6">
-                <a href="/" class="btn btn-light w-100" id="reset-layout">View Cart</a>
-                <!-- <button type="button" class="btn btn-light w-100" id="reset-layout">View Cart</button> -->
-            </div>
-            <div class="col-6">
-                <button type="button" id="lg-continue-to-co-btn" class="btn btn-info w-100"
-                    @if ($cartCount == 0) disabled @endif>
-                    Continue to Checkout
-                </button>
-                <!-- <a href="#!" target="_blank" class="btn btn-info w-100">Continue to Checkout</a> -->
-            </div>
-        </div>
-    </div>
-</div>
+{{-- Cart Offcanvas --}}
+<x-cart-offcanvas
+    :cartCount="$cartCount"
+    :cart="$cart"
+    :subtotal="$subtotal"
+/>
 
 <!-- Modal -->
 <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
