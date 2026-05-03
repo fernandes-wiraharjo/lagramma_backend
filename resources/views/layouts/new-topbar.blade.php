@@ -116,15 +116,15 @@
     <div class="w-100 d-none d-lg-block lg-navbar-menus lg-navbar-menus-desktop">
         <div class="container container-1440 h-100 position-relative">
             <div class="d-flex h-100 justify-content-center align-items-center">
-                <a href="/catalogue"
+                <a href="{{ config('app.frontend_url') }}/catalogue"
                     class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('catalogue') ? 'lg-navbar-menu-link-active' : '' }}">
                     SHOP NOW
                 </a>
-                <a href="/a-story-of-love"
+                <a href="{{ config('app.frontend_url') }}/a-story-of-love"
                     class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('a-story-of-love') ? 'lg-navbar-menu-link-active' : '' }}">
                     A STORY OF
                     LOVE</a>
-                <a href="/locations"
+                <a href="{{ config('app.frontend_url') }}/locations"
                     class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('locations') ? 'lg-navbar-menu-link-active' : '' }}">
                     LOCATION
                 </a>
