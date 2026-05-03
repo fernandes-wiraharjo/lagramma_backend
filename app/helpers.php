@@ -38,10 +38,10 @@ function refreshMokaToken()
         'client_id' => env('MOKA_CLIENT_ID'),
         'client_secret' => env('MOKA_CLIENT_SECRET'),
         'grant_type' => 'refresh_token',
-        'refresh_token' => $latestToken->refresh_token
+        'refresh_token' => $latestToken->refresh_token,
     ];
 
-    $response = Http::post($baseUrl . '/oauth/token', $credentials);
+    $response = Http::post($baseUrl.'/oauth/token', $credentials);
 
     if ($response->successful()) {
         $responseData = $response->json();
@@ -50,8 +50,8 @@ function refreshMokaToken()
         $newRefreshToken = $responseData['refresh_token'];
         $expiresIn = $responseData['expires_in']; // Expiry time in seconds
 
-         // Calculate the new expiration time
-         $expiresAt = now()->addSeconds($expiresIn);
+        // Calculate the new expiration time
+        $expiresAt = now()->addSeconds($expiresIn);
 
         // Update in database
         DB::table('moka_tokens')->updateOrInsert(
@@ -69,11 +69,13 @@ function refreshMokaToken()
         $status = $response->status();
         Log::error("Refresh MOKA API Token Error: HTTP {$status}");
         insertApiErrorLog('Refresh MOKA API Token', "$baseUrl/oauth/token", 'POST', null, null, null, $response->status(), $response->body());
+
         return null;
     }
 }
 
-function normalizePhone($phone) {
+function normalizePhone($phone)
+{
     // Remove spaces, dashes, etc.
     $phone = preg_replace('/\D+/', '', $phone); // Only keep digits
 
@@ -81,4 +83,18 @@ function normalizePhone($phone) {
     $phone = ltrim($phone, '0+');
 
     return $phone;
+}
+
+function calculateTotalOnCart($cart)
+{
+    $total = 0;
+    foreach ($cart as $item) {
+        $itemTotal = ($item['price'] ?? 0) * $item['quantity'];
+        if (! empty($item['modifiers'])) {
+            $itemTotal += array_sum(array_column($item['modifiers'], 'price')) * $item['quantity'];
+        }
+        $total += $itemTotal;
+    }
+
+    return $total;
 }

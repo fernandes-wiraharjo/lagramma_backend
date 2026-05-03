@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(find public/build/css -name bootstrap*.css)"
+    ]
+  }
+}

@@ -39,7 +39,41 @@
             <!-- End Page-content -->
 
             <!-- footer -->
-            @include('layouts.footer')
+            @if (!session())
+                @include('layouts.footer')
+            @else
+                <footer class="footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="text-center">
+                                    <p class="mb-0 text-muted">©
+                                        <script>
+                                            document.write(new Date().getFullYear())
+                                        </script> La Gramma. Crafted by Fernandes Wiraharjo
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> © La Gramma.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Developed by Fernandes Wiraharjo
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            @endif
         </div>
         <!-- end main content-->
 
