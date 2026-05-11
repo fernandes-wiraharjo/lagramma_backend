@@ -426,7 +426,8 @@ class PaymentController extends Controller
                 "grand_total" => intval($orderDelivery?->grand_total),
                 "cod_value" => intval($orderDelivery?->grand_total),
                 "insurance_value" => 0,
-                "order_details" => $roOrderDetails
+                "order_details" => $roOrderDetails,
+                "commodity_code" => config('app.commodity_code'),
             ];
             $baseUrlKomerce = config('app.komerce_api_url');
             $komerceApiKey = config('app.komerce_api_key');
