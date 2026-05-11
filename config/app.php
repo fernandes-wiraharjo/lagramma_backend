@@ -216,5 +216,6 @@ return [
     'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
     'komerce_api_url' => env('KOMERCE_API_URL'),
     'komerce_api_key' => env('KOMERCE_API_KEY'),
+    'commodity_code' => env('COMMODITY_CODE', 'MSO097'),
 
 ];
