@@ -358,6 +358,8 @@
             </div>
         </div>
     </div>
+
+    @stack('extra_scripts')
 </body>
 
 </html>
