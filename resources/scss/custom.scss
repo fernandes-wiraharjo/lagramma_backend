@@ -142,11 +142,8 @@ $lagramma_green:        #0c3e3c;
     }
 }
 
-/* Header color */
-#page-topbar,
-.top-tagbar,
-#navbar,
-.topbar-shadow {
+/* Header color - storefront only (backend #page-topbar uses default --bs-header-bg: white) */
+#navbar {
     background-color: $lagramma_green !important;
 }
 
