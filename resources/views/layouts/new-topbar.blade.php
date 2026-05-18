@@ -21,7 +21,7 @@
                     <div class="logo-dark">
                         <!-- LA GRAMMA -->
                         <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt=""
-                            class="lg-topbar-logo lg-topbar-logo-dark" style="width: 360px;">
+                            class="lg-topbar-logo lg-topbar-logo-dark">
                     </div>
                     <div class="logo-light">
                         <!-- LA GRAMMA -->
@@ -70,7 +70,14 @@
                     </div>
                 @endif
 
-                <div class="dropdown header-item dropdown-hover-end">
+                <div class="header-item d-lg-none">
+                    <button type="button" class="btn p-0 border-0 bg-transparent lg-topbar-action"
+                        data-bs-toggle="offcanvas" data-bs-target="#userSidebar" aria-controls="userSidebar">
+                        <i class="bi bi-person lg-topbar-icon"></i>
+                    </button>
+                </div>
+
+                <div class="dropdown header-item dropdown-hover-end d-none d-lg-flex align-items-center">
                     <button type="button" class="btn p-0 border-0 bg-transparent lg-topbar-action"
                         id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
@@ -108,7 +115,7 @@
     {{-- Mobile Search Section --}}
     <div class="w-100 d-block d-lg-none lg-navbar-menus lg-navbar-menus-mobile">
         <div class="container container-1440 h-100 position-relative d-flex justify-content-center align-items-center">
-            <x-search-input-alt max-width="560px" />
+            <x-search-input-alt max-width="560px" id="search-mobile" />
         </div>
     </div>
 
@@ -116,15 +123,15 @@
     <div class="w-100 d-none d-lg-block lg-navbar-menus lg-navbar-menus-desktop">
         <div class="container container-1440 h-100 position-relative">
             <div class="d-flex h-100 justify-content-center align-items-center">
-                <a href="{{ config('app.frontend_url') }}/catalogue"
+                <a href="/catalogue"
                     class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('catalogue') ? 'lg-navbar-menu-link-active' : '' }}">
                     SHOP NOW
                 </a>
-                <a href="{{ config('app.frontend_url') }}/a-story-of-love"
+                <a href="/a-story-of-love"
                     class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('a-story-of-love') ? 'lg-navbar-menu-link-active' : '' }}">
                     A STORY OF
                     LOVE</a>
-                <a href="{{ config('app.frontend_url') }}/locations"
+                <a href="/locations"
                     class="text-decoration-none text-black px-3 lg-navbar-menu-link {{ request()->is('locations') ? 'lg-navbar-menu-link-active' : '' }}">
                     LOCATION
                 </a>
@@ -141,31 +148,7 @@
         </div>
     </div>
 
-    <!-- Navbar Menu - Mobile -->
-    <div class="collapse navbar-collapse d-lg-none" id="navbarSupportedContent">
-        <ul class="navbar-nav mb-0" id="navigation-menu">
-            <li class="nav-item d-block d-lg-none">
-                <a class="d-block p-5 h-auto text-center" href="/">
-                    <img src="{{ URL::asset('build/images/logo-dark.png') }}" alt="" height="25"
-                        class="card-logo-dark mx-auto">
-                    <img src="{{ URL::asset('build/images/logo-light.png') }}" alt="" height="25"
-                        class="card-logo-light mx-auto">
-                </a>
-            </li>
-            <li class="nav-item d-lg-none">
-                <a class="nav-link" href="/catalogue">SHOP NOW</a>
-            </li>
-            <li class="nav-item d-lg-none">
-                <a class="nav-link" href="/a-story-of-love">A STORY OF LOVE</a>
-            </li>
-            <li class="nav-item d-lg-none">
-                <a class="nav-link" href="/locations">LOCATION</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="bg-overlay navbar-overlay" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent.show">
-    </div>
+    <x-mobile-menu />
 </nav>
 
 {{-- Cart Offcanvas --}}
@@ -174,6 +157,8 @@
     :cart="$cart"
     :subtotal="$subtotal"
 />
+
+<x-user-sidebar />
 
 <!-- Modal -->
 <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
