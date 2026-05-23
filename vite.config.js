@@ -1,5 +1,6 @@
 
 const vite = require('vite');
+import { globSync } from 'fs';
 import laravel from 'laravel-vite-plugin';
 import { viteStaticCopy } from 'vite-plugin-static-copy'
 
@@ -10,32 +11,44 @@ export default vite.defineConfig({
         rtl: true,
         outDir: 'public/build/',
         cssCodeSplit: true,
+        minify: true,
         rollupOptions: {
             output: {
-              assetFileNames: (css) => {
-                if(css.name.split('.').pop() == 'css') {
-                    return 'css/' + `[name]` + '.min.' + 'css';
-                } else {
-                    return 'icons/' + css.name;
-                }
-            },
-                entryFileNames: 'js/' + `[name]` + `.js`,
+                assetFileNames: (css) => {
+                    if (css.name.split('.').pop() == 'css') {
+                        return 'css/' + `[name]` + '.min.' + 'css';
+                    } else {
+                        return 'icons/' + css.name;
+                    }
+                },
+                entryFileNames: (chunkInfo) => {
+                    const srcPath = chunkInfo.facadeModuleId
+                        ? chunkInfo.facadeModuleId.replace(/\\/g, '/')
+                        : '';
+                    const match = srcPath.match(/resources\/js\/(.*)\.js/);
+                    const subPath = match ? match[1] : chunkInfo.name;
+                    return 'js/' + subPath + '.js';
+                },
             },
         },
-      },
+    },
     plugins: [
         laravel(
             {
                 input: [
+                    // SCSS entries
                     'resources/scss/app.scss',
                     'resources/scss/bootstrap.scss',
                     'resources/scss/icons.scss',
                     'resources/scss/custom.scss',
+
+                    // JS entries (all files in resources/js)
+                    ...globSync('resources/js/**/*.js'),
                 ],
-                refresh: true,                
+                refresh: true,
             }
         ),
-         viteStaticCopy({
+        viteStaticCopy({
             targets: [
                 {
                     src: 'resources/fonts',
@@ -50,17 +63,8 @@ export default vite.defineConfig({
                     dest: ''
                 },
                 {
-                    src: 'resources/js',
-                    dest: ''
-                },
-                {
                     src: 'resources/lang',
                     dest: ''
-                },
-
-                {
-                    src: './node_modules/leaflet/dist/images',
-                    dest: 'libs/leaflet/'
                 },
 
                 {
@@ -70,19 +74,21 @@ export default vite.defineConfig({
                     ],
                     dest: 'libs/bootstrap'
                 },
+
                 {
                     src: ['./node_modules/simplebar/dist/simplebar.js'],
                     dest: 'libs/simplebar',
                     rename: 'simplebar.min.js',
                 },
+
                 {
-                    src: ['./node_modules/prismjs/prism.js'],
-                    dest: 'libs/prismjs',
+                    src: ['./node_modules/isotope-layout/dist/isotope.pkgd.min.js'],
+                    dest: 'libs/isotope-layout',
                 },
+
                 {
-                    src: ['./node_modules/sortablejs/Sortable.js'],
-                    dest: 'libs/sortable',
-                    rename: 'sortable.min.js',
+                    src: ['./node_modules/masonry-layout/dist/masonry.pkgd.min.js'],
+                    dest: 'libs/masonry-layout',
                 },
 
                 {
@@ -192,7 +198,7 @@ export default vite.defineConfig({
 
                 {
                     src: ["./node_modules/jsvectormap/dist/css/jsvectormap.min.css", "./node_modules/jsvectormap/dist/js/jsvectormap.min.js", "./node_modules/jsvectormap/dist/maps/world-merc.js", "./node_modules/jsvectormap/dist/maps/world-merc.js", "./node_modules/jsvectormap/dist/maps/us-merc-en.js", "./node_modules/jsvectormap/dist/maps/canada.js", "./node_modules/jsvectormap/dist/maps/russia.js",
-                    "./node_modules/jsvectormap/dist/maps/spain.js"],
+                        "./node_modules/jsvectormap/dist/maps/spain.js"],
                     dest: 'libs/jsvectormap'
                 },
 
@@ -251,6 +257,6 @@ export default vite.defineConfig({
                     dest: 'libs/fg-emoji-picker'
                 },
             ]
-         }),
+        }),
     ],
 });
