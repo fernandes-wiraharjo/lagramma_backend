@@ -73,7 +73,7 @@ var swiper = new Swiper(".testi-slider", {
         prevEl: ".swiper-button-prev",
     },
     breakpoints: {
-        00: {
+        0: {
             slidesPerView: 1
         },
         768: {
