@@ -330,7 +330,7 @@ class PaymentController extends Controller
                     "product_price" => $productPrice,
                     "product_width" => intval($item?->product->width) ?? 1,
                     "product_height" => intval($item?->product->height) ?? 1,
-                    "product_weight" => isset($item?->product->weight) ? intval($item?->product->weight) * 1000 : 1000,
+                    "product_weight" => isset($item?->product->weight) ? (float)($item?->product->weight) * 1000 : 1000,
                     "product_length" => intval($item?->product->length) ?? 1,
                     "qty" => $productQty,
                     "subtotal" => $productTotalPrice
